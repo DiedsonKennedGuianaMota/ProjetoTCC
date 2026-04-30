@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trilha de Exercícios - ALGORITMOLAB</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="no-scroll app-mode">
+
+    <header class="navbar">
+        <div class="nav-profile">
+            <div class="avatar" id="user-avatar">A</div>
+            <div>
+                <strong id="user-name">Aluno</strong>
+                <div class="streak-badge">
+                    <i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-outline nav-btn" onclick="abrirConfiguracoes()" title="Configurações">
+                <i class="fas fa-cog"></i>
+            </button>
+            <button class="btn btn-outline nav-btn" onclick="handleLogout()" title="Sair">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="wizard-container">
+        
+        <div class="fase-card active" id="fase1-container">
+            <div class="fase-header">
+                <h3><i class="fas fa-brain"></i> Fase 1: Teoria</h3>
+                <span class="badge bg-teal pulse-anim">Nota necessária: 80%</span>
+            </div>
+            
+            <div id="quiz-fase1" class="quiz-grid">
+                </div>
+
+            <button class="btn bg-dark btn-animate" onclick="corrigirFase1()" style="width: 100%; margin-top: 15px; color: white;">
+                <i class="fas fa-paper-plane"></i> Enviar Respostas
+            </button>
+            <div id="resultado-fase1" class="resultado-box hidden"></div>
+        </div>
+
+        <div class="fase-card" id="fase2-container">
+            <div class="fase-header">
+                <h3><i class="fas fa-code"></i> Fase 2: Laboratório de C</h3>
+                <span class="badge bg-sand"><i class="fas fa-terminal"></i> GCC Compiler</span>
+            </div>
+            <p class="missao-text"><strong>Missão:</strong> Crie uma função em C chamada <code>soma</code> que receba dois inteiros (a, b) e retorne a soma deles.</p>
+            
+            <div class="ide-container">
+                <div class="ide-header">
+                    <span><i class="fas fa-file-code"></i> main.c</span>
+                </div>
+                <textarea id="editor-fase2" class="code-editor" spellcheck="false">
+#include <stdio.h>
+
+int soma(int a, int b) {
+    // Digite seu codigo aqui...
+    
+}
+</textarea>
+                <div class="ide-footer">
+                    <button class="btn bg-teal btn-animate" onclick="executarCodigoC_Fase2()">
+                        <i class="fas fa-play"></i> Compilar e Rodar
+                    </button>
+                </div>
+            </div>
+            <div id="console-fase2" class="console-output">Terminal aguardando instruções...</div>
+        </div>
+
+        <div class="fase-card" id="fase3-container">
+            <div class="fase-header">
+                <h3><i class="fas fa-trophy"></i> Fase 3: Boss Fight</h3>
+                <span class="badge bg-dark" style="color: white;">Desafio Final</span>
+            </div>
+            
+            <div class="questao-mista">
+                <h4>Parte A: Lógica</h4>
+                <p>Em C, qual o especificador de formato para imprimir um inteiro no `printf`?</p>
+                <select id="select-fase3" class="form-select">
+                    <option value="">Selecione...</option>
+                    <option value="%f">%f</option>
+                    <option value="%s">%s</option>
+                    <option value="%d">%d ou %i</option>
+                </select>
+            </div>
+
+            <div class="questao-mista" style="margin-top: 15px;">
+                <h4>Parte B: Algoritmo (C)</h4>
+                <p>Crie uma função <code>int ehPar(int num)</code> que retorne <code>1</code> se for par e <code>0</code> se ímpar.</p>
+                <div class="ide-container" style="margin-top: 5px;">
+                    <textarea id="editor-fase3" class="code-editor small-editor" spellcheck="false">
+int ehPar(int num) {
+    // Seu codigo aqui...
+}
+</textarea>
+                </div>
+            </div>
+
+            <button class="btn bg-dark btn-animate" onclick="avaliarDesafioFinalC()" style="width: 100%; margin-top: 15px; color: white;">
+                <i class="fas fa-flag-checkered"></i> Concluir Trilha
+            </button>
+            <div id="console-fase3" class="console-output hidden"></div>
+        </div>
+
+    </main>
+
+    <div class="floating-actions" style="z-index: 100;">
+        <a href="opcoes-unidade.html" class="btn"><i class="fas fa-arrow-left"></i> Voltar</a>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', carregarQuizFase1);
+    </script>
+</body>
+</html>

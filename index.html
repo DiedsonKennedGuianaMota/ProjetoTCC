@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALGORITMOLAB - Início</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="container">
+        <section class="hero-section">
+            <i class="fas fa-laptop-code" style="font-size: 4rem; color: var(--accent-teal);"></i>
+            <h1>ALGORITMOLAB</h1>
+            <p style="font-size: 1.2rem; max-width: 600px; line-height: 1.6;">
+                O ambiente perfeito para dominar os fundamentos da Lógica de Programação. 
+                Construído para calouros de computação que querem aprender de forma prática, gamificada e sem frustrações.
+            </p>
+            <a href="#login-area" class="btn"><i class="fas fa-arrow-down"></i> Começar Agora</a>
+        </section>
+
+        <section id="login-area" class="form-container" style="margin-top: 50px; margin-bottom: 100px;">
+            <div class="card">
+                <h2 style="text-align: center; margin-bottom: 25px;"><i class="fas fa-sign-in-alt"></i> Acessar Plataforma</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="Seu e-mail institucional" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="senha" placeholder="Sua senha" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Entrar <i class="fas fa-chevron-right"></i></button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="landing-footer">
+        <h3><i class="fas fa-info-circle"></i> Sobre a Plataforma</h3>
+        <p style="margin-top: 10px; max-width: 800px; margin-left: auto; margin-right: auto;">
+            O AlgoritmoLab foi desenvolvido como apoio educacional para introduzir conceitos de variáveis, estruturas de dados e funções através de um compilador embutido e sistema de avaliação contínua.
+        </p>
+    </footer>
+
+    <div class="floating-actions">
+        <button class="btn" onclick="toggleAccessibility()" title="Alto Contraste / Fonte Maior">
+            <i class="fas fa-universal-access"></i> Acessibilidade
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Se já estiver logado, joga pra home direto
+        if (localStorage.getItem('userLogado') === 'true') {
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>

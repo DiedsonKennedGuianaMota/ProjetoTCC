@@ -1,0 +1,283 @@
+/* ==========================================================================
+   VARIÁVEIS GLOBAIS E RESET
+   ========================================================================== */
+:root {
+    --primary-blue: #170c79;
+    --accent-teal: #4bc0c8;
+    --alert-sand: #f0ebd8;
+    --bg-white: #ffffff;
+    --bg-light: #f9f9f9;
+    --text-dark: #333333;
+    --success-green: #2ecc71;
+    --radius: 12px;
+    --shadow: 0 4px 10px rgba(0,0,0,0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ==========================================================================
+   CABEÇALHO (NAVBAR) E UTILITÁRIOS
+   ========================================================================== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-white);
+    padding: 15px 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.nav-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--accent-teal);
+    color: var(--bg-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.streak-badge {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bg-teal { background-color: var(--accent-teal); color: var(--primary-blue); }
+.bg-sand { background-color: var(--alert-sand); color: var(--primary-blue); }
+.bg-dark { background-color: var(--primary-blue); color: var(--bg-white); }
+
+.floating-actions {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+}
+.floating-actions .btn {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+/* ==========================================================================
+   TELA PRINCIPAL: TRILHA HORIZONTAL (unidades.html)
+   ========================================================================== */
+.trilha-horizontal-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.trilha-card {
+    background: var(--bg-white);
+    border: 3px solid var(--accent-teal);
+    border-radius: var(--radius);
+    padding: 25px 20px;
+    width: 220px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--primary-blue);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 2;
+}
+
+.trilha-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--bg-white);
+    border: 3px solid var(--accent-teal);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: var(--accent-teal);
+    margin-top: -55px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.trilha-card.unlocked:hover {
+    transform: translateY(-5px);
+    background: var(--alert-sand);
+}
+
+.trilha-card.unlocked .trilha-icon { background: var(--accent-teal); color: var(--bg-white); }
+
+.trilha-card.locked {
+    border-color: #d1d1d1; background: #f5f5f5; color: #999;
+    pointer-events: none; box-shadow: none;
+}
+.trilha-card.locked .trilha-icon { border-color: #d1d1d1; color: #999; background: #e0e0e0; }
+
+.trilha-conector {
+    flex-grow: 1; min-width: 50px; max-width: 100px; height: 6px;
+    background: var(--accent-teal); position: relative;
+    display: flex; align-items: center; justify-content: flex-end; z-index: 1;
+}
+.trilha-conector i { color: var(--accent-teal); font-size: 1.5rem; margin-right: -10px; background: var(--bg-light); }
+.trilha-conector.locked { background: #d1d1d1; }
+.trilha-conector.locked i { color: #d1d1d1; }
+
+/* ==========================================================================
+   TELA INTERNA: OPÇÕES DA UNIDADE (opcoes-unidade.html)
+   ========================================================================== */
+.opcoes-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px;
+}
+
+.opcao-card {
+    border-radius: var(--radius); padding: 40px 20px; text-align: center;
+    text-decoration: none; box-shadow: var(--shadow); transition: var(--transition);
+    position: relative; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; color: var(--primary-blue);
+}
+.opcao-card:hover:not(.locked) { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+.opcao-card.locked {
+    background-color: #e0e0e0 !important; color: #999 !important;
+    cursor: not-allowed; pointer-events: none; box-shadow: none;
+}
+
+.icone-grande { font-size: 3.5rem; margin-bottom: 15px; }
+.full-width { width: 100%; flex-direction: row; gap: 20px; padding: 30px; box-sizing: border-box; }
+.full-width .icone-grande { margin-bottom: 0; font-size: 2.5rem; }
+
+.checkbox-container { position: absolute; top: 15px; left: 20px; font-size: 1.5rem; }
+.check-icon.marcado { color: var(--success-green); }
+.bg-dark .check-icon.marcado { color: #4CAF50; }
+
+/* ==========================================================================
+   TELA: MATERIAL DE ESTUDO (material-estudo.html)
+   ========================================================================== */
+.material-grid {
+    display: grid; grid-template-columns: 1fr; gap: 30px; margin-bottom: 50px;
+}
+@media (min-width: 768px) { .material-grid { grid-template-columns: 2fr 1fr; } }
+
+.material-card {
+    background: var(--bg-white); border: 2px solid var(--alert-sand);
+    border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow);
+}
+.material-header {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 2px solid var(--bg-light); padding-bottom: 15px; margin-bottom: 20px; color: var(--primary-blue);
+}
+.material-header h3 { margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+.video-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000; }
+.video-container video { width: 100%; display: block; }
+.status-check .check-icon { font-size: 1.8rem; color: #ccc; }
+.status-check .check-icon.marcado { color: var(--success-green); }
+.icone-gigante { font-size: 4rem; color: var(--accent-teal); margin-bottom: 20px; }
+
+/* ==========================================================================
+   TELA: TRILHA DE EXERCÍCIOS GAMIFICADA (exercicios.html)
+   ========================================================================== */
+body.app-mode.no-scroll {
+    overflow: hidden; height: 100vh; display: flex; flex-direction: column; background-color: #eef2f5;
+}
+.nav-btn { background: transparent; color: var(--primary-blue); box-shadow: none; border: 2px solid var(--primary-blue); }
+
+.wizard-container {
+    flex: 1; position: relative; display: flex; justify-content: center;
+    align-items: center; overflow: hidden; padding: 20px;
+}
+
+.fase-card {
+    position: absolute; width: 100%; max-width: 900px; background: var(--bg-white);
+    border-radius: 20px; box-shadow: 0 15px 35px rgba(23, 12, 121, 0.1); padding: 30px;
+    display: flex; flex-direction: column; border-top: 5px solid var(--primary-blue);
+    max-height: 85vh; overflow-y: auto;
+    /* Configuração da Animação (Escondido por padrão) */
+    opacity: 0; pointer-events: none; transform: scale(0.95) translateY(30px);
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.fase-card.active {
+    opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); z-index: 10;
+}
+
+.fase-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--bg-light); padding-bottom: 15px; margin-bottom: 15px; }
+.fase-header h3 { margin: 0; color: var(--primary-blue); font-size: 1.5rem; }
+.badge { padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+
+/* Animações e Grid Quiz */
+.pulse-anim { animation: pulse 2s infinite; }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); box-shadow: 0 0 10px rgba(75, 192, 200, 0.5); } 100% { transform: scale(1); } }
+.btn-animate { transition: transform 0.2s, background 0.2s; }
+.btn-animate:active { transform: scale(0.95); }
+
+.quiz-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.quiz-grid .questao-quiz:last-child { grid-column: 1 / -1; }
+.questao-quiz { background: #f8f9fa; padding: 10px 15px; border-left: 4px solid var(--accent-teal); border-radius: 8px; font-size: 0.9rem; }
+.questao-quiz p { margin: 0 0 8px 0; font-weight: bold; }
+.opcao-quiz { display: inline-block; margin-right: 10px; cursor: pointer; }
+
+/* IDE / COMPILADOR */
+.missao-text { font-size: 1rem; color: #444; margin-bottom: 10px; }
+.ide-container { border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+.ide-header { background: #1e1e1e; color: #858585; padding: 5px 15px; font-family: monospace; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 5px;}
+.code-editor {
+    width: 100%; height: 180px; background: #2d2d2d; color: #e06c75;
+    font-family: 'Consolas', 'Courier New', monospace; font-size: 1.1rem;
+    padding: 15px; border: none; resize: none; outline: none; line-height: 1.5; box-sizing: border-box;
+}
+.small-editor { height: 120px; }
+.ide-footer { background: #1e1e1e; padding: 10px; text-align: right; }
+
+.console-output {
+    background: #000; color: #0f0; font-family: 'Consolas', monospace;
+    padding: 15px; border-radius: 8px; margin-top: 15px; min-height: 60px;
+    white-space: pre-wrap; font-size: 0.9rem; border-left: 4px solid #0f0;
+}
+.console-error { color: #ff5555; border-left-color: #ff5555; }
+.form-select { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 1rem; }
+
+/* Caixas de Resultado */
+.resultado-box { padding: 10px; border-radius: 8px; font-weight: bold; text-align: center; margin-top: 15px;}
+.resultado-sucesso { background-color: #d4edda; color: #155724; }
+.resultado-erro { background-color: #f8d7da; color: #721c24; }
+.hidden { display: none !important; }

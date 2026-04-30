@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALGORITMOLAB - Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-profile">
+            <div class="avatar" id="user-avatar">A</div>
+            <div>
+                <strong id="user-name">Aluno</strong>
+                <div class="streak-badge">
+                    <i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="btn" onclick="handleLogout()" style="background: transparent; color: var(--primary-blue); box-shadow: none; border: 2px solid var(--primary-blue);">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2 style="margin-top: 30px;"><i class="fas fa-home"></i> Painel de Controle</h2>
+        
+        <div class="dashboard-grid">
+            <a href="modulos.html" class="card dash-item">
+                <i class="fas fa-layer-group"></i>
+                Módulos
+            </a>
+            
+            <a href="#" class="card dash-item">
+                <i class="fas fa-trophy"></i>
+                Desafios Extras
+            </a>
+            
+            <a href="#" class="card dash-item">
+                <i class="fas fa-chart-line"></i>
+                Meu Progresso
+            </a>
+            
+            <a href="#" class="card dash-item">
+                <i class="fas fa-certificate"></i>
+                Certificados
+            </a>
+        </div>
+    </main>
+
+    <div class="floating-actions">
+        <div style="flex: 1;"></div> <button class="btn" onclick="toggleAccessibility()">
+            <i class="fas fa-universal-access"></i>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Trava de segurança: obriga a estar logado para ver a tela
+        checkAuth();
+    </script>
+</body>
+</html>
