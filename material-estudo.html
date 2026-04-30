@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material de Estudo - ALGORITMOLAB</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-profile">
+            <div class="avatar" id="user-avatar">A</div>
+            <div>
+                <strong id="user-name">Aluno</strong>
+                <div class="streak-badge">
+                    <i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-outline" onclick="abrirConfiguracoes()" style="background: transparent; color: var(--primary-blue); box-shadow: none; border: 2px solid var(--primary-blue);" title="Configurações">
+                <i class="fas fa-cog"></i>
+            </button>
+            <button class="btn btn-outline" onclick="handleLogout()" style="background: transparent; color: var(--primary-blue); box-shadow: none; border: 2px solid var(--primary-blue);" title="Sair">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2 style="margin-bottom: 30px; color: var(--primary-blue);">
+            <i class="fas fa-book-reader"></i> Material de Estudo - Unidade 1
+        </h2>
+        
+        <div class="material-grid">
+            
+            <div class="material-card">
+                <div class="material-header">
+                    <h3><i class="fas fa-video"></i> Videoaula: Introdução à Lógica</h3>
+                    <div class="status-check">
+                        <i class="far fa-square check-icon" id="check-video"></i>
+                    </div>
+                </div>
+                
+                <div class="video-container">
+                    <video id="video-aula" controls>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        Seu navegador não suporta a tag de vídeo.
+                    </video>
+                </div>
+                <p style="font-size: 0.9rem; margin-top: 10px; color: #666;">Assista ao vídeo até o final para contabilizar o progresso.</p>
+            </div>
+
+            <div class="material-card">
+                <div class="material-header">
+                    <h3><i class="fas fa-file-pdf"></i> Apostila Complementar</h3>
+                    <div class="status-check">
+                        <i class="far fa-square check-icon" id="check-apostila"></i>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; padding: 30px 0;">
+                    <i class="fas fa-book icone-gigante" style="color: var(--accent-teal); font-size: 4rem; margin-bottom: 20px;"></i>
+                    <p style="margin-bottom: 20px;">Leia o material de apoio para fixar o conteúdo da videoaula.</p>
+                    <button class="btn bg-teal" onclick="lerApostila()" style="color: var(--primary-blue);">
+                        <i class="fas fa-download"></i> Acessar Apostila
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <div class="floating-actions">
+        <a href="opcoes-unidade.html" class="btn"><i class="fas fa-arrow-left"></i> Voltar</a>
+        <button class="btn" onclick="toggleAccessibility()" title="Acessibilidade">
+            <i class="fas fa-universal-access"></i> Acessibilidade
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Inicia a verificação de status quando a página carrega
+        document.addEventListener('DOMContentLoaded', atualizarStatusMaterial);
+    </script>
+</body>
+</html>

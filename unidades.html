@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trilha de Unidades - ALGORITMOLAB</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-profile">
+            <div class="avatar" id="user-avatar">A</div>
+            <div>
+                <strong id="user-name">Aluno</strong>
+                <div class="streak-badge">
+                    <i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-outline" onclick="abrirConfiguracoes()" style="background: transparent; color: var(--primary-blue); box-shadow: none; border: 2px solid var(--primary-blue);" title="Configurações">
+                <i class="fas fa-cog"></i>
+            </button>
+            <button class="btn btn-outline" onclick="handleLogout()" style="background: transparent; color: var(--primary-blue); box-shadow: none; border: 2px solid var(--primary-blue);">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2 style="text-align: center; margin-bottom: 50px; color: var(--primary-blue);">
+            <i class="fas fa-route"></i> Trilha: Lógica de Programação
+        </h2>
+        
+        <div class="trilha-horizontal-container">
+            
+            <a href="opcoes-unidade.html" class="trilha-card unlocked" id="unidade-1">
+                <div class="trilha-icon">
+                    <i class="fas fa-flag"></i>
+                </div>
+                <h3>Unidade 1</h3>
+                <p>Introdução</p>
+            </a>
+
+            <div class="trilha-conector locked" id="linha-1">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+
+            <div class="trilha-card locked" id="unidade-2">
+                <div class="trilha-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Unidade 2</h3>
+                <p>Fluxogramas</p>
+            </div>
+
+            <div class="trilha-conector locked" id="linha-2">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+
+            <div class="trilha-card locked" id="unidade-3">
+                <div class="trilha-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Unidade 3</h3>
+                <p>Pseudocódigo</p>
+            </div>
+
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <button class="btn btn-outline" onclick="resetarProgresso()">Resetar Progresso (Testes)</button>
+        </div>
+    </main>
+
+    <div class="floating-actions">
+        <button class="btn" onclick="toggleAccessibility()" title="Acessibilidade">
+            <i class="fas fa-universal-access"></i> Acessibilidade
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Quando a página carrega, verifica o que está desbloqueado
+        document.addEventListener('DOMContentLoaded', verificarProgressoUnidades);
+    </script>
+</body>
+</html>
