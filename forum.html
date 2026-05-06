@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fórum de Discussão - ALGORITMOLAB</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+    <header class="navbar">
+        <div class="nav-profile">
+            <div class="avatar" id="user-avatar">A</div>
+            <div>
+                <strong id="user-name">Aluno</strong>
+                <div class="streak-badge">
+                    <i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-outline" onclick="abrirConfiguracoes()" style="background: transparent; color: var(--primary-blue); box-shadow: none; border: 2px solid var(--primary-blue);" title="Configurações">
+                <i class="fas fa-cog"></i>
+            </button>
+            <button class="btn btn-outline" onclick="handleLogout()" style="background: transparent; color: var(--primary-blue); box-shadow: none; border: 2px solid var(--primary-blue);" title="Sair">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2 style="margin-bottom: 20px; color: var(--primary-blue);">
+            <i class="fas fa-comments"></i> Fórum de Discussão
+        </h2>
+
+        <div class="post-creator card-shadow">
+            <textarea id="novo-post-texto" placeholder="Tem alguma dúvida ou dica de código? Compartilhe aqui..." class="form-input"></textarea>
+            <div style="text-align: right; margin-top: 10px;">
+                <button class="btn bg-dark" onclick="criarPost()">
+                    <i class="fas fa-paper-plane"></i> Publicar
+                </button>
+            </div>
+        </div>
+
+        <div id="forum-feed" style="margin-top: 30px; display: flex; flex-direction: column; gap: 20px;">
+            </div>
+
+    </main>
+
+    <div class="floating-actions">
+        <a href="opcoes-unidade.html" class="btn"><i class="fas fa-arrow-left"></i> Voltar</a>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="forum.js"></script> </body>
+</html>
