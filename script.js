@@ -655,3 +655,37 @@ function exibirResultado(notaTotal, objPts, pratPts) {
 function voltarParaUnidade() {
     window.location.href = "opcoes-unidade.html";
 }
+
+// NOVA FUNÇÃO: Botão para marcar vídeo do YouTube
+function marcarVideoConcluido() {
+    if (localStorage.getItem('video_concluido') !== 'true') {
+        localStorage.setItem('video_concluido', 'true');
+        alert("Ótimo! Você concluiu a videoaula.");
+        atualizarStatusMaterial();
+    } else {
+        alert("Esta aula já está marcada como concluída!");
+    }
+}
+
+function atualizarStatusMaterial() {
+    const checkVideo = document.getElementById('check-video');
+    const checkApostila = document.getElementById('check-apostila');
+    
+    if(!checkVideo || !checkApostila) return;
+
+    const videoFeito = localStorage.getItem('video_concluido') === 'true';
+    const apostilaFeita = localStorage.getItem('apostila_concluida') === 'true';
+
+    if (videoFeito) checkVideo.className = 'fas fa-check-square check-icon marcado';
+    if (apostilaFeita) checkApostila.className = 'fas fa-check-square check-icon marcado';
+
+    // Libera os exercícios se ambos estiverem prontos
+    if (videoFeito && apostilaFeita) {
+        if (localStorage.getItem('uni1_conteudo') !== 'true') {
+            localStorage.setItem('uni1_conteudo', 'true');
+            setTimeout(() => {
+                alert("Parabéns! Você concluiu o material de estudo.\nA Trilha de Exercícios foi liberada!");
+            }, 500);
+        }
+    }
+}
