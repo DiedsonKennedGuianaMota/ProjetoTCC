@@ -664,28 +664,44 @@ function atualizarStatusMaterial() {
     }
 }
 /* ==========================================================================
-   SISTEMA FUNCIONAL DO FÓRUM (forum.js)
+   SISTEMA FLUIDO DO FÓRUM (forum.js)
    ========================================================================== */
 
 let forumData = [];
-const currentUser = "Aluno";
-
-// Gera um ID único simples
+const currentUser = "Aluno"; // Seu nome de usuário logado
 const generateId = () => '_' + Math.random().toString(36).substr(2, 9);
 
-// Inicializa o fórum ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
     carregarDadosForum();
     renderizarForum();
 });
 
-// Carrega do LocalStorage ou cria dados padrão se estiver vazio
+// ==========================================
+// CONTROLE DO MODAL
+// ==========================================
+function abrirModalPost() {
+    const modal = document.getElementById('modal-post');
+    const textarea = document.getElementById('novo-post-texto');
+    modal.classList.remove('hidden');
+    setTimeout(() => textarea.focus(), 100); // Foca no campo após a animação
+}
+
+function fecharModalPost() {
+    const modal = document.getElementById('modal-post');
+    const textarea = document.getElementById('novo-post-texto');
+    modal.classList.add('hidden');
+    textarea.value = ''; // Limpa ao fechar
+}
+
+// ==========================================
+// DADOS (LOCALSTORAGE)
+// ==========================================
 function carregarDadosForum() {
-    const dadosSalvos = localStorage.getItem('algoritmolab_forum');
+    const dadosSalvos = localStorage.getItem('algoritmolab_forum_v2');
     if (dadosSalvos) {
         forumData = JSON.parse(dadosSalvos);
     } else {
-        // Dados iniciais fictícios para o fórum não começar vazio
+        // Dados semente
         forumData = [
             {
                 id: generateId(),
@@ -719,31 +735,29 @@ function carregarDadosForum() {
 }
 
 function salvarDadosForum() {
-    localStorage.setItem('algoritmolab_forum', JSON.stringify(forumData));
+    localStorage.setItem('algoritmolab_forum_v2', JSON.stringify(forumData));
 }
 
 // ==========================================
-// FUNÇÕES DE CRIAÇÃO
+// AÇÕES DO FÓRUM
 // ==========================================
-
 function criarPost() {
     const textarea = document.getElementById('novo-post-texto');
     const content = textarea.value.trim();
-    if (!content) return;
+    
+    if (!content) {
+        alert("Escreva algo antes de publicar!");
+        return;
+    }
 
     const novoPost = {
-        id: generateId(),
-        author: currentUser,
-        content: content,
-        time: "Agora mesmo",
-        likes: 0,
-        likedByMe: false,
-        comments: []
+        id: generateId(), author: currentUser, content: content,
+        time: "Agora mesmo", likes: 0, likedByMe: false, comments: []
     };
 
-    forumData.unshift(novoPost); // Adiciona no início do array
+    forumData.unshift(novoPost); // Adiciona no topo
     salvarDadosForum();
-    textarea.value = '';
+    fecharModalPost();
     renderizarForum();
 }
 
@@ -752,15 +766,11 @@ function adicionarComentario(postId) {
     const content = input.value.trim();
     if (!content) return;
 
-    const postIndex = forumData.findIndex(p => p.id === postId);
-    if (postIndex > -1) {
-        forumData[postIndex].comments.push({
-            id: generateId(),
-            author: currentUser,
-            content: content,
-            likes: 0,
-            likedByMe: false,
-            replies: []
+    const post = forumData.find(p => p.id === postId);
+    if (post) {
+        post.comments.push({
+            id: generateId(), author: currentUser, content: content,
+            likes: 0, likedByMe: false, replies: []
         });
         salvarDadosForum();
         renderizarForum();
@@ -772,33 +782,36 @@ function adicionarResposta(postId, commentId) {
     const content = input.value.trim();
     if (!content) return;
 
-    const postIndex = forumData.findIndex(p => p.id === postId);
-    if (postIndex > -1) {
-        const commentIndex = forumData[postIndex].comments.findIndex(c => c.id === commentId);
-        if (commentIndex > -1) {
-            forumData[postIndex].comments[commentIndex].replies.push({
-                id: generateId(),
-                author: currentUser,
-                content: content,
-                likes: 0,
-                likedByMe: false
-            });
-            salvarDadosForum();
-            renderizarForum();
-        }
+    const post = forumData.find(p => p.id === postId);
+    const comment = post.comments.find(c => c.id === commentId);
+    if (comment) {
+        comment.replies.push({
+            id: generateId(), author: currentUser, content: content,
+            likes: 0, likedByMe: false
+        });
+        salvarDadosForum();
+        renderizarForum();
+    }
+}
+
+function toggleInteracaoBox(id) {
+    const el = document.getElementById(id);
+    if (el.style.display === 'none' || el.style.display === '') {
+        el.style.display = 'flex';
+        el.querySelector('input').focus();
+    } else {
+        el.style.display = 'none';
     }
 }
 
 // ==========================================
-// FUNÇÕES DE CURTIDA
+// CURTIDAS
 // ==========================================
-
 function toggleLikePost(postId) {
     const post = forumData.find(p => p.id === postId);
     post.likedByMe = !post.likedByMe;
     post.likes += post.likedByMe ? 1 : -1;
-    salvarDadosForum();
-    renderizarForum();
+    salvarDadosForum(); renderizarForum();
 }
 
 function toggleLikeComment(postId, commentId) {
@@ -806,8 +819,7 @@ function toggleLikeComment(postId, commentId) {
     const comment = post.comments.find(c => c.id === commentId);
     comment.likedByMe = !comment.likedByMe;
     comment.likes += comment.likedByMe ? 1 : -1;
-    salvarDadosForum();
-    renderizarForum();
+    salvarDadosForum(); renderizarForum();
 }
 
 function toggleLikeReply(postId, commentId, replyId) {
@@ -816,19 +828,12 @@ function toggleLikeReply(postId, commentId, replyId) {
     const reply = comment.replies.find(r => r.id === replyId);
     reply.likedByMe = !reply.likedByMe;
     reply.likes += reply.likedByMe ? 1 : -1;
-    salvarDadosForum();
-    renderizarForum();
+    salvarDadosForum(); renderizarForum();
 }
 
 // ==========================================
-// FUNÇÕES DE UI (Renderização e Exibição)
+// RENDERIZAÇÃO
 // ==========================================
-
-function toggleBox(id) {
-    const el = document.getElementById(id);
-    el.classList.toggle('hidden');
-}
-
 function renderizarForum() {
     const feed = document.getElementById('forum-feed');
     let html = '';
@@ -850,44 +855,42 @@ function renderizarForum() {
             
             <div class="post-content">${post.content}</div>
             
-            <div style="display: flex; gap: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            <div class="forum-actions">
                 <button class="action-btn ${likeClass}" onclick="toggleLikePost('${post.id}')">
-                    <i class="${likeIcon}"></i> ${post.likes} Curtidas
+                    <i class="${likeIcon}"></i> <span>${post.likes} Curtidas</span>
                 </button>
                 <button class="action-btn" onclick="document.getElementById('input-comment-${post.id}').focus()">
-                    <i class="far fa-comment"></i> Responder
+                    <i class="far fa-comment-alt"></i> <span>Comentar</span>
                 </button>
             </div>
 
             <div class="comments-section">
         `;
 
-        // Renderiza Comentários
         post.comments.forEach(comment => {
             const cLikeIcon = comment.likedByMe ? 'fas fa-heart' : 'far fa-heart';
             const cLikeClass = comment.likedByMe ? 'liked' : '';
-            const cInitial = comment.author.charAt(0).toUpperCase();
-
+            
             html += `
                 <div class="comment-card">
-                    <strong style="color: var(--primary-blue); font-size: 0.9rem;">${comment.author}</strong>
+                    <strong style="color: var(--primary-blue); font-size: 0.95rem;">${comment.author}</strong>
                     <div class="comment-content">${comment.content}</div>
-                    <div style="display: flex; gap: 15px; font-size: 0.85rem;">
-                        <button class="action-btn ${cLikeClass}" onclick="toggleLikeComment('${post.id}', '${comment.id}')">
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 8px;">
+                        <button class="action-btn ${cLikeClass}" style="padding: 4px 8px; font-size: 0.85rem;" onclick="toggleLikeComment('${post.id}', '${comment.id}')">
                             <i class="${cLikeIcon}"></i> ${comment.likes}
                         </button>
-                        <button class="action-btn" onclick="toggleBox('reply-box-${comment.id}')">
+                        <button class="action-btn" style="padding: 4px 8px; font-size: 0.85rem;" onclick="toggleInteracaoBox('reply-box-${comment.id}')">
                             <i class="fas fa-reply"></i> Responder
                         </button>
                     </div>
 
-                    <div id="reply-box-${comment.id}" class="hidden input-row">
-                        <input type="text" id="input-reply-${comment.id}" placeholder="Escreva uma resposta...">
-                        <button class="btn bg-dark" style="padding: 8px 15px;" onclick="adicionarResposta('${post.id}', '${comment.id}')">Enviar</button>
+                    <div id="reply-box-${comment.id}" class="input-row" style="display: none; margin-top: 10px;">
+                        <input type="text" id="input-reply-${comment.id}" class="forum-input" placeholder="Respondendo a ${comment.author}..." onkeypress="if(event.key === 'Enter') adicionarResposta('${post.id}', '${comment.id}')">
+                        <button class="btn bg-dark" style="padding: 0 20px;" onclick="adicionarResposta('${post.id}', '${comment.id}')">Enviar</button>
                     </div>
             `;
 
-            // Renderiza Respostas dos Comentários (Nível 3)
             if (comment.replies && comment.replies.length > 0) {
                 html += `<div class="replies-section">`;
                 comment.replies.forEach(reply => {
@@ -895,9 +898,9 @@ function renderizarForum() {
                     const rLikeClass = reply.likedByMe ? 'liked' : '';
                     html += `
                         <div class="reply-card">
-                            <strong style="font-size: 0.85rem; color: #555;">${reply.author}</strong>
-                            <div style="font-size: 0.9rem; margin: 4px 0;">${reply.content}</div>
-                            <button class="action-btn ${rLikeClass}" style="font-size: 0.8rem;" onclick="toggleLikeReply('${post.id}', '${comment.id}', '${reply.id}')">
+                            <strong style="font-size: 0.85rem; color: #64748b;">${reply.author}</strong>
+                            <div style="font-size: 0.9rem; margin: 4px 0; color: #334155;">${reply.content}</div>
+                            <button class="action-btn ${rLikeClass}" style="padding: 2px 5px; font-size: 0.8rem;" onclick="toggleLikeReply('${post.id}', '${comment.id}', '${reply.id}')">
                                 <i class="${rLikeIcon}"></i> ${reply.likes}
                             </button>
                         </div>
@@ -905,19 +908,19 @@ function renderizarForum() {
                 });
                 html += `</div>`;
             }
-
-            html += `</div>`; // Fim do comment-card
+            html += `</div>`;
         });
 
-        // Caixa para novo comentário no post
         html += `
-                <div class="input-row" style="margin-top: 15px;">
-                    <input type="text" id="input-comment-${post.id}" placeholder="Escreva um comentário...">
-                    <button class="btn bg-teal" style="color: var(--primary-blue);" onclick="adicionarComentario('${post.id}')">
+                <div class="input-row">
+                    <input type="text" id="input-comment-${post.id}" class="forum-input" placeholder="Escreva um comentário..." onkeypress="if(event.key === 'Enter') adicionarComentario('${post.id}')">
+                    <button class="btn bg-teal" style="color: var(--primary-blue); padding: 0 20px;" onclick="adicionarComentario('${post.id}')">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
-            </div> </div> `;
+            </div> 
+        </div> 
+        `;
     });
 
     feed.innerHTML = html;
