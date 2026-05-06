@@ -51,6 +51,266 @@
         <a href="opcoes-unidade.html" class="btn"><i class="fas fa-arrow-left"></i> Voltar</a>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js">
+        /* ==========================================================================
+   SISTEMA FUNCIONAL DO FÓRUM (forum.js)
+   ========================================================================== */
+
+let forumData = [];
+const currentUser = "Aluno";
+
+// Gera um ID único simples
+const generateId = () => '_' + Math.random().toString(36).substr(2, 9);
+
+// Inicializa o fórum ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+    carregarDadosForum();
+    renderizarForum();
+});
+
+// Carrega do LocalStorage ou cria dados padrão se estiver vazio
+function carregarDadosForum() {
+    const dadosSalvos = localStorage.getItem('algoritmolab_forum');
+    if (dadosSalvos) {
+        forumData = JSON.parse(dadosSalvos);
+    } else {
+        // Dados iniciais fictícios para o fórum não começar vazio
+        forumData = [
+            {
+                id: generateId(),
+                author: "Prof. Lógica",
+                content: "Bem-vindos ao fórum da Unidade 1! Lembrem-se que o laço 'while' é perfeito quando não sabemos quantas vezes o código vai repetir. Alguém tem um exemplo prático?",
+                time: "Há 2 horas",
+                likes: 12,
+                likedByMe: false,
+                comments: [
+                    {
+                        id: generateId(),
+                        author: "João Silva",
+                        content: "Eu uso muito em jogos, tipo um 'while(vida > 0)' para manter o jogo rodando!",
+                        likes: 5,
+                        likedByMe: false,
+                        replies: [
+                            {
+                                id: generateId(),
+                                author: "Prof. Lógica",
+                                content: "Excelente exemplo, João! O famoso Game Loop.",
+                                likes: 2,
+                                likedByMe: false
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+        salvarDadosForum();
+    }
+}
+
+function salvarDadosForum() {
+    localStorage.setItem('algoritmolab_forum', JSON.stringify(forumData));
+}
+
+// ==========================================
+// FUNÇÕES DE CRIAÇÃO
+// ==========================================
+
+function criarPost() {
+    const textarea = document.getElementById('novo-post-texto');
+    const content = textarea.value.trim();
+    if (!content) return;
+
+    const novoPost = {
+        id: generateId(),
+        author: currentUser,
+        content: content,
+        time: "Agora mesmo",
+        likes: 0,
+        likedByMe: false,
+        comments: []
+    };
+
+    forumData.unshift(novoPost); // Adiciona no início do array
+    salvarDadosForum();
+    textarea.value = '';
+    renderizarForum();
+}
+
+function adicionarComentario(postId) {
+    const input = document.getElementById(`input-comment-${postId}`);
+    const content = input.value.trim();
+    if (!content) return;
+
+    const postIndex = forumData.findIndex(p => p.id === postId);
+    if (postIndex > -1) {
+        forumData[postIndex].comments.push({
+            id: generateId(),
+            author: currentUser,
+            content: content,
+            likes: 0,
+            likedByMe: false,
+            replies: []
+        });
+        salvarDadosForum();
+        renderizarForum();
+    }
+}
+
+function adicionarResposta(postId, commentId) {
+    const input = document.getElementById(`input-reply-${commentId}`);
+    const content = input.value.trim();
+    if (!content) return;
+
+    const postIndex = forumData.findIndex(p => p.id === postId);
+    if (postIndex > -1) {
+        const commentIndex = forumData[postIndex].comments.findIndex(c => c.id === commentId);
+        if (commentIndex > -1) {
+            forumData[postIndex].comments[commentIndex].replies.push({
+                id: generateId(),
+                author: currentUser,
+                content: content,
+                likes: 0,
+                likedByMe: false
+            });
+            salvarDadosForum();
+            renderizarForum();
+        }
+    }
+}
+
+// ==========================================
+// FUNÇÕES DE CURTIDA
+// ==========================================
+
+function toggleLikePost(postId) {
+    const post = forumData.find(p => p.id === postId);
+    post.likedByMe = !post.likedByMe;
+    post.likes += post.likedByMe ? 1 : -1;
+    salvarDadosForum();
+    renderizarForum();
+}
+
+function toggleLikeComment(postId, commentId) {
+    const post = forumData.find(p => p.id === postId);
+    const comment = post.comments.find(c => c.id === commentId);
+    comment.likedByMe = !comment.likedByMe;
+    comment.likes += comment.likedByMe ? 1 : -1;
+    salvarDadosForum();
+    renderizarForum();
+}
+
+function toggleLikeReply(postId, commentId, replyId) {
+    const post = forumData.find(p => p.id === postId);
+    const comment = post.comments.find(c => c.id === commentId);
+    const reply = comment.replies.find(r => r.id === replyId);
+    reply.likedByMe = !reply.likedByMe;
+    reply.likes += reply.likedByMe ? 1 : -1;
+    salvarDadosForum();
+    renderizarForum();
+}
+
+// ==========================================
+// FUNÇÕES DE UI (Renderização e Exibição)
+// ==========================================
+
+function toggleBox(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('hidden');
+}
+
+function renderizarForum() {
+    const feed = document.getElementById('forum-feed');
+    let html = '';
+
+    forumData.forEach(post => {
+        const likeIcon = post.likedByMe ? 'fas fa-heart' : 'far fa-heart';
+        const likeClass = post.likedByMe ? 'liked' : '';
+        const initial = post.author.charAt(0).toUpperCase();
+
+        html += `
+        <div class="post-card">
+            <div class="post-header">
+                <div class="post-avatar">${initial}</div>
+                <div>
+                    <div class="post-author">${post.author}</div>
+                    <div class="post-time">${post.time}</div>
+                </div>
+            </div>
+            
+            <div class="post-content">${post.content}</div>
+            
+            <div style="display: flex; gap: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <button class="action-btn ${likeClass}" onclick="toggleLikePost('${post.id}')">
+                    <i class="${likeIcon}"></i> ${post.likes} Curtidas
+                </button>
+                <button class="action-btn" onclick="document.getElementById('input-comment-${post.id}').focus()">
+                    <i class="far fa-comment"></i> Responder
+                </button>
+            </div>
+
+            <div class="comments-section">
+        `;
+
+        // Renderiza Comentários
+        post.comments.forEach(comment => {
+            const cLikeIcon = comment.likedByMe ? 'fas fa-heart' : 'far fa-heart';
+            const cLikeClass = comment.likedByMe ? 'liked' : '';
+            const cInitial = comment.author.charAt(0).toUpperCase();
+
+            html += `
+                <div class="comment-card">
+                    <strong style="color: var(--primary-blue); font-size: 0.9rem;">${comment.author}</strong>
+                    <div class="comment-content">${comment.content}</div>
+                    <div style="display: flex; gap: 15px; font-size: 0.85rem;">
+                        <button class="action-btn ${cLikeClass}" onclick="toggleLikeComment('${post.id}', '${comment.id}')">
+                            <i class="${cLikeIcon}"></i> ${comment.likes}
+                        </button>
+                        <button class="action-btn" onclick="toggleBox('reply-box-${comment.id}')">
+                            <i class="fas fa-reply"></i> Responder
+                        </button>
+                    </div>
+
+                    <div id="reply-box-${comment.id}" class="hidden input-row">
+                        <input type="text" id="input-reply-${comment.id}" placeholder="Escreva uma resposta...">
+                        <button class="btn bg-dark" style="padding: 8px 15px;" onclick="adicionarResposta('${post.id}', '${comment.id}')">Enviar</button>
+                    </div>
+            `;
+
+            // Renderiza Respostas dos Comentários (Nível 3)
+            if (comment.replies && comment.replies.length > 0) {
+                html += `<div class="replies-section">`;
+                comment.replies.forEach(reply => {
+                    const rLikeIcon = reply.likedByMe ? 'fas fa-heart' : 'far fa-heart';
+                    const rLikeClass = reply.likedByMe ? 'liked' : '';
+                    html += `
+                        <div class="reply-card">
+                            <strong style="font-size: 0.85rem; color: #555;">${reply.author}</strong>
+                            <div style="font-size: 0.9rem; margin: 4px 0;">${reply.content}</div>
+                            <button class="action-btn ${rLikeClass}" style="font-size: 0.8rem;" onclick="toggleLikeReply('${post.id}', '${comment.id}', '${reply.id}')">
+                                <i class="${rLikeIcon}"></i> ${reply.likes}
+                            </button>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            html += `</div>`; // Fim do comment-card
+        });
+
+        // Caixa para novo comentário no post
+        html += `
+                <div class="input-row" style="margin-top: 15px;">
+                    <input type="text" id="input-comment-${post.id}" placeholder="Escreva um comentário...">
+                    <button class="btn bg-teal" style="color: var(--primary-blue);" onclick="adicionarComentario('${post.id}')">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div> </div> `;
+    });
+
+    feed.innerHTML = html;
+}
+    </script>
 </body>
 </html>
