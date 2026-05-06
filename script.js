@@ -263,32 +263,6 @@ function simularTerminoExercicios() {
     verificarProgressoInterno();
 }
 
-function simularAvaliacao() {
-    if(document.getElementById('card-avaliacao').classList.contains('locked')) return;
-    
-    // Pergunta a nota ao aluno simulando o fim do quiz
-    let nota = prompt("Simulação: Qual foi a sua nota na Avaliação Final? (Digite de 0 a 100)");
-    
-    // Verifica se cancelou ou digitou algo inválido
-    if (nota === null || nota === "") return;
-    
-    nota = parseInt(nota);
-
-    if (nota >= 80) {
-        alert("Parabéns! Sua nota foi " + nota + "%. Você concluiu a Unidade 1!\nA Unidade 2 (Fluxogramas) já está desbloqueada na trilha principal.");
-        
-        // Salva que passou na avaliação da unidade internamente
-        localStorage.setItem('uni1_avaliacao', 'true');
-        
-        // Salva que a unidade 1 inteira foi completada (Para a tela unidades.html)
-        localStorage.setItem('unidade1Completed', 'true');
-        
-        verificarProgressoInterno();
-    } else {
-        alert("Sua nota foi " + nota + "%. Para avançar, é necessário tirar no mínimo 80%.\nRevise o material e tente novamente!");
-    }
-}
-
 // --- UTILITÁRIOS EXTRAS ---
 function resetarProgresso() {
     if(confirm("Tem certeza que deseja apagar todo o progresso para testar novamente?")) {
