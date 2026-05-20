@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Material de Estudo - ALGORITMOLAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -77,6 +78,12 @@
 
         </div>
 
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="btn" style="background: #ccc; color: #333;" onclick="resetarProgresso()">
+                <i class="fas fa-sync"></i> Resetar Progresso (Testes)
+            </button>
+        </div>
+
     </main>
 
     <div class="floating-actions">
@@ -90,87 +97,10 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Atualiza o nome e os dias de ofensiva na barra superior
             updateNavbarUI();
-            
-            // Verifica no localStorage se os itens já foram concluídos e marca os checks
+            // Esta função que está no seu script.js vai ler o localStorage e pintar os checks!
             atualizarStatusMaterial();
         });
-        function marcarVideoConcluido() {
-    if (localStorage.getItem('video_concluido') !== 'true') {
-        localStorage.setItem('video_concluido', 'true');
-        alert("Ótimo! Você concluiu a videoaula.");
-        atualizarStatusMaterial();
-    } else {
-        alert("Esta aula já está marcada como concluída!");
-    }
-}
-
-function lerApostila() {
-    window.open('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', '_blank');
-    if (localStorage.getItem('apostila_concluida') !== 'true') {
-        localStorage.setItem('apostila_concluida', 'true');
-        atualizarStatusMaterial();
-    }
-}
-
-function atualizarStatusMaterial() {
-    const checkVideo = document.getElementById('check-video');
-    const checkApostila = document.getElementById('check-apostila');
-    
-    if(!checkVideo || !checkApostila) return;
-
-    const videoFeito = localStorage.getItem('video_concluido') === 'true';
-    const apostilaFeita = localStorage.getItem('apostila_concluida') === 'true';
-
-    if (videoFeito) checkVideo.className = 'fas fa-check-square check-icon marcado';
-    if (apostilaFeita) checkApostila.className = 'fas fa-check-square check-icon marcado';
-
-    if (videoFeito && apostilaFeita) {
-        if (localStorage.getItem('uni1_conteudo') !== 'true') {
-            localStorage.setItem('uni1_conteudo', 'true');
-            setTimeout(() => {
-                alert("Parabéns! Você concluiu o material de estudo.\nA Trilha de Exercícios foi liberada!");
-            }, 500);
-        }
-    }
-}
-        function verificarProgressoInterno() {
-    // Material de Estudo
-    if (localStorage.getItem('uni1_conteudo') === 'true') {
-        marcarCheckbox('check-conteudo');
-        desbloquearCard('card-exercicios');
-        const txtExe = document.getElementById('txt-exercicios');
-        if(txtExe) txtExe.innerText = "(Liberado! Clique para simular/acessar)";
-    }
-
-    // Trilha de Exercícios
-    if (localStorage.getItem('ex2_done') === 'true' || localStorage.getItem('uni1_exercicios') === 'true') {
-        marcarCheckbox('check-exercicios');
-        desbloquearCard('card-avaliacao');
-        localStorage.setItem('uni1_exercicios', 'true'); 
-        const txtAva = document.getElementById('txt-avaliacao');
-        if(txtAva) txtAva.innerText = "(Liberado! Clique para fazer a prova)";
-    }
-
-    // Avaliação Final
-    if (localStorage.getItem('uni1_avaliacao') === 'true') {
-        marcarCheckbox('check-avaliacao');
-        const txtAva = document.getElementById('txt-avaliacao');
-        if(txtAva) txtAva.innerText = "Aprovado! Unidade 2 desbloqueada na trilha.";
-    }
-}
-
-// Utilitários de Interface
-function marcarCheckbox(id) {
-    const el = document.getElementById(id);
-    if(el) el.className = 'fas fa-check-square check-icon marcado';
-}
-
-function desbloquearCard(id) {
-    const el = document.getElementById(id);
-    if(el) el.classList.remove('locked');
-}
     </script>
 </body>
 </html>
