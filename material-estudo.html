@@ -135,6 +135,42 @@ function atualizarStatusMaterial() {
         }
     }
 }
+        function verificarProgressoInterno() {
+    // Material de Estudo
+    if (localStorage.getItem('uni1_conteudo') === 'true') {
+        marcarCheckbox('check-conteudo');
+        desbloquearCard('card-exercicios');
+        const txtExe = document.getElementById('txt-exercicios');
+        if(txtExe) txtExe.innerText = "(Liberado! Clique para simular/acessar)";
+    }
+
+    // Trilha de Exercícios
+    if (localStorage.getItem('ex2_done') === 'true' || localStorage.getItem('uni1_exercicios') === 'true') {
+        marcarCheckbox('check-exercicios');
+        desbloquearCard('card-avaliacao');
+        localStorage.setItem('uni1_exercicios', 'true'); 
+        const txtAva = document.getElementById('txt-avaliacao');
+        if(txtAva) txtAva.innerText = "(Liberado! Clique para fazer a prova)";
+    }
+
+    // Avaliação Final
+    if (localStorage.getItem('uni1_avaliacao') === 'true') {
+        marcarCheckbox('check-avaliacao');
+        const txtAva = document.getElementById('txt-avaliacao');
+        if(txtAva) txtAva.innerText = "Aprovado! Unidade 2 desbloqueada na trilha.";
+    }
+}
+
+// Utilitários de Interface
+function marcarCheckbox(id) {
+    const el = document.getElementById(id);
+    if(el) el.className = 'fas fa-check-square check-icon marcado';
+}
+
+function desbloquearCard(id) {
+    const el = document.getElementById(id);
+    if(el) el.classList.remove('locked');
+}
     </script>
 </body>
 </html>
