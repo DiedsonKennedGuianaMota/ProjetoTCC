@@ -973,3 +973,174 @@ body.no-scroll {
     background: #f8fafc; transition: 0.3s; outline: none;
 }
 .forum-input:focus { background: white; border-color: var(--accent-teal); box-shadow: 0 0 0 3px rgba(75, 192, 200, 0.1); }
+.trilha-page-container {
+    overflow-y: auto; /* Permitir scroll na página se necessário */
+    padding-bottom: 50px;
+}
+
+.trilha-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Espaço vertical entre itens */
+    align-items: flex-start; /* Alinhamento à esquerda */
+    padding-left: 20px;
+}
+
+.trilha-item {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaço horizontal entre visual, ícone e texto */
+    text-decoration: none;
+    color: inherit;
+    position: relative; /* Para posicionar conector */
+}
+
+/* Caixa Visual Retangular */
+.trilha-card-visual {
+    background: var(--bg-white);
+    border: 3px solid var(--accent-teal); /* Borda padrão liberada */
+    border-radius: 15px; /* Bordas arredondadas suaves */
+    width: 220px;
+    height: 80px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box; /* Incluir borda no tamanho */
+}
+
+.map-marker-icon {
+    font-size: 2rem;
+    color: var(--accent-teal);
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    transform: rotate(-15deg);
+}
+
+/* Ícone de Status (Cadeado/Check) adjacente */
+.trilha-status-icon {
+    position: relative;
+    z-index: 2;
+}
+
+.status-circle {
+    width: 50px;
+    height: 50px;
+    background: var(--accent-teal); /* Fundo padrão liberado */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.status-circle i {
+    /* Centralizar ícone automaticamente pelo flex */
+}
+
+/* Bloco de Texto adjacente */
+.trilha-text-block {
+    display: flex;
+    flex-direction: row; /* Texto de Unidade e Descrição na mesma linha */
+    align-items: center;
+    gap: 10px;
+}
+
+.trilha-text-block h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-dark);
+    white-space: nowrap; /* Não quebrar linha */
+}
+
+.trilha-text-block p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+    white-space: nowrap; /* Não quebrar linha */
+}
+
+/* Conector (Linha cinza com seta) */
+.trilha-connector {
+    position: absolute;
+    left: 250px; /* Ajustar conforme tamanho da caixa visual e gap */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+}
+
+.trilha-connector .line {
+    width: 60px; /* Comprimento da linha cinza */
+    height: 3px;
+    background: #ccc;
+}
+
+.arrow-icon {
+    font-size: 1rem;
+    color: #ccc;
+    margin-left: -5px;
+}
+
+/* ESTADOS BLOQUEADO / LIBERADO */
+
+/* Estado Bloqueado */
+.trilha-item.locked {
+    pointer-events: none;
+    cursor: default;
+}
+
+.trilha-item.locked .trilha-card-visual {
+    border-color: #ccc; /* Borda cinza para bloqueado */
+    box-shadow: none;
+}
+
+.trilha-item.locked .status-circle {
+    background: #ccc; /* Fundo cinza para bloqueado */
+}
+
+.trilha-item.locked .trilha-text-block h3,
+.trilha-item.locked .trilha-text-block p {
+    color: #999;
+}
+
+/* Ajustes Específicos do Cadeado */
+.locked-icon-container i {
+    font-size: 1.3rem;
+}
+
+/* Conector Bloqueado */
+.trilha-connector.locked .line {
+    background: #eee; /* Linha mais clara */
+}
+.trilha-connector.locked .arrow-icon {
+    color: #eee;
+}
+
+/* ==========================================================================
+   TELA INTERNA: OPÇÕES DA UNIDADE E MATERIAL
+   ========================================================================== */
+.opcoes-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px;
+}
+.opcao-card {
+    border-radius: var(--radius); padding: 40px 20px; text-align: center;
+    text-decoration: none; box-shadow: var(--shadow); transition: var(--transition);
+    position: relative; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; color: var(--primary-blue);
+}
+.icone-grande { font-size: 3.5rem; margin-bottom: 15px; }
+.full-width { width: 100%; flex-direction: row; gap: 20px; padding: 30px; box-sizing: border-box; }
+.checkbox-container { position: absolute; top: 15px; left: 20px; font-size: 1.5rem; }
+.check-icon.marcado { color: var(--success-green); }
+
+/* Material de Estudo */
+.material-grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-bottom: 50px; }
+@media (min-width: 768px) { .material-grid { grid-template-columns: 2fr 1fr; } }
+.material-card { background: var(--bg-white); border: 2px solid var(--alert-sand); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.video-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000; }
+.video-container video { width: 100%; display: block; }
