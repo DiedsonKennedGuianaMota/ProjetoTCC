@@ -4,55 +4,238 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ALGORITMOLAB - Início</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. ESTILOS GERAIS E ANIMAÇÕES
+           ========================================== */
+        :root {
+            --primary-blue: #1c3d5a;
+            --accent-teal: #2b6cb0;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --error: #e53e3e;
+            --success: #38a169;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        body { background: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
+
+        /* Animações */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* ==========================================
+           2. LAYOUT: HERO E FORMULÁRIOS
+           ========================================== */
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+
+        .hero-section { text-align: center; margin-bottom: 40px; animation: fadeInDown 1s ease-out; }
+        .hero-section h1 { font-size: 3rem; color: var(--primary-blue); font-weight: 800; margin: 10px 0; letter-spacing: -1px; }
+        .hero-section p { font-size: 1.1rem; max-width: 500px; color: #555; margin: 0 auto; line-height: 1.6; }
+
+        .form-container { 
+            width: 100%; 
+            max-width: 400px; 
+            perspective: 1000px; /* Para o efeito 3D caso queira adicionar depois */
+            animation: slideInUp 1s ease-out forwards;
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+
+        .card { background: var(--card-bg); padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+        .card h2 { color: var(--primary-blue); text-align: center; margin-bottom: 25px; }
+
+        .form-group { margin-bottom: 20px; position: relative; }
+        .form-group i { position: absolute; left: 15px; top: 14px; color: #a0aec0; }
+        .form-control { 
+            width: 100%; padding: 12px 15px 12px 45px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; transition: border-color 0.3s;
+        }
+        .form-control:focus { outline: none; border-color: var(--accent-teal); }
+
+        .btn { 
+            width: 100%; padding: 14px; background: var(--accent-teal); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background 0.3s, transform 0.1s; display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn:hover { background: var(--primary-blue); }
+        .btn:active { transform: scale(0.98); }
+
+        .toggle-link { display: block; text-align: center; margin-top: 20px; color: var(--accent-teal); font-weight: 600; cursor: pointer; text-decoration: underline; }
+        .toggle-link:hover { color: var(--primary-blue); }
+
+        .alert { padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-size: 0.9rem; display: none; }
+        .alert-error { background: #fed7d7; color: var(--error); border: 1px solid #feb2b2; }
+        .alert-success { background: #c6f6d5; color: var(--success); border: 1px solid #9ae6b4; }
+
+        /* Oculta formulários inativos */
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
 
     <main class="container">
         <section class="hero-section">
-            <i class="fas fa-laptop-code" style="font-size: 4rem; color: var(--accent-teal);"></i>
+            <i class="fas fa-laptop-code" style="font-size: 4rem; color: var(--accent-teal); animation: pulse 2s infinite;"></i>
             <h1>ALGORITMOLAB</h1>
-            <p style="font-size: 1.2rem; max-width: 600px; line-height: 1.6;">
-                O ambiente perfeito para dominar os fundamentos da Lógica de Programação. 
-                Construído para calouros de computação que querem aprender de forma prática, gamificada e sem frustrações.
-            </p>
-            <a href="#login-area" class="btn"><i class="fas fa-arrow-down"></i> Começar Agora</a>
+            <p>O ambiente perfeito para dominar a Lógica de Programação. Gamificado, prático e feito para você.</p>
         </section>
 
-        <section id="login-area" class="form-container" style="margin-top: 50px; margin-bottom: 100px;">
-            <div class="card">
-                <h2 style="text-align: center; margin-bottom: 25px;"><i class="fas fa-sign-in-alt"></i> Acessar Plataforma</h2>
-                <form onsubmit="handleLogin(event)">
+        <section class="form-container">
+            
+            <div class="card" id="card-login">
+                <h2><i class="fas fa-sign-in-alt"></i> Bem-vindo de volta!</h2>
+                <div id="login-alert" class="alert alert-error">E-mail ou senha incorretos.</div>
+                
+                <form onsubmit="fazerLogin(event)">
                     <div class="form-group">
-                        <input type="email" id="email" placeholder="Seu e-mail institucional" required>
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="login-email" class="form-control" placeholder="E-mail" required>
                     </div>
                     <div class="form-group">
-                        <input type="password" id="senha" placeholder="Sua senha" required>
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="login-senha" class="form-control" placeholder="Senha" required>
                     </div>
-                    <button type="submit" class="btn" style="width: 100%;">Entrar <i class="fas fa-chevron-right"></i></button>
+                    <button type="submit" class="btn">Entrar <i class="fas fa-arrow-right"></i></button>
                 </form>
+                <span class="toggle-link" onclick="alternarTelas()">Não tem conta? Cadastre-se aqui</span>
             </div>
+
+            <div class="card hidden" id="card-register">
+                <h2><i class="fas fa-user-plus"></i> Criar Conta</h2>
+                <div id="register-alert" class="alert"></div>
+                
+                <form onsubmit="cadastrarUsuario(event)">
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="reg-nome" class="form-control" placeholder="Seu nome completo" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="reg-email" class="form-control" placeholder="E-mail" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="reg-senha" class="form-control" placeholder="Crie uma senha" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn" style="background: var(--success);">Finalizar Cadastro</button>
+                </form>
+                <span class="toggle-link" onclick="alternarTelas()">Já tem uma conta? Faça Login</span>
+            </div>
+
         </section>
     </main>
 
-    <footer class="landing-footer">
-        <h3><i class="fas fa-info-circle"></i> Sobre a Plataforma</h3>
-        <p style="margin-top: 10px; max-width: 800px; margin-left: auto; margin-right: auto;">
-            O AlgoritmoLab foi desenvolvido como apoio educacional para introduzir conceitos de variáveis, estruturas de dados e funções através de um compilador embutido e sistema de avaliação contínua.
-        </p>
-    </footer>
-
-    <div class="floating-actions">
-        <button class="btn" onclick="toggleAccessibility()" title="Alto Contraste / Fonte Maior">
-            <i class="fas fa-universal-access"></i> Acessibilidade
-        </button>
-    </div>
-
-    <script src="script.js"></script>
     <script>
-        // Se já estiver logado, joga pra home direto
+        /* ==========================================
+           LÓGICA DE BANCO DE DADOS E AUTENTICAÇÃO
+           ========================================== */
+        
+        // Verifica se já está logado e joga direto para o sistema
         if (localStorage.getItem('userLogado') === 'true') {
-            window.location.href = 'home.html';
+            window.location.href = 'opcoes-unidade.html'; // Coloque o link correto da sua home/trilha aqui
+        }
+
+        // Função para alternar entre Login e Cadastro visualmente
+        function alternarTelas() {
+            const telaLogin = document.getElementById('card-login');
+            const telaRegistro = document.getElementById('card-register');
+            
+            // Limpa os alertas ao trocar de tela
+            document.getElementById('login-alert').style.display = 'none';
+            document.getElementById('register-alert').style.display = 'none';
+
+            if (telaLogin.classList.contains('hidden')) {
+                telaLogin.classList.remove('hidden');
+                telaRegistro.classList.add('hidden');
+            } else {
+                telaLogin.classList.add('hidden');
+                telaRegistro.classList.remove('hidden');
+            }
+        }
+
+        // Função para obter o "Banco de Dados"
+        function getUsuariosDB() {
+            const db = localStorage.getItem('algoritmolab_usuarios');
+            return db ? JSON.parse(db) : []; // Retorna os usuários ou um array vazio se for a primeira vez
+        }
+
+        // Função de CADASTRO
+        function cadastrarUsuario(event) {
+            event.preventDefault(); // Impede a página de recarregar
+            
+            const nome = document.getElementById('reg-nome').value.trim();
+            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const senha = document.getElementById('reg-senha').value;
+            const alerta = document.getElementById('register-alert');
+
+            let usuarios = getUsuariosDB();
+
+            // Verifica se o e-mail já existe no banco
+            const usuarioExiste = usuarios.find(u => u.email === email);
+            if (usuarioExiste) {
+                alerta.className = 'alert alert-error';
+                alerta.innerText = 'Este e-mail já está cadastrado!';
+                alerta.style.display = 'block';
+                return;
+            }
+
+            // Cria o novo usuário e salva no "Banco"
+            const novoUsuario = { nome, email, senha };
+            usuarios.push(novoUsuario);
+            localStorage.setItem('algoritmolab_usuarios', JSON.stringify(usuarios));
+
+            // Feedback visual e manda para o login
+            alerta.className = 'alert alert-success';
+            alerta.innerText = 'Cadastro realizado com sucesso! Faça login.';
+            alerta.style.display = 'block';
+            
+            // Limpa o formulário
+            document.getElementById('reg-nome').value = '';
+            document.getElementById('reg-email').value = '';
+            document.getElementById('reg-senha').value = '';
+
+            // Aguarda 1.5 segundos e muda para a tela de login
+            setTimeout(() => { alternarTelas(); }, 1500);
+        }
+
+        // Função de LOGIN
+        function fazerLogin(event) {
+            event.preventDefault(); // Impede a página de recarregar
+            
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const senha = document.getElementById('login-senha').value;
+            const alerta = document.getElementById('login-alert');
+
+            const usuarios = getUsuariosDB();
+
+            // Procura no banco se existe o e-mail E se a senha bate
+            const usuarioValido = usuarios.find(u => u.email === email && u.senha === senha);
+
+            if (usuarioValido) {
+                // Sucesso! Salva que ele está logado e guarda o nome dele para usar na plataforma
+                localStorage.setItem('userLogado', 'true');
+                localStorage.setItem('userName', usuarioValido.nome);
+                
+                // Redireciona para a tela inicial do sistema (Ajuste o link se necessário)
+                window.location.href = 'opcoes-unidade.html'; 
+            } else {
+                // Erro: E-mail não achado ou senha errada
+                alerta.style.display = 'block';
+            }
         }
     </script>
 </body>
