@@ -84,6 +84,7 @@ body.no-scroll {
     transform: translateY(-2px);
     background-color: var(--primary-blue);
     box-shadow: var(--shadow-hover);
+   text-color: white;
 }
 
 .navbar {
