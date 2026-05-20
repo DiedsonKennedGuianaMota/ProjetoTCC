@@ -1,3 +1,4 @@
+alert("O arquivo script.js está conectado e funcionando!");
 // ==========================================
 // 1. INICIALIZAÇÃO GERAL E EVENTOS
 // ==========================================
