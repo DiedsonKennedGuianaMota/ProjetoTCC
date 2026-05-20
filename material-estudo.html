@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bg-light">
 
     <header class="navbar">
         <div class="nav-profile">
@@ -19,88 +19,89 @@
                 </div>
             </div>
         </div>
-        <div style="display: flex; gap: 10px;">
-            <button class="btn btn-outline" onclick="abrirConfiguracoes()" style="background: transparent; color: var(--primary-blue); box-shadow: none; border: 2px solid var(--primary-blue);" title="Configurações">
-                <i class="fas fa-cog"></i>
-            </button>
-            <button class="btn btn-outline" onclick="handleLogout()" style="background: transparent; color: var(--primary-blue); box-shadow: none; border: 2px solid var(--primary-blue);" title="Sair">
-                <i class="fas fa-sign-out-alt"></i>
-            </button>
-        </div>
     </header>
 
     <main class="container">
-        <h2 style="margin-bottom: 30px; color: var(--primary-blue);">
-            <i class="fas fa-book-reader"></i> Material de Estudo - Unidade 1
+        <h2 style="margin: 20px 0; color: var(--primary-blue);">
+            <i class="fas fa-book-reader"></i> Material: Unidade 1
         </h2>
         
-        <div class="material-grid">
+        <div class="material-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
             
-            <div class="material-card">
-                <div class="material-header">
-                    <h3><i class="fas fa-video"></i> Videoaula: Introdução à Lógica</h3>
-                    <div class="status-check">
-                        <i class="far fa-square check-icon" id="check-video"></i>
-                    </div>
+            <div class="material-card" style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3><i class="fas fa-video"></i> Videoaula</h3>
+                    <i class="far fa-square" id="check-video" style="font-size: 1.5rem; color: #ccc;"></i>
                 </div>
                 
-                <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0;">
-                    <iframe src="https://www.youtube.com/embed/jBIPvXHRYpg?si=DYU68or2lixYtoHw" 
-                            title="YouTube video player" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;">
-                    </iframe>
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
+                    <iframe src="https://www.youtube.com/embed/jBIPvXHRYpg" style="position: absolute; top:0; left:0; width:100%; height:100%; border:0;" allowfullscreen></iframe>
                 </div>
                 
-                <button class="btn bg-teal btn-animate" onclick="marcarVideoConcluido()" style="width: 100%; margin-top: 15px; justify-content: center; color: var(--primary-blue);">
-                    <i class="fas fa-check-circle"></i> Marcar como Assistida
+                <button class="btn btn-primary" onclick="marcarVideoConcluido()" style="width: 100%; margin-top: 15px; background: var(--accent-teal); border: none; padding: 12px; border-radius: 8px; color: white; cursor: pointer;">
+                    Marcar como Assistida
                 </button>
             </div>
 
-            <div class="material-card">
-                <div class="material-header">
-                    <h3><i class="fas fa-file-pdf"></i> Apostila Complementar</h3>
-                    <div class="status-check">
-                        <i class="far fa-square check-icon" id="check-apostila"></i>
-                    </div>
+            <div class="material-card" style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3><i class="fas fa-file-pdf"></i> Apostila</h3>
+                    <i class="far fa-square" id="check-apostila" style="font-size: 1.5rem; color: #ccc;"></i>
                 </div>
-                
-                <div style="text-align: center; padding: 30px 0;">
-                    <i class="fas fa-book icone-gigante" style="color: var(--accent-teal); font-size: 4rem; margin-bottom: 20px;"></i>
-                    <p style="margin-bottom: 20px;">Leia o material de apoio para fixar o conteúdo da videoaula.</p>
-                    <button class="btn bg-teal" onclick="lerApostila()" style="color: var(--primary-blue);">
-                        <i class="fas fa-download"></i> Acessar Apostila
-                    </button>
+                <div style="text-align: center; padding: 20px;">
+                    <i class="fas fa-book-open" style="font-size: 4rem; color: var(--accent-teal); opacity: 0.3;"></i>
+                    <p style="margin: 15px 0;">Leia o material para liberar os exercícios.</p>
                 </div>
+                <button class="btn btn-primary" onclick="lerApostila()" style="width: 100%; background: var(--primary-blue); border: none; padding: 12px; border-radius: 8px; color: white; cursor: pointer;">
+                    Acessar Apostila
+                </button>
             </div>
-
         </div>
 
         <div style="text-align: center; margin-top: 30px;">
-            <button class="btn" style="background: #ccc; color: #333;" onclick="resetarProgresso()">
-                <i class="fas fa-sync"></i> Resetar Progresso (Testes)
-            </button>
+            <a href="opcoes-unidade.html" class="btn" style="text-decoration: none; color: var(--primary-blue); font-weight: bold;">
+                <i class="fas fa-arrow-left"></i> Voltar para Opções
+            </a>
         </div>
-
     </main>
 
-    <div class="floating-actions">
-        <a href="opcoes-unidade.html" class="btn"><i class="fas fa-arrow-left"></i> Voltar</a>
-        <button class="btn" onclick="toggleAccessibility()" title="Acessibilidade">
-            <i class="fas fa-universal-access"></i> Acessibilidade
-        </button>
-    </div>
-
-    <script src="script.js"></script>
-    
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            updateNavbarUI();
-            // Esta função que está no seu script.js vai ler o localStorage e pintar os checks!
-            atualizarStatusMaterial();
-        });
+        // FUNÇÕES DIRETAS NO HTML PARA GARANTIR QUE FUNCIONEM
+        function marcarVideoConcluido() {
+            localStorage.setItem('video_concluido', 'true');
+            alert("Vídeo concluído!");
+            atualizarInterface();
+        }
+
+        function lerApostila() {
+            window.open('https://www.google.com', '_blank'); // Link de teste
+            localStorage.setItem('apostila_concluida', 'true');
+            atualizarInterface();
+        }
+
+        function atualizarInterface() {
+            const vDone = localStorage.getItem('video_concluido') === 'true';
+            const aDone = localStorage.getItem('apostila_concluida') === 'true';
+
+            if(vDone) {
+                const icon = document.getElementById('check-video');
+                icon.className = 'fas fa-check-square';
+                icon.style.color = '#2ecc71';
+            }
+            if(aDone) {
+                const icon = document.getElementById('check-apostila');
+                icon.className = 'fas fa-check-square';
+                icon.style.color = '#2ecc71';
+            }
+
+            if(vDone && aDone) {
+                localStorage.setItem('uni1_conteudo', 'true');
+                console.log("Conteúdo completo! Exercícios liberados.");
+            }
+        }
+
+        // Executa ao carregar a página
+        window.onload = atualizarInterface;
     </script>
 </body>
 </html>
