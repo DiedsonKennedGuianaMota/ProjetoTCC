@@ -110,16 +110,20 @@ function updateNavbarUI() {
 // ==========================================
 // 4. PROGRESSO DA TRILHA E UNIDADES
 // ==========================================
+// --- SISTEMA DA TRILHA PRINCIPAL (unidades.html) ---
 function verificarProgressoUnidades() {
+    // Se a Unidade 1 inteira foi completada (nota >= 80 na avaliação)
     if (localStorage.getItem('unidade1Completed') === 'true') {
         const uni2 = document.getElementById('unidade-2');
         const linha1 = document.getElementById('linha-1');
         
         if (uni2) {
+            // Apenas troca as classes visuais e libera o clique
             uni2.classList.remove('locked');
             uni2.classList.add('unlocked');
-            uni2.style.pointerEvents = 'auto';
+            uni2.style.pointerEvents = 'auto'; // Remove o bloqueio de clique
             
+            // Troca o ícone do cadeado
             const icon = uni2.querySelector('.trilha-icon i');
             if(icon) icon.className = 'fas fa-code-branch'; 
         }
@@ -884,4 +888,62 @@ function renderizarForum() {
     });
 
     feed.innerHTML = html;
+}
+/* ==========================================================================
+   LÓGICA GERAL & UTILITÁRIOS
+   ========================================================================== */
+function resetarProgresso() {
+    if(confirm("Tem certeza que deseja apagar todo o progresso para testar novamente?")) {
+        localStorage.clear();
+        location.reload();
+    }
+}
+function abrirConfiguracoes() { alert("Configurações: Painel em desenvolvimento."); }
+function handleLogout() { alert("Saindo do sistema..."); }
+function toggleAccessibility() { document.body.classList.toggle('alto-contraste'); alert("Modo acessibilidade alternado."); }
+
+/* ==========================================================================
+   SISTEMA DA TRILHA PRINCIPAL (unidades.html) - NOVO E CORRIGIDO
+   ========================================================================== */
+function verificarProgressoUnidades() {
+    // 1. Unidade 1 Concluída -> Desbloqueia Unidade 2
+    if (localStorage.getItem('unidade1Completed') === 'true') {
+        const itemUni2 = document.getElementById('unidade-2-item');
+        const connectorUni1 = document.querySelector('#unidade-1-item .trilha-connector');
+
+        if (itemUni2) {
+            itemUni2.classList.remove('locked');
+            itemUni2.classList.add('unlocked');
+            
+            // Alterar ícone do cadeado para cadeado aberto
+            const iconContainer = itemUni2.querySelector('.status-circle.locked-icon-container');
+            if (iconContainer) {
+                iconContainer.querySelector('i').className = 'fas fa-unlock';
+            }
+        }
+        
+        if (connectorUni1) {
+             connectorUni1.classList.remove('locked');
+        }
+    }
+
+    // 2. Unidade 2 Concluída -> Desbloqueia Unidade 3
+    if (localStorage.getItem('uni2_avaliacao') === 'true') { 
+        const itemUni3 = document.getElementById('unidade-3-item');
+        const connectorUni2 = document.querySelector('#unidade-2-item .trilha-connector');
+
+        if (itemUni3) {
+            itemUni3.classList.remove('locked');
+            itemUni3.classList.add('unlocked');
+            
+            const iconContainer = itemUni3.querySelector('.status-circle.locked-icon-container');
+            if (iconContainer) {
+                iconContainer.querySelector('i').className = 'fas fa-unlock';
+            }
+        }
+        
+        if (connectorUni2) {
+             connectorUni2.classList.remove('locked');
+        }
+    }
 }
