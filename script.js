@@ -1,28 +1,53 @@
-// script.js
+// ==========================================
+// 1. INICIALIZAÇÃO GERAL E EVENTOS
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    loadAccessibilityPref();
+    
+    // Inicializa vídeo se existir na página
+    const video = document.getElementById('video-aula');
+    if (video) {
+        video.addEventListener('ended', () => {
+            if (localStorage.getItem('video_concluido') !== 'true') {
+                localStorage.setItem('video_concluido', 'true');
+                alert("Ótimo! Você concluiu a videoaula.");
+                atualizarStatusMaterial();
+            }
+        });
+    }
 
-// 1. Sistema de Acessibilidade (Alto Contraste)
+    // Inicializa Fórum se estiver na página
+    if (document.getElementById('forum-feed')) {
+        carregarDadosForum();
+        renderizarForum();
+    }
+});
+
+// ==========================================
+// 2. SISTEMA DE ACESSIBILIDADE
+// ==========================================
 function toggleAccessibility() {
     const body = document.body;
     body.classList.toggle('accessibility-mode');
     
-    // Salva a preferência do usuário
     const isAccessible = body.classList.contains('accessibility-mode');
     localStorage.setItem('acessibilidade', isAccessible);
 }
 
-// Carrega a preferência de acessibilidade ao abrir a página
 function loadAccessibilityPref() {
     if (localStorage.getItem('acessibilidade') === 'true') {
         document.body.classList.add('accessibility-mode');
     }
 }
 
-// 2. Sistema de Login Simples
+// ==========================================
+// 3. SISTEMA DE LOGIN E AUTENTICAÇÃO
+// ==========================================
 function handleLogin(event) {
-    event.preventDefault(); // Impede o recarregamento do form
+    event.preventDefault();
     
     const email = document.getElementById('email').value;
-    const nome = email.split('@')[0]; // Pega o nome antes do @ para o avatar
+    const nome = email.split('@')[0];
     
     localStorage.setItem('userLogado', 'true');
     localStorage.setItem('userName', nome);
@@ -33,10 +58,10 @@ function handleLogin(event) {
 
 function handleLogout() {
     localStorage.removeItem('userLogado');
+    alert("Saindo do sistema...");
     window.location.href = 'index.html';
 }
 
-// Verifica se o usuário pode acessar a tela protegida
 function checkAuth() {
     if (localStorage.getItem('userLogado') !== 'true') {
         window.location.href = 'index.html';
@@ -45,33 +70,30 @@ function checkAuth() {
     }
 }
 
-// 3. Sistema de Ofensivas (Streak)
 function calcularOfensiva() {
     const dataAtual = new Date().toDateString();
     let ultimaData = localStorage.getItem('ultimaDataLogin');
     let streak = parseInt(localStorage.getItem('userStreak')) || 0;
 
     if (ultimaData === dataAtual) {
-        // Já logou hoje, não muda nada
+        // Já logou hoje
     } else if (ultimaData) {
-        // Verifica se logou ontem
         let ontem = new Date();
         ontem.setDate(ontem.getDate() - 1);
         
         if (ultimaData === ontem.toDateString()) {
-            streak += 1; // Logou dias seguidos
+            streak += 1;
         } else {
-            streak = 1; // Quebrou a sequência
+            streak = 1;
         }
     } else {
-        streak = 1; // Primeiro login
+        streak = 1;
     }
 
     localStorage.setItem('ultimaDataLogin', dataAtual);
     localStorage.setItem('userStreak', streak);
 }
 
-// 4. Atualiza a Interface do Usuário (Nome e Fogo)
 function updateNavbarUI() {
     const nome = localStorage.getItem('userName') || 'Aluno';
     const streak = localStorage.getItem('userStreak') || '0';
@@ -85,30 +107,45 @@ function updateNavbarUI() {
     if (streakEl) streakEl.textContent = `${streak} Dias`;
 }
 
-// Inicializações automáticas
-document.addEventListener('DOMContentLoaded', () => {
-    loadAccessibilityPref();
-});
-// --- SISTEMA INTERNO DA UNIDADE (opcoes-unidade.html) ---
+// ==========================================
+// 4. PROGRESSO DA TRILHA E UNIDADES
+// ==========================================
+function verificarProgressoUnidades() {
+    if (localStorage.getItem('unidade1Completed') === 'true') {
+        const uni2 = document.getElementById('unidade-2');
+        const linha1 = document.getElementById('linha-1');
+        
+        if (uni2) {
+            uni2.classList.remove('locked');
+            uni2.classList.add('unlocked');
+            uni2.style.pointerEvents = 'auto';
+            
+            const icon = uni2.querySelector('.trilha-icon i');
+            if(icon) icon.className = 'fas fa-code-branch'; 
+        }
+        if (linha1) linha1.classList.remove('locked');
+    }
+}
+
 function verificarProgressoInterno() {
-    // 1. Verifica Material de Estudo (Vem da página material-estudo.html)
+    // Material de Estudo
     if (localStorage.getItem('uni1_conteudo') === 'true') {
         marcarCheckbox('check-conteudo');
         desbloquearCard('card-exercicios');
-        document.getElementById('txt-exercicios').innerText = "(Liberado! Clique para acessar)";
+        const txtExe = document.getElementById('txt-exercicios');
+        if(txtExe) txtExe.innerText = "(Liberado! Clique para simular/acessar)";
     }
 
-    // 2. Verifica Trilha de Exercícios (Vem da página exercicios.html)
-    // Se você completou o exercício 2 (o prático), vamos considerar a trilha feita para o teste
+    // Trilha de Exercícios
     if (localStorage.getItem('ex2_done') === 'true' || localStorage.getItem('uni1_exercicios') === 'true') {
         marcarCheckbox('check-exercicios');
         desbloquearCard('card-avaliacao');
-        localStorage.setItem('uni1_exercicios', 'true'); // Garante que a flag está salva
+        localStorage.setItem('uni1_exercicios', 'true'); 
         const txtAva = document.getElementById('txt-avaliacao');
         if(txtAva) txtAva.innerText = "(Liberado! Clique para fazer a prova)";
     }
 
-    // 3. Verifica Avaliação Final
+    // Avaliação Final
     if (localStorage.getItem('uni1_avaliacao') === 'true') {
         marcarCheckbox('check-avaliacao');
         const txtAva = document.getElementById('txt-avaliacao');
@@ -116,7 +153,7 @@ function verificarProgressoInterno() {
     }
 }
 
-// Utilitários visuais para as opções da unidade
+// Utilitários de Interface
 function marcarCheckbox(id) {
     const el = document.getElementById(id);
     if(el) el.className = 'fas fa-check-square check-icon marcado';
@@ -127,38 +164,18 @@ function desbloquearCard(id) {
     if(el) el.classList.remove('locked');
 }
 
-// --- AVALIAÇÃO FINAL ---
-function simularAvaliacao() {
-    if(document.getElementById('card-avaliacao').classList.contains('locked')) return;
-    
-    let nota = prompt("Simulação: Qual foi a sua nota na Avaliação Final? (Digite de 0 a 100)");
-    if (nota === null || nota === "") return;
-    
-    nota = parseInt(nota);
-
-    if (nota >= 80) {
-        alert("Parabéns! Sua nota foi " + nota + "%. Você concluiu a Unidade 1!\nA Unidade 2 já está desbloqueada na trilha principal.");
-        localStorage.setItem('uni1_avaliacao', 'true');
-        localStorage.setItem('unidade1Completed', 'true');
-        verificarProgressoInterno();
+// ==========================================
+// 5. MATERIAL DE ESTUDO
+// ==========================================
+function marcarVideoConcluido() {
+    if (localStorage.getItem('video_concluido') !== 'true') {
+        localStorage.setItem('video_concluido', 'true');
+        alert("Ótimo! Você concluiu a videoaula.");
+        atualizarStatusMaterial();
     } else {
-        alert("Sua nota foi " + nota + "%. Para avançar, é necessário tirar no mínimo 80%.\nRevise o material e tente novamente!");
+        alert("Esta aula já está marcada como concluída!");
     }
 }
-
-// --- LÓGICA DA TELA DE MATERIAL DE ESTUDO (material-estudo.html) ---
-document.addEventListener('DOMContentLoaded', function() {
-    const video = document.getElementById('video-aula');
-    if (video) {
-        video.addEventListener('ended', function() {
-            if (localStorage.getItem('video_concluido') !== 'true') {
-                localStorage.setItem('video_concluido', 'true');
-                alert("Ótimo! Você concluiu a videoaula.");
-                atualizarStatusMaterial();
-            }
-        });
-    }
-});
 
 function lerApostila() {
     window.open('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', '_blank');
@@ -190,66 +207,9 @@ function atualizarStatusMaterial() {
     }
 }
 
-// --- UTILITÁRIOS ---
-function abrirConfiguracoes() { alert("Configurações em desenvolvimento."); }
-function handleLogout() { alert("Saindo do sistema..."); }
-function toggleAccessibility() { document.body.classList.toggle('accessibility-mode'); }
-
-// --- SISTEMA DA TRILHA PRINCIPAL (unidades.html) ---
-function verificarProgressoUnidades() {
-    // Se a Unidade 1 inteira foi completada (nota >= 80 na avaliação)
-    if (localStorage.getItem('unidade1Completed') === 'true') {
-        const uni2 = document.getElementById('unidade-2');
-        const linha1 = document.getElementById('linha-1');
-        
-        if (uni2) {
-            uni2.classList.remove('locked');
-            uni2.classList.add('unlocked');
-            uni2.outerHTML = uni2.outerHTML.replace('<div', '<a href="#"').replace('</div', '</a');
-            
-            const newUni2 = document.getElementById('unidade-2');
-            if(newUni2) newUni2.querySelector('.trilha-icon i').className = 'fas fa-project-diagram'; 
-        }
-        if (linha1) linha1.classList.remove('locked');
-    }
-}
-
-// --- SISTEMA INTERNO DA UNIDADE (opcoes-unidade.html) ---
-function verificarProgressoInterno() {
-    // 1. Verifica Material de Estudo
-    if (localStorage.getItem('uni1_conteudo') === 'true') {
-        marcarCheckbox('check-conteudo');
-        desbloquearCard('card-exercicios');
-        document.getElementById('txt-exercicios').innerText = "(Liberado! Clique para simular)";
-    }
-
-    // 2. Verifica Trilha de Exercícios
-    if (localStorage.getItem('uni1_exercicios') === 'true') {
-        marcarCheckbox('check-exercicios');
-        desbloquearCard('card-avaliacao');
-        document.getElementById('txt-avaliacao').innerText = "(Liberado! Clique para fazer a prova)";
-    }
-
-    // 3. Verifica Avaliação Final
-    if (localStorage.getItem('uni1_avaliacao') === 'true') {
-        marcarCheckbox('check-avaliacao');
-        document.getElementById('txt-avaliacao').innerText = "Aprovado! Unidade 2 desbloqueada na trilha.";
-    }
-}
-
-// Utilitários visuais para as opções da unidade
-function marcarCheckbox(id) {
-    const el = document.getElementById(id);
-    if(el) el.className = 'fas fa-check-square check-icon marcado';
-}
-
-function desbloquearCard(id) {
-    const el = document.getElementById(id);
-    if(el) el.classList.remove('locked');
-}
-
-// --- SIMULADORES (Atuam como o "Back-End" do sistema) ---
-
+// ==========================================
+// 6. SIMULADORES E FASES (QUIZ / IDE)
+// ==========================================
 function simularTerminoConteudo() {
     alert("Sistema: Você assistiu as videoaulas e leu o material. Exercícios liberados!");
     localStorage.setItem('uni1_conteudo', 'true');
@@ -263,90 +223,23 @@ function simularTerminoExercicios() {
     verificarProgressoInterno();
 }
 
-// --- UTILITÁRIOS EXTRAS ---
-function resetarProgresso() {
-    if(confirm("Tem certeza que deseja apagar todo o progresso para testar novamente?")) {
-        localStorage.clear();
-        location.reload();
-    }
-}
-
-function abrirConfiguracoes() {
-    alert("Configurações: Painel em desenvolvimento.");
-}
-
-function handleLogout() {
-    alert("Saindo do sistema...");
-    // window.location.href = 'login.html';
-}
-
-function toggleAccessibility() {
-    document.body.classList.toggle('alto-contraste');
-    alert("Acessibilidade ativada/desativada.");
-}
-// --- LÓGICA DA TELA DE MATERIAL DE ESTUDO ---
-
-// 1. Detectar o fim do vídeo
-document.addEventListener('DOMContentLoaded', function() {
-    const video = document.getElementById('video-aula');
+// Animação de troca de telas
+function irParaFase(faseAtualId, proximaFaseId) {
+    const atual = document.getElementById(faseAtualId);
+    const proxima = document.getElementById(proximaFaseId);
     
-    // Verifica se a página contém o vídeo antes de adicionar o listener
-    if (video) {
-        video.addEventListener('ended', function() {
-            // Quando o vídeo termina, marca como concluído no sistema
-            if (localStorage.getItem('video_concluido') !== 'true') {
-                localStorage.setItem('video_concluido', 'true');
-                alert("Ótimo! Você concluiu a videoaula.");
-                atualizarStatusMaterial();
-            }
+    atual.classList.remove('active');
+    
+    setTimeout(() => {
+        atual.classList.add('hidden');
+        proxima.classList.remove('hidden');
+        requestAnimationFrame(() => {
+            proxima.classList.add('active');
         });
-    }
-});
-
-// 2. Ação de ler a apostila
-function lerApostila() {
-    // Abre um PDF de demonstração em uma nova aba
-    window.open('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', '_blank');
-    
-    // Se ainda não estava marcada como concluída, marca agora
-    if (localStorage.getItem('apostila_concluida') !== 'true') {
-        localStorage.setItem('apostila_concluida', 'true');
-        atualizarStatusMaterial();
-    }
+    }, 400); 
 }
 
-// 3. Atualizar o visual das caixinhas e liberar a próxima etapa
-function atualizarStatusMaterial() {
-    const checkVideo = document.getElementById('check-video');
-    const checkApostila = document.getElementById('check-apostila');
-    
-    if(!checkVideo || !checkApostila) return; // Só roda na página certa
-
-    const videoFeito = localStorage.getItem('video_concluido') === 'true';
-    const apostilaFeita = localStorage.getItem('apostila_concluida') === 'true';
-
-    // Pinta as caixinhas de verde
-    if (videoFeito) {
-        checkVideo.className = 'fas fa-check-square check-icon marcado';
-    }
-    
-    if (apostilaFeita) {
-        checkApostila.className = 'fas fa-check-square check-icon marcado';
-    }
-
-    // Se ambos foram feitos, o material de estudo da unidade 1 está 100%
-    if (videoFeito && apostilaFeita) {
-        // Se ainda não tinha liberado a etapa geral, avisa e libera
-        if (localStorage.getItem('uni1_conteudo') !== 'true') {
-            localStorage.setItem('uni1_conteudo', 'true');
-            // Dá um pequeno atraso de meio segundo para dar tempo do ícone ficar verde
-            setTimeout(() => {
-                alert("Parabéns! Você concluiu todo o material de estudo desta unidade.\nVocê já pode voltar e acessar a Trilha de Exercícios!");
-            }, 500);
-        }
-    }
-}
-// --- DADOS DO QUIZ ---
+// Fase 1 (Quiz)
 const perguntasFase1 = [
     { p: "O que é um algoritmo?", op: ["Linguagem", "Passos finitos", "Hardware"], c: 1 },
     { p: "Tipo de dado para '10.5'?", op: ["int", "float/double", "char"], c: 1 },
@@ -370,27 +263,6 @@ function carregarQuizFase1() {
     container.innerHTML = html;
 }
 
-// --- CONTROLE DE MUDANÇA DE TELA ANIMADA ---
-function irParaFase(faseAtualId, proximaFaseId) {
-    const atual = document.getElementById(faseAtualId);
-    const proxima = document.getElementById(proximaFaseId);
-    
-    // Remove a classe active da atual, fazendo ela sumir
-    atual.classList.remove('active');
-    
-    // Espera a animação de saída (500ms) e mostra a próxima
-    setTimeout(() => {
-        atual.classList.add('hidden');
-        proxima.classList.remove('hidden');
-        
-        // Pega o próximo frame para a animação de entrada funcionar
-        requestAnimationFrame(() => {
-            proxima.classList.add('active');
-        });
-    }, 400); // 400ms para dar overlap suave
-}
-
-// --- FASE 1 ---
 function corrigirFase1() {
     let acertos = 0;
     let todas = true;
@@ -415,7 +287,6 @@ function corrigirFase1() {
     if (nota >= 80) {
         boxResult.innerText = `Nota: ${nota}%. Destravando Fase 2...`;
         boxResult.classList.add('resultado-sucesso');
-        
         setTimeout(() => irParaFase('fase1-container', 'fase2-container'), 1500);
     } else {
         boxResult.innerText = `Nota: ${nota}%. Mínimo de 80%. Tente novamente!`;
@@ -423,27 +294,23 @@ function corrigirFase1() {
     }
 }
 
-// --- FASE 2: SIMULADOR DE COMPILADOR C (SOMA) ---
+// Fase 2 e 3 (IDE)
 function executarCodigoC_Fase2() {
     const code = document.getElementById('editor-fase2').value;
     const consoleOut = document.getElementById('console-fase2');
     
-    consoleOut.className = 'console-output'; // Reseta cor
+    consoleOut.className = 'console-output'; 
     consoleOut.innerText = "$ gcc main.c -o main\n$ ./main\n";
     
     setTimeout(() => {
-        // Limpa espaços vazios e formatações para análise estática
         const cleanCode = code.replace(/\s+/g, '');
         
-        // Verificações básicas de sintaxe C
         if (!code.includes(';')) {
             consoleOut.innerText += "main.c: erro: esperava ';' antes do fim do retorno.\n";
             consoleOut.className += ' console-error';
             return;
         }
 
-        // Lógica de verificação da Soma
-        // Procura por "return a+b;" ou parecidos
         const hasSumLogic = cleanCode.includes('returna+b;') || cleanCode.includes('returnb+a;') || cleanCode.includes('return(a+b);');
         
         if (hasSumLogic) {
@@ -453,10 +320,9 @@ function executarCodigoC_Fase2() {
             consoleOut.innerText += "❌ Erro Lógico: A função não retornou a soma de 'a' e 'b'. Lembre-se do operador '+'.";
             consoleOut.className += ' console-error';
         }
-    }, 800); // Delay falso para parecer que está compilando no servidor
+    }, 800); 
 }
 
-// --- FASE 3: SIMULADOR C (PAR/ÍMPAR) ---
 function avaliarDesafioFinalC() {
     const questaoA = document.getElementById('select-fase3').value;
     const codeB = document.getElementById('editor-fase3').value;
@@ -475,16 +341,12 @@ function avaliarDesafioFinalC() {
 
     setTimeout(() => {
         const cleanCode = codeB.replace(/\s+/g, '');
-        
-        // Verifica se usou o operador Módulo (%) e retornou 1 para par e 0 para ímpar
         const usedModulo = cleanCode.includes('%2');
         const correctLogic = cleanCode.includes('%2==0') || cleanCode.includes('%2===0');
         
         if (usedModulo && correctLogic) {
             consoleOut.innerText += "✅ Teste [ehPar(4)] -> 1: PASSOU\n✅ Teste [ehPar(7)] -> 0: PASSOU\n\n🏆 PARABÉNS! COMPILADO COM SUCESSO. Você venceu a unidade!";
-            
             localStorage.setItem('uni1_exercicios', 'true');
-            
             setTimeout(() => {
                 alert("Nível Concluído! Retornando ao Menu da Unidade.");
                 window.location.href = "opcoes-unidade.html";
@@ -495,10 +357,10 @@ function avaliarDesafioFinalC() {
         }
     }, 1000);
 }
-/* ==========================================================================
-   SISTEMA DA AVALIAÇÃO FINAL (avaliacao.html)
-   ========================================================================== */
 
+// ==========================================
+// 7. AVALIAÇÃO FINAL (TIMER E PROVA)
+// ==========================================
 const questoesProva = [
     { p: "Qual estrutura de repetição executa o bloco pelo menos uma vez antes de testar a condição?", op: ["for", "while", "do-while"], c: 2 },
     { p: "Em C, como declaramos uma variável do tipo caractere?", op: ["char letra;", "string letra;", "character letra;"], c: 0 },
@@ -507,7 +369,7 @@ const questoesProva = [
     { p: "Como adicionamos um comentário de uma linha em C?", op: ["// Comentário", "/* Comentário */", "# Comentário"], c: 0 }
 ];
 
-let tempoProva = 3600; // 1 Hora em segundos
+let tempoProva = 3600; // 1 Hora
 let timerInterval;
 
 function carregarProva() {
@@ -528,8 +390,6 @@ function carregarProva() {
 function iniciarProva() {
     carregarProva();
     irParaFase('intro-prova', 'area-prova');
-    
-    // Inicia o Timer
     timerInterval = setInterval(atualizarTimer, 1000);
 }
 
@@ -542,31 +402,21 @@ function atualizarTimer() {
     const display = document.getElementById('timer-display');
     if(display) {
         display.innerHTML = `<i class="fas fa-clock"></i> ${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
-        
-        // Alerta nos últimos 5 minutos (300 segundos)
-        if (tempoProva <= 300) {
-            display.classList.add('warning');
-        }
+        if (tempoProva <= 300) { display.classList.add('warning'); }
     }
 
-    // Tempo esgotado
     if (tempoProva <= 0) {
         clearInterval(timerInterval);
         alert("O tempo esgotou! Entregando a prova automaticamente...");
-        finalizarProva(true); // true indica que finalizou por tempo
+        finalizarProva(true);
     }
 }
 
 function avaliarCodigoProvaC() {
     const code = document.getElementById('editor-prova').value;
     const cleanCode = code.replace(/\s+/g, '');
-    
-    // Lógica simples de correção: Verifica se o aluno multiplicou a base pela altura
-    const containsMultiplication = cleanCode.includes('returnbase*altura;') || 
-                                   cleanCode.includes('returnaltura*base;') ||
-                                   cleanCode.includes('return(base*altura);');
-                                   
-    return containsMultiplication ? 50 : 0; // Se acertar ganha 50 pontos
+    const containsMultiplication = cleanCode.includes('returnbase*altura;') || cleanCode.includes('returnaltura*base;') || cleanCode.includes('return(base*altura);');
+    return containsMultiplication ? 50 : 0; 
 }
 
 function finalizarProva(porTempo = false) {
@@ -575,21 +425,15 @@ function finalizarProva(porTempo = false) {
         if (!confirmar) return;
     }
 
-    clearInterval(timerInterval); // Para o cronômetro
+    clearInterval(timerInterval); 
 
     let notaObjetivas = 0;
-    // Corrige as objetivas
     questoesProva.forEach((q, index) => {
         const selecionada = document.querySelector(`input[name="p${index}"]:checked`);
-        if (selecionada && parseInt(selecionada.value) === q.c) {
-            notaObjetivas += 10; // Cada uma vale 10 pontos
-        }
+        if (selecionada && parseInt(selecionada.value) === q.c) { notaObjetivas += 10; }
     });
 
-    // Corrige a prática
     const notaPratica = avaliarCodigoProvaC();
-    
-    // Calcula nota total
     const notaFinal = notaObjetivas + notaPratica;
 
     exibirResultado(notaFinal, notaObjetivas, notaPratica);
@@ -613,10 +457,8 @@ function exibirResultado(notaTotal, objPts, pratPts) {
         msg.innerText = `Sua nota final foi ${notaTotal}%. Você concluiu a Unidade 1 com maestria e desbloqueou a Unidade 2!`;
         detalhes.className = 'resultado-box resultado-sucesso';
         
-        // Salva o progresso no banco
         localStorage.setItem('uni1_avaliacao', 'true');
         localStorage.setItem('unidade1Completed', 'true');
-        
     } else {
         icone.innerHTML = '<i class="fas fa-times-circle" style="color: #e74c3c;"></i>';
         titulo.innerText = "Não foi dessa vez...";
@@ -626,42 +468,160 @@ function exibirResultado(notaTotal, objPts, pratPts) {
     }
 }
 
-function voltarParaUnidade() {
-    window.location.href = "opcoes-unidade.html";
+function voltarParaUnidade() { window.location.href = "opcoes-unidade.html"; }
+
+// ==========================================
+// 8. FÓRUM DE DISCUSSÕES
+// ==========================================
+let forumData = [];
+const currentUser = "Aluno"; 
+const generateId = () => '_' + Math.random().toString(36).substr(2, 9);
+
+function abrirModalPost() {
+    const modal = document.getElementById('modal-post');
+    const textarea = document.getElementById('novo-post-texto');
+    modal.classList.remove('hidden');
+    setTimeout(() => textarea.focus(), 100); 
 }
 
-// NOVA FUNÇÃO: Botão para marcar vídeo do YouTube
-function marcarVideoConcluido() {
-    if (localStorage.getItem('video_concluido') !== 'true') {
-        localStorage.setItem('video_concluido', 'true');
-        alert("Ótimo! Você concluiu a videoaula.");
-        atualizarStatusMaterial();
+function fecharModalPost() {
+    const modal = document.getElementById('modal-post');
+    const textarea = document.getElementById('novo-post-texto');
+    modal.classList.add('hidden');
+    textarea.value = ''; 
+}
+
+function carregarDadosForum() {
+    const dadosSalvos = localStorage.getItem('algoritmolab_forum_v2');
+    if (dadosSalvos) {
+        forumData = JSON.parse(dadosSalvos);
     } else {
-        alert("Esta aula já está marcada como concluída!");
+        forumData = [
+            {
+                id: generateId(), author: "Prof. Lógica", content: "Bem-vindos ao fórum da Unidade 1! Lembrem-se que o laço 'while' é perfeito quando não sabemos quantas vezes o código vai repetir. Alguém tem um exemplo prático?",
+                time: "Há 2 horas", likes: 12, likedByMe: false,
+                comments: [{ id: generateId(), author: "João Silva", content: "Eu uso muito em jogos, tipo um 'while(vida > 0)' para manter o jogo rodando!", likes: 5, likedByMe: false, replies: [] }]
+            }
+        ];
+        salvarDadosForum();
     }
 }
 
-function atualizarStatusMaterial() {
-    const checkVideo = document.getElementById('check-video');
-    const checkApostila = document.getElementById('check-apostila');
-    
-    if(!checkVideo || !checkApostila) return;
+function salvarDadosForum() { localStorage.setItem('algoritmolab_forum_v2', JSON.stringify(forumData)); }
 
-    const videoFeito = localStorage.getItem('video_concluido') === 'true';
-    const apostilaFeita = localStorage.getItem('apostila_concluida') === 'true';
+function criarPost() {
+    const textarea = document.getElementById('novo-post-texto');
+    const content = textarea.value.trim();
+    if (!content) { alert("Escreva algo antes de publicar!"); return; }
 
-    if (videoFeito) checkVideo.className = 'fas fa-check-square check-icon marcado';
-    if (apostilaFeita) checkApostila.className = 'fas fa-check-square check-icon marcado';
+    forumData.unshift({ id: generateId(), author: currentUser, content: content, time: "Agora mesmo", likes: 0, likedByMe: false, comments: [] });
+    salvarDadosForum();
+    fecharModalPost();
+    renderizarForum();
+}
 
-    // Libera os exercícios se ambos estiverem prontos
-    if (videoFeito && apostilaFeita) {
-        if (localStorage.getItem('uni1_conteudo') !== 'true') {
-            localStorage.setItem('uni1_conteudo', 'true');
-            setTimeout(() => {
-                alert("Parabéns! Você concluiu o material de estudo.\nA Trilha de Exercícios foi liberada!");
-            }, 500);
-        }
+function adicionarComentario(postId) {
+    const input = document.getElementById(`input-comment-${postId}`);
+    if (!input.value.trim()) return;
+    const post = forumData.find(p => p.id === postId);
+    if (post) {
+        post.comments.push({ id: generateId(), author: currentUser, content: input.value.trim(), likes: 0, likedByMe: false, replies: [] });
+        salvarDadosForum(); renderizarForum();
     }
+}
+
+function adicionarResposta(postId, commentId) {
+    const input = document.getElementById(`input-reply-${commentId}`);
+    if (!input.value.trim()) return;
+    const post = forumData.find(p => p.id === postId);
+    const comment = post.comments.find(c => c.id === commentId);
+    if (comment) {
+        comment.replies.push({ id: generateId(), author: currentUser, content: input.value.trim(), likes: 0, likedByMe: false });
+        salvarDadosForum(); renderizarForum();
+    }
+}
+
+function toggleInteracaoBox(id) {
+    const el = document.getElementById(id);
+    if (el.style.display === 'none' || el.style.display === '') {
+        el.style.display = 'flex';
+        el.querySelector('input').focus();
+    } else { el.style.display = 'none'; }
+}
+
+function toggleLikePost(postId) {
+    const post = forumData.find(p => p.id === postId);
+    post.likedByMe = !post.likedByMe; post.likes += post.likedByMe ? 1 : -1;
+    salvarDadosForum(); renderizarForum();
+}
+
+function toggleLikeComment(postId, commentId) {
+    const post = forumData.find(p => p.id === postId);
+    const comment = post.comments.find(c => c.id === commentId);
+    comment.likedByMe = !comment.likedByMe; comment.likes += comment.likedByMe ? 1 : -1;
+    salvarDadosForum(); renderizarForum();
+}
+
+function renderizarForum() {
+    const feed = document.getElementById('forum-feed');
+    if(!feed) return;
+    let html = '';
+
+    forumData.forEach(post => {
+        const likeClass = post.likedByMe ? 'liked' : '';
+        const likeIcon = post.likedByMe ? 'fas fa-heart' : 'far fa-heart';
+        html += `
+        <div class="post-card">
+            <div class="post-header">
+                <div class="post-avatar">${post.author.charAt(0)}</div>
+                <div><div class="post-author">${post.author}</div><div class="post-time">${post.time}</div></div>
+            </div>
+            <div class="post-content">${post.content}</div>
+            <div class="forum-actions">
+                <button class="action-btn ${likeClass}" onclick="toggleLikePost('${post.id}')"><i class="${likeIcon}"></i> ${post.likes}</button>
+                <button class="action-btn" onclick="toggleInteracaoBox('comment-box-${post.id}')"><i class="far fa-comment-alt"></i> Comentar</button>
+            </div>
+            
+            <div class="comments-section">
+                ${post.comments.map(c => `
+                    <div class="comment-card">
+                        <strong>${c.author}</strong> <span class="post-time">- Comentou</span>
+                        <div class="comment-content">${c.content}</div>
+                        <div class="forum-actions" style="border:none; padding:0;">
+                            <button class="action-btn ${c.likedByMe ? 'liked' : ''}" onclick="toggleLikeComment('${post.id}', '${c.id}')"><i class="${c.likedByMe ? 'fas' : 'far'} fa-heart"></i> ${c.likes}</button>
+                            <button class="action-btn" onclick="toggleInteracaoBox('reply-box-${c.id}')"><i class="fas fa-reply"></i> Responder</button>
+                        </div>
+                        <div class="replies-section">
+                            ${(c.replies || []).map(r => `<div class="reply-card"><strong>${r.author}:</strong> ${r.content}</div>`).join('')}
+                            <div class="input-row" id="reply-box-${c.id}" style="display:none;">
+                                <input type="text" id="input-reply-${c.id}" class="forum-input" placeholder="Sua resposta...">
+                                <button class="btn" onclick="adicionarResposta('${post.id}', '${c.id}')">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+                <div class="input-row" id="comment-box-${post.id}" style="display:none;">
+                    <input type="text" id="input-comment-${post.id}" class="forum-input" placeholder="Escreva um comentário...">
+                    <button class="btn" onclick="adicionarComentario('${post.id}')">Comentar</button>
+                </div>
+            </div>
+        </div>`;
+    });
+    feed.innerHTML = html;
+}
+
+// ==========================================
+// 9. UTILITÁRIOS EXTRAS
+// ==========================================
+function resetarProgresso() {
+    if(confirm("Tem certeza que deseja apagar todo o progresso para testar novamente?")) {
+        localStorage.clear();
+        location.reload();
+    }
+}
+
+function abrirConfiguracoes() {
+    alert("Configurações: Painel em desenvolvimento.");
 }
 /* ==========================================================================
    SISTEMA FLUIDO DO FÓRUM (forum.js)
@@ -924,28 +884,4 @@ function renderizarForum() {
     });
 
     feed.innerHTML = html;
-}
-/* ==========================================================================
-   SISTEMA DA TRILHA PRINCIPAL (unidades.html)
-   ========================================================================== */
-
-function verificarProgressoUnidades() {
-    if (localStorage.getItem('unidade1Completed') === 'true') {
-        const uni2 = document.getElementById('unidade-2');
-        const linha1 = document.getElementById('linha-1');
-        
-        if (uni2) {
-            // Remove a classe locked e adiciona unlocked
-            uni2.classList.remove('locked');
-            uni2.classList.add('unlocked');
-            
-            // Remove o bloqueio de clique
-            uni2.style.pointerEvents = 'auto';
-            
-            // Muda o ícone de cadeado para o ícone da Unidade
-            const icon = uni2.querySelector('.trilha-icon i');
-            if(icon) icon.className = 'fas fa-code-branch'; 
-        }
-        if (linha1) linha1.classList.remove('locked');
-    }
 }
