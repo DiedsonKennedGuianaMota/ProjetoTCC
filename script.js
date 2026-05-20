@@ -925,3 +925,27 @@ function renderizarForum() {
 
     feed.innerHTML = html;
 }
+/* ==========================================================================
+   SISTEMA DA TRILHA PRINCIPAL (unidades.html)
+   ========================================================================== */
+
+function verificarProgressoUnidades() {
+    if (localStorage.getItem('unidade1Completed') === 'true') {
+        const uni2 = document.getElementById('unidade-2');
+        const linha1 = document.getElementById('linha-1');
+        
+        if (uni2) {
+            // Remove a classe locked e adiciona unlocked
+            uni2.classList.remove('locked');
+            uni2.classList.add('unlocked');
+            
+            // Remove o bloqueio de clique
+            uni2.style.pointerEvents = 'auto';
+            
+            // Muda o ícone de cadeado para o ícone da Unidade
+            const icon = uni2.querySelector('.trilha-icon i');
+            if(icon) icon.className = 'fas fa-code-branch'; 
+        }
+        if (linha1) linha1.classList.remove('locked');
+    }
+}
