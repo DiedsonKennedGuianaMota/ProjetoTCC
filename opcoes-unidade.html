@@ -81,8 +81,15 @@
     </div>
 
     <script src="script.js"></script>
+    
     <script>
-        document.addEventListener('DOMContentLoaded', verificarProgressoInterno);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Atualiza o nome e os dias de ofensiva na barra superior
+            updateNavbarUI();
+            
+            // Verifica no localStorage se os itens já foram concluídos e marca os checks
+            atualizarStatusMaterial();
+        });
     </script>
 </body>
 </html>
