@@ -333,11 +333,6 @@ int main() {
             }
         }
 
-        function mudarFase(atual, proxima, progresso) {
-            document.getElementById(atual).classList.remove('active');
-            document.getElementById(proxima).classList.add('active');
-            document.getElementById('progresso-trilha').style.width = progresso + '%';
-        }
 
         window.onload = inicializar;
     </script>
