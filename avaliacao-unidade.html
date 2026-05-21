@@ -44,10 +44,10 @@
         
         .fase-card { 
             background: var(--card-bg); border-radius: 20px; width: 100%; max-width: 900px; padding: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             animation: fadeIn 0.5s ease-out forwards;
         }
-        .fase-card.active { display: flex; flex-direction: column; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .fase-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid var(--bg-color); padding-bottom: 15px; }
@@ -72,7 +72,7 @@
         /* IDE SIMULADOR */
         .ide-container { background: #282a36; border-radius: 12px; overflow: hidden; border: 1px solid #444; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .ide-header { background: #21222c; padding: 10px 15px; color: #f8f8f2; font-size: 0.85rem; font-family: 'Fira Code', monospace; }
-        .CodeMirror { height: 250px; font-family: 'Fira Code', monospace; font-size: 0.95rem; }
+        .CodeMirror { height: 250px; font-family: 'Fira Code', monospace; font-size: 0.95rem; text-align: left; }
 
         /* BOTÕES */
         .btn { padding: 15px 25px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; font-size: 1rem; }
@@ -99,13 +99,13 @@
             </div>
         </div>
         <div style="display: flex; gap: 10px;">
-            <button class="btn btn-outline" onclick="location.href='opcoes-unidade.html'" title="Sair"><i class="fas fa-sign-out-alt"></i> Sair</button>
+            <button type="button" class="btn btn-outline" onclick="location.href='opcoes-unidade.html'" title="Sair"><i class="fas fa-sign-out-alt"></i> Sair</button>
         </div>
     </header>
 
     <main class="wizard-container">
         
-        <div class="fase-card active" id="intro-prova">
+        <div class="fase-card" id="intro-prova" style="display: flex; flex-direction: column;">
             <div style="text-align: center;">
                 <i class="fas fa-graduation-cap icone-gigante"></i>
                 <h2>Avaliação Final - Unidade 1</h2>
@@ -121,12 +121,12 @@
                 </ul>
             </div>
             
-            <button class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.2rem;" onclick="iniciarProva()">
+            <button type="button" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.2rem;" onclick="iniciarProva()">
                 <i class="fas fa-play"></i> Iniciar Prova Agora
             </button>
         </div>
 
-        <div class="fase-card" id="area-prova" style="padding: 0; height: 100%; max-height: 800px;">
+        <div class="fase-card" id="area-prova" style="display: none; padding: 0; height: 100%; max-height: 800px; flex-direction: column;">
             <div class="prova-header">
                 <h3 style="margin: 0;"><i class="fas fa-pen-alt"></i> Avaliação em Andamento</h3>
                 <div class="timer-box" id="timer-display"><i class="fas fa-clock"></i> 60:00</div>
@@ -148,13 +148,13 @@
                     </div>
                 </div>
 
-                <button class="btn btn-teal" onclick="finalizarProva(false)" style="width: 100%; margin-top: 30px; justify-content: center; font-size: 1.1rem;">
+                <button type="button" class="btn btn-teal" onclick="finalizarProva(false)" style="width: 100%; margin-top: 30px; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-check-double"></i> Entregar Avaliação
                 </button>
             </div>
         </div>
 
-        <div class="fase-card" id="resultado-prova" style="text-align: center;">
+        <div class="fase-card" id="resultado-prova" style="display: none; text-align: center; flex-direction: column;">
             <div id="resultado-icone" style="font-size: 5rem; margin-bottom: 20px;"></div>
             <h2 id="resultado-titulo">Calculando...</h2>
             
@@ -169,7 +169,7 @@
 
             <p id="resultado-mensagem" style="margin-bottom: 30px; font-weight: 600;"></p>
 
-            <button class="btn btn-primary" onclick="location.href='opcoes-unidade.html'" style="width: 100%; justify-content: center;">
+            <button type="button" class="btn btn-primary" onclick="location.href='opcoes-unidade.html'" style="width: 100%; justify-content: center;">
                 <i class="fas fa-home"></i> Voltar para a Unidade
             </button>
         </div>
