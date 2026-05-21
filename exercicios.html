@@ -230,10 +230,24 @@ int soma(int a, int b) {
         function validarFase1() {
             if(respostas.q1 === 'b' && respostas.q2 === 'c') {
                 mudarFase('fase1', 'fase2', 66);
-                // Precisa dar refresh no editor porque ele estava oculto
-                setTimeout(() => editorCodeMirror.refresh(), 100); 
             } else {
                 alert("Ops! Alguma resposta está incorreta. Revise o material!");
+            }
+        }
+
+        // --- ATUALIZAÇÃO: CORREÇÃO DO EDITOR E TRANSIÇÃO ---
+        function mudarFase(atual, proxima, progresso) {
+            document.getElementById(atual).classList.remove('active');
+            document.getElementById(proxima).classList.add('active');
+            document.getElementById('progresso-trilha').style.width = progresso + '%';
+
+            // Se estivermos indo para a Fase 2, força o editor a recalcular seu tamanho
+            if (proxima === 'fase2') {
+                setTimeout(() => {
+                    editorCodeMirror.refresh();
+                    // Reescreve o texto inicial para garantir que nada fique cortado
+                    editorCodeMirror.setValue("int soma(int a, int b) {\n    // Digite sua logica aqui\n    return \n}");
+                }, 100); // 100ms é o tempo suficiente para a div aparecer
             }
         }
 
