@@ -323,8 +323,15 @@
                 icone.style.color = "#48bb78";
                 notaElement.className = "nota-destaque aprovado";
                 mensagem.innerText = "Excelente desempenho! Você demonstrou domínio dos conceitos básicos.";
+                
+                // --- ADICIONE ESTA LINHA ---
+                // Ela salva no navegador que a Unidade 2 agora está livre
+                localStorage.setItem('unidade2Liberada', 'true'); 
+                // ---------------------------
+
             } else {
                 titulo.innerText = "Não foi desta vez...";
+                // restante do código mantido...
                 icone.innerHTML = "📚";
                 icone.style.color = "#e53e3e";
                 notaElement.className = "nota-destaque reprovado";
