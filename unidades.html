@@ -294,6 +294,17 @@
             let s = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--font-scale')) || 100;
             document.documentElement.style.setProperty('--font-scale', (s + d) + '%');
         }
+        document.addEventListener('DOMContentLoaded', () => {
+    // Verifica se a chave existe e é 'true'
+    if (localStorage.getItem('unidade2Liberada') === 'true') {
+        // Encontre o botão ou card da Unidade 2 pelo ID ou classe e remova o bloqueio
+        const cardUnidade2 = document.getElementById('card-unidade-2'); 
+        if(cardUnidade2) {
+            cardUnidade2.classList.remove('bloqueado'); // Remova a classe visual de cadeado
+            cardUnidade2.disabled = false; // Habilite o clique
+        }
+    }
+});
 
         window.onload = () => {
             inicializar();
