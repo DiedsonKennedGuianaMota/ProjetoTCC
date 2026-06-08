@@ -8,9 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        /* ==========================================
-           1. ESTILOS GERAIS E ANIMAÇÕES
-           ========================================== */
         :root {
             --primary-blue: #1c3d5a;
             --accent-teal: #2b6cb0;
@@ -40,9 +37,6 @@
             100% { transform: scale(1); }
         }
 
-        /* ==========================================
-           2. LAYOUT: HERO E FORMULÁRIOS
-           ========================================== */
         .container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
 
         .hero-section { text-align: center; margin-bottom: 40px; animation: fadeInDown 1s ease-out; }
@@ -52,7 +46,7 @@
         .form-container { 
             width: 100%; 
             max-width: 400px; 
-            perspective: 1000px; /* Para o efeito 3D caso queira adicionar depois */
+            perspective: 1000px; 
             animation: slideInUp 1s ease-out forwards;
             animation-delay: 0.3s;
             opacity: 0;
@@ -81,7 +75,6 @@
         .alert-error { background: #fed7d7; color: var(--error); border: 1px solid #feb2b2; }
         .alert-success { background: #c6f6d5; color: var(--success); border: 1px solid #9ae6b4; }
 
-        /* Oculta formulários inativos */
         .hidden { display: none; }
     </style>
 </head>
@@ -139,68 +132,64 @@
         </section>
     </main>
 
-    <script>
-        /* ==========================================
-           LÓGICA DE BANCO DE DADOS E AUTENTICAÇÃO
-           ========================================== */
+   <script>
+    /* ==========================================
+       LÓGICA DE BANCO DE DADOS (VIA BACK-END API) E AUTENTICAÇÃO
+       ========================================== */
+    
+    // Verifica se já está logado
+    if (localStorage.getItem('userLogado') === 'true') {
+        window.location.href = 'home.html'; 
+    }
+
+    // Função para alternar entre Login e Cadastro
+    function alternarTelas() {
+        const telaLogin = document.getElementById('card-login');
+        const telaRegistro = document.getElementById('card-register');
         
-        // Verifica se já está logado e joga direto para o sistema
-        if (localStorage.getItem('userLogado') === 'true') {
-            window.location.href = 'opcoes-unidade.html'; // Coloque o link correto da sua home/trilha aqui
+        document.getElementById('login-alert').style.display = 'none';
+        document.getElementById('register-alert').style.display = 'none';
+
+        if (telaLogin.classList.contains('hidden')) {
+            telaLogin.classList.remove('hidden');
+            telaRegistro.classList.add('hidden');
+        } else {
+            telaLogin.classList.add('hidden');
+            telaRegistro.classList.remove('hidden');
         }
+    }
 
-        // Função para alternar entre Login e Cadastro visualmente
-        function alternarTelas() {
-            const telaLogin = document.getElementById('card-login');
-            const telaRegistro = document.getElementById('card-register');
-            
-            // Limpa os alertas ao trocar de tela
-            document.getElementById('login-alert').style.display = 'none';
-            document.getElementById('register-alert').style.display = 'none';
+    // URL do seu servidor local (mude para a URL do Railway quando for subir o backend)
+    const API_URL = 'http://localhost:3000/api';
 
-            if (telaLogin.classList.contains('hidden')) {
-                telaLogin.classList.remove('hidden');
-                telaRegistro.classList.add('hidden');
-            } else {
-                telaLogin.classList.add('hidden');
-                telaRegistro.classList.remove('hidden');
-            }
-        }
+    // Função de CADASTRO conectada ao Backend
+    async function cadastrarUsuario(event) {
+        event.preventDefault(); 
+        
+        const nome = document.getElementById('reg-nome').value.trim();
+        const email = document.getElementById('reg-email').value.trim().toLowerCase();
+        const senha = document.getElementById('reg-senha').value;
+        const alerta = document.getElementById('register-alert');
 
-        // Função para obter o "Banco de Dados"
-        function getUsuariosDB() {
-            const db = localStorage.getItem('algoritmolab_usuarios');
-            return db ? JSON.parse(db) : []; // Retorna os usuários ou um array vazio se for a primeira vez
-        }
+        try {
+            const response = await fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, email, senha })
+            });
 
-        // Função de CADASTRO
-        function cadastrarUsuario(event) {
-            event.preventDefault(); // Impede a página de recarregar
-            
-            const nome = document.getElementById('reg-nome').value.trim();
-            const email = document.getElementById('reg-email').value.trim().toLowerCase();
-            const senha = document.getElementById('reg-senha').value;
-            const alerta = document.getElementById('register-alert');
+            const data = await response.json();
 
-            let usuarios = getUsuariosDB();
-
-            // Verifica se o e-mail já existe no banco
-            const usuarioExiste = usuarios.find(u => u.email === email);
-            if (usuarioExiste) {
+            if (!response.ok) {
                 alerta.className = 'alert alert-error';
-                alerta.innerText = 'Este e-mail já está cadastrado!';
+                alerta.innerText = data.error || 'Erro ao cadastrar.';
                 alerta.style.display = 'block';
                 return;
             }
 
-            // Cria o novo usuário e salva no "Banco"
-            const novoUsuario = { nome, email, senha };
-            usuarios.push(novoUsuario);
-            localStorage.setItem('algoritmolab_usuarios', JSON.stringify(usuarios));
-
-            // Feedback visual e manda para o login
+            // Feedback visual sucesso
             alerta.className = 'alert alert-success';
-            alerta.innerText = 'Cadastro realizado com sucesso! Faça login.';
+            alerta.innerText = data.message;
             alerta.style.display = 'block';
             
             // Limpa o formulário
@@ -208,35 +197,57 @@
             document.getElementById('reg-email').value = '';
             document.getElementById('reg-senha').value = '';
 
-            // Aguarda 1.5 segundos e muda para a tela de login
             setTimeout(() => { alternarTelas(); }, 1500);
+
+        } catch (error) {
+            alerta.className = 'alert alert-error';
+            alerta.innerText = 'Erro de conexão com o servidor.';
+            alerta.style.display = 'block';
         }
+    }
 
-        // Função de LOGIN
-        function fazerLogin(event) {
-            event.preventDefault(); // Impede a página de recarregar
-            
-            const email = document.getElementById('login-email').value.trim().toLowerCase();
-            const senha = document.getElementById('login-senha').value;
-            const alerta = document.getElementById('login-alert');
+    // Função de LOGIN conectada ao Backend
+    async function fazerLogin(event) {
+        event.preventDefault(); 
+        
+        const email = document.getElementById('login-email').value.trim().toLowerCase();
+        const senha = document.getElementById('login-senha').value;
+        const alerta = document.getElementById('login-alert');
 
-            const usuarios = getUsuariosDB();
+        try {
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, senha })
+            });
 
-            // Procura no banco se existe o e-mail E se a senha bate
-            const usuarioValido = usuarios.find(u => u.email === email && u.senha === senha);
+            const data = await response.json();
 
-            if (usuarioValido) {
-                // Sucesso! Salva que ele está logado e guarda o nome dele para usar na plataforma
-                localStorage.setItem('userLogado', 'true');
-                localStorage.setItem('userName', usuarioValido.nome);
-                
-                // Redireciona para a tela inicial do sistema (Ajuste o link se necessário)
-                window.location.href = 'home.html'; 
-            } else {
-                // Erro: E-mail não achado ou senha errada
+            if (!response.ok) {
+                alerta.innerText = data.error || 'E-mail ou senha incorretos.';
                 alerta.style.display = 'block';
+                return;
             }
+
+            // Sucesso! O servidor validou a senha e devolveu os dados do usuário
+            localStorage.setItem('userLogado', 'true');
+            localStorage.setItem('userName', data.user.nome);
+            
+            // Opcional: Você pode salvar os dados completos do usuário no localStorage
+            // para que a home.html consiga ler a foto, streak, etc. sem precisar chamar o banco de novo.
+            let usuarios = JSON.parse(localStorage.getItem('algoritmolab_usuarios')) || [];
+            // Remove o cache antigo se existir e adiciona o atualizado vindo do banco
+            usuarios = usuarios.filter(u => u.nome !== data.user.nome); 
+            usuarios.push(data.user);
+            localStorage.setItem('algoritmolab_usuarios', JSON.stringify(usuarios));
+            
+            window.location.href = 'home.html'; 
+
+        } catch (error) {
+            alerta.innerText = 'Erro de conexão com o servidor.';
+            alerta.style.display = 'block';
         }
-    </script>
+    }
+</script>
 </body>
 </html>
