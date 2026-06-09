@@ -87,7 +87,26 @@ app.post('/api/update-photo', (req, res) => {
     });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
+});
+// Exemplo de rota no seu Back-end Node.js (usando Express e mysql2)
+app.post('/api/salvar-nota', (req, res) => {
+    const { email, nota } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ erro: "Email não fornecido." });
+    }
+
+    // Atualiza a coluna nota_diagnostica baseada no email do usuário
+    const query = "UPDATE usuarios SET nota_diagnostica = ?, avaliacao_concluida = true WHERE email = ?";
+    
+    db.query(query, [nota, email], (err, results) => {
+        if (err) {
+            console.error("Erro ao salvar nota no Railway:", err);
+            return res.status(500).json({ erro: "Erro ao salvar no banco de dados." });
+        }
+        res.json({ sucesso: true, mensagem: "Nota salva com sucesso!" });
+    });
 });
