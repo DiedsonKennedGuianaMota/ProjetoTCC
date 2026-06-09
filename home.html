@@ -45,11 +45,6 @@
             from { transform: scale(0.9); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0px); }
-        }
         @keyframes burn {
             0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255,159,67,0.5)); }
             50% { transform: scale(1.1); filter: drop-shadow(0 0 10px rgba(255,159,67,0.9)); }
@@ -132,7 +127,7 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
         .widget-missao h3 { font-size: 1.3rem; margin-bottom: 5px; }
-        .widget-missao p { opacity: 0.8; font-size: 0.95rem; }
+        .widget-missao p { opacity: 0.9; font-size: 0.95rem; }
 
         /* Botões */
         .btn { 
@@ -178,7 +173,7 @@
 
     <header class="navbar">
         <div class="nav-profile">
-            <div class="avatar" id="user-avatar" onclick="abrirModalAvatar()">A</div>
+            <div class="avatar" id="user-avatar" onclick="abrirModalAvatar()"></div>
             <div>
                 <strong id="user-name" style="font-size: 1.1rem;">Carregando...</strong>
                 <div>
@@ -199,13 +194,10 @@
         
         <section class="widget-missao">
             <div>
-                <h3><i class="fas fa-bullseye"></i> Desafio do Dia Garantido?</h3>
-                <p id="missao-status">Você ainda não completou nenhuma atividade hoje. Codifique para manter o fogo aceso!</p>
+                <h3><i class="fas fa-bullseye"></i> Sua Ofensiva Diária</h3>
+                <p id="missao-status">Complete um exercício no módulo de estudos hoje para garantir seu +1 dia de ofensiva e manter seu fogo aceso!</p>
             </div>
-            <button class="btn" style="background: #ffffff; color: #1c3d5a;" onclick="completarMissaoDiaria()">
-                <i class="fas fa-check-circle" style="color: #38a169;"></i> Concluir Tarefa
-            </button>
-        </section>
+            </section>
 
         <h2><i class="fas fa-home"></i> Painel de Controle</h2>
         
@@ -221,16 +213,14 @@
             </a>
             
             <a href="progresso.html" class="dash-item" style="animation-delay: 0.3s;">
-    <i class="fas fa-chart-line"></i>
-    Meu Progresso
-</a>
-
+                <i class="fas fa-chart-line"></i>
+                Meu Progresso
+            </a>
             
             <a href="certificados.html" class="dash-item" style="animation-delay: 0.4s;">
-    <i class="fas fa-certificate"></i>
-    Certificados
-</a>
-
+                <i class="fas fa-certificate"></i>
+                Certificados
+            </a>
         </div>
     </main>
 
@@ -264,45 +254,40 @@
 
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
                 <button class="btn btn-logout" onclick="fecharModalAvatar()">Cancelar</button>
-                <button class="btn btn-primary" onclick="salvarNovaFoto()">Salvar Foto</button>
+                <button class="btn btn-primary" onclick="salvarNovaFoto()" id="btn-salvar-foto">Salvar Foto</button>
             </div>
         </div>
     </div>
 
     <script>
+        // URL da sua API no Render
+        const API_URL = 'https://algoritmolab.onrender.com/api';
+        
         let usuarioLogadoData = null; 
         let fotoSelecionadaTemp = "";
 
         // TRAVA DE SEGURANÇA: Garante autenticação
         function checkAuth() {
-            if (localStorage.getItem('userLogado') !== 'true') {
-                window.location.href = 'index.html';
+            const userString = localStorage.getItem('userData');
+            
+            if (!userString) {
+                window.location.href = 'index.html'; // Redireciona se não estiver logado
                 return;
             }
             
-            // Procura os dados detalhados do usuário ativo na lista global de usuários
-            const nomeLogado = localStorage.getItem('userName');
-            let usuarios = JSON.parse(localStorage.getItem('algoritmolab_usuarios')) || [];
-            usuarioLogadoData = usuarios.find(u => u.nome === nomeLogado);
-
-            // Caso o usuário não tenha registro completo, estruturamos um na hora para não quebrar
-            if (!usuarioLogadoData) {
-                usuarioLogadoData = { nome: nomeLogado, streak: 0, lastCompletion: "", foto: "" };
-                usuarios.push(usuarioLogadoData);
-                localStorage.setItem('algoritmolab_usuarios', JSON.stringify(usuarios));
-            }
-
+            // Pega os dados do usuário que salvamos no login
+            usuarioLogadoData = JSON.parse(userString);
             renderizarDadosUsuario();
         }
 
-        // Atualiza a tela com as informações vindas do Banco de Dados
+        // Atualiza a tela com as informações
         function renderizarDadosUsuario() {
             document.getElementById('user-name').innerText = usuarioLogadoData.nome;
             document.getElementById('user-streak').innerText = `${usuarioLogadoData.streak || 0} Dias`;
             
             // Renderiza foto ou letra padrão
             const avatarDiv = document.getElementById('user-avatar');
-            if (usuarioLogadoData.foto) {
+            if (usuarioLogadoData.foto && usuarioLogadoData.foto !== "") {
                 avatarDiv.innerHTML = `<img src="${usuarioLogadoData.foto}" style="width:100%; height:100%; object-fit:cover;">`;
             } else {
                 avatarDiv.innerText = usuarioLogadoData.nome.charAt(0).toUpperCase();
@@ -313,34 +298,6 @@
             if (usuarioLogadoData.lastCompletion === hoje) {
                 document.getElementById('missao-status').innerHTML = '<i class="fas fa-check-circle" style="color:#2ecc71"></i> <strong>Parabéns!</strong> Ofensiva de hoje garantida. Volte amanhã!';
             }
-        }
-
-        // Salva dados no banco local global
-        function salvarDadosNoBanco() {
-            let usuarios = JSON.parse(localStorage.getItem('algoritmolab_usuarios')) || [];
-            const index = usuarios.findIndex(u => u.nome === usuarioLogadoData.nome);
-            if (index !== -1) {
-                usuarios[index] = usuarioLogadoData;
-                localStorage.setItem('algoritmolab_usuarios', JSON.stringify(usuarios));
-            }
-            renderizarDadosUsuario();
-        }
-
-        // SISTEMA DE OFENSIVAS
-        function completarMissaoDiaria() {
-            const hoje = new Date().toDateString();
-
-            if (usuarioLogadoData.lastCompletion === hoje) {
-                alert("Você já completou a missão de hoje e garantiu seu fogo! Volte amanhã.");
-                return;
-            }
-
-            // Ganha ofensiva
-            usuarioLogadoData.streak = (usuarioLogadoData.streak || 0) + 1;
-            usuarioLogadoData.lastCompletion = hoje;
-            
-            salvarDadosNoBanco();
-            alert("🔥 Incrível! Você garantiu +1 dia de Ofensiva!");
         }
 
         /* MODAL DE FOTO DE PERFIL */
@@ -362,20 +319,50 @@
             if (file) reader.readAsDataURL(file);
         }
 
-        function salvarNovaFoto() {
+        // ENVIAR FOTO PARA O BACKEND
+        async function salvarNovaFoto() {
             const urlInput = document.getElementById('avatar-url').value.trim();
+            const novaFoto = urlInput || fotoSelecionadaTemp;
             
-            if (urlInput) {
-                usuarioLogadoData.foto = urlInput;
-            } else if (fotoSelecionadaTemp) {
-                usuarioLogadoData.foto = fotoSelecionadaTemp;
+            if (!novaFoto) {
+                alert("Por favor, selecione ou informe uma imagem.");
+                return;
             }
 
-            salvarDadosNoBanco();
-            fecharModalAvatar();
-            // Limpa campos
-            document.getElementById('avatar-url').value = "";
-            fotoSelecionadaTemp = "";
+            const btnSalvar = document.getElementById('btn-salvar-foto');
+            btnSalvar.innerText = "Salvando...";
+            btnSalvar.disabled = true;
+
+            try {
+                // Envia a foto e o email do usuário para a sua API no Render
+                const response = await fetch(`${API_URL}/update-photo`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: usuarioLogadoData.email,
+                        foto: novaFoto
+                    })
+                });
+
+                if (response.ok) {
+                    // Atualiza a foto localmente
+                    usuarioLogadoData.foto = novaFoto;
+                    localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+                    renderizarDadosUsuario();
+                    fecharModalAvatar();
+                } else {
+                    const data = await response.json();
+                    alert("Erro ao salvar: " + data.error);
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                alert("Erro de conexão com o servidor. Tente novamente.");
+            } finally {
+                btnSalvar.innerText = "Salvar Foto";
+                btnSalvar.disabled = false;
+                document.getElementById('avatar-url').value = "";
+                fotoSelecionadaTemp = "";
+            }
         }
 
         /* SISTEMA DE ACESSIBILIDADE */
@@ -400,7 +387,7 @@
 
         // DESLOGAR
         function fazerLogout() {
-            localStorage.setItem('userLogado', 'false');
+            localStorage.removeItem('userData');
             window.location.href = 'index.html';
         }
 
@@ -408,7 +395,7 @@
         window.onload = function() {
             checkAuth();
             
-            // Restaura configurações de acessibilidade anteriores salvas no dispositivo
+            // Restaura configurações de acessibilidade
             if (localStorage.getItem('acess_alto_contraste') === 'true') {
                 document.body.classList.add('high-contrast');
             }
