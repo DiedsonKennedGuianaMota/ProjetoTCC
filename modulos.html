@@ -9,7 +9,7 @@
     
     <style>
         /* ==========================================
-           1. VARIÁVEIS E ACESSIBILIDADE (IGUAL À HOME)
+           1. VARIÁVEIS E ACESSIBILIDADE 
            ========================================== */
         :root {
             --primary-blue: #1c3d5a;
@@ -41,7 +41,7 @@
         @keyframes slideInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ==========================================
-           2. HEADER E NAV (PADRÃO DO SITE)
+           2. HEADER E NAV
            ========================================== */
         .navbar { 
             background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
@@ -85,7 +85,7 @@
         .module-info p { font-size: 0.9rem; color: var(--text-muted); }
 
         /* ==========================================
-           4. ACESSIBILIDADE E FLOATING (IGUAL HOME)
+           4. ACESSIBILIDADE E FLOATING
            ========================================== */
         .floating-actions { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 10px; z-index: 99; }
         .btn-floating { width: 55px; height: 55px; border-radius: 50%; background: var(--primary-blue); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
@@ -96,7 +96,7 @@
         }
 
         /* ==========================================
-           5. MODAL DE CONFIGURAÇÕES (IGUAL HOME)
+           5. MODAL DE CONFIGURAÇÕES
            ========================================== */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -105,13 +105,17 @@
         }
         .modal-card { background: var(--card-bg); padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
         .input-text { width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 8px; margin-bottom: 15px; background: var(--bg-color); color: var(--text-main); }
+        
+        .grade-badge {
+            background: #e2e8f0; color: var(--text-main); padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; margin-left: 10px; display: inline-block;
+        }
     </style>
 </head>
 <body>
 
     <header class="navbar">
         <div class="nav-profile">
-            <div class="avatar" id="user-avatar">A</div>
+            <div class="avatar" id="user-avatar">...</div>
             <div>
                 <strong id="user-name">Carregando...</strong>
                 <div class="streak-badge"><i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span></div>
@@ -133,7 +137,9 @@
                     <h3 id="title-0">Avaliação Diagnóstica</h3>
                     <p>Obrigatório para iniciar a jornada.</p>
                 </div>
-                <div id="status-0" style="margin-left: auto;"><i class="fas fa-chevron-right"></i></div>
+                <div id="status-0" style="margin-left: auto; display: flex; align-items: center;">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
             </a>
 
             <a href="unidades.html" class="module-card locked" id="mod-1">
@@ -180,7 +186,7 @@
         <div class="modal-card">
             <h3 style="margin-bottom: 15px; color: var(--primary-blue);"><i class="fas fa-cog"></i> Configurações</h3>
             
-            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Alterar Nome de Usuário:</label>
+            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Alterar Nome de Usuário (Apenas Local):</label>
             <input type="text" id="edit-nome" class="input-text" placeholder="Seu nome">
 
             <div style="padding-top: 15px; border-top: 1px solid var(--border-color); margin-top: 10px;">
@@ -197,28 +203,27 @@
     </div>
 
     <script>
-        let usuarioLogadoData = null;
+        let userData = null;
 
-        // --- 1. CARREGAR E SINCRONIZAR PERFIL ---
+        // --- 1. CARREGAR PERFIL DO BANCO DE DADOS (VIA LOGIN) ---
         function carregarPerfil() {
             if (localStorage.getItem('userLogado') !== 'true') {
                 window.location.href = 'index.html';
                 return;
             }
 
-            const nomeLogado = localStorage.getItem('userName');
-            const usuarios = JSON.parse(localStorage.getItem('algoritmolab_usuarios')) || [];
-            usuarioLogadoData = usuarios.find(u => u.nome === nomeLogado);
+            // Puxa o pacote exato que salvamos na tela de Login
+            userData = JSON.parse(localStorage.getItem('userData'));
 
-            if (usuarioLogadoData) {
-                document.getElementById('user-name').innerText = usuarioLogadoData.nome;
-                document.getElementById('user-streak').innerText = `${usuarioLogadoData.streak || 0} Dias`;
+            if (userData) {
+                document.getElementById('user-name').innerText = userData.nome;
+                document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
                 
                 const avatarDiv = document.getElementById('user-avatar');
-                if (usuarioLogadoData.foto) {
-                    avatarDiv.innerHTML = `<img src="${usuarioLogadoData.foto}">`;
+                if (userData.foto) {
+                    avatarDiv.innerHTML = `<img src="${userData.foto}">`;
                 } else {
-                    avatarDiv.innerText = usuarioLogadoData.nome.charAt(0).toUpperCase();
+                    avatarDiv.innerText = userData.nome.charAt(0).toUpperCase();
                 }
             }
             verificarBloqueios();
@@ -226,14 +231,22 @@
 
         // --- 2. LÓGICA DE BLOQUEIO POR ETAPAS ---
         function verificarBloqueios() {
+            // Lemos as informações do navegador (no futuro, virá do banco de dados)
             const avaliacaoOK = localStorage.getItem('avaliacao_concluida') === 'true';
             const mod1OK = localStorage.getItem('mod1_concluido') === 'true';
+            const notaDiagnostica = localStorage.getItem('nota_diagnostica');
 
-            // Se terminou a Avaliação -> Libera Unidade 1
+            // Se terminou a Avaliação -> Mostra nota e Libera Unidade 1
             if (avaliacaoOK) {
                 document.getElementById('mod-0').classList.add('completed');
-                document.getElementById('status-0').innerHTML = '<i class="fas fa-check-circle" style="color:var(--success-green)"></i>';
                 
+                let htmlStatus = '<i class="fas fa-check-circle" style="color:var(--success-green); font-size: 1.5rem;"></i>';
+                if(notaDiagnostica) {
+                    htmlStatus += `<span class="grade-badge">Nota: ${notaDiagnostica}</span>`;
+                }
+                document.getElementById('status-0').innerHTML = htmlStatus;
+                
+                // Destrava Modulo 1
                 const mod1 = document.getElementById('mod-1');
                 mod1.classList.remove('locked');
                 document.getElementById('title-1').innerHTML = "Lógica de Programação";
@@ -242,8 +255,9 @@
             // Se terminou Unidade 1 -> Libera Unidade 2
             if (mod1OK) {
                 document.getElementById('mod-1').classList.add('completed');
-                document.getElementById('status-1').innerHTML = '<i class="fas fa-check-circle" style="color:var(--success-green)"></i>';
+                document.getElementById('status-1').innerHTML = '<i class="fas fa-check-circle" style="color:var(--success-green); font-size: 1.5rem;"></i>';
                 
+                // Destrava Modulo 2
                 const mod2 = document.getElementById('mod-2');
                 mod2.classList.remove('locked');
                 mod2.setAttribute('href', 'variaveis.html'); // Link real da unidade
@@ -253,19 +267,17 @@
 
         // --- 3. CONFIGURAÇÕES ---
         function abrirConfiguracoes() {
-            document.getElementById('edit-nome').value = usuarioLogadoData.nome;
+            if(userData) document.getElementById('edit-nome').value = userData.nome;
             document.getElementById('config-modal').style.display = 'flex';
         }
         function fecharConfiguracoes() { document.getElementById('config-modal').style.display = 'none'; }
 
         function salvarConfiguracoes() {
             const novoNome = document.getElementById('edit-nome').value.trim();
-            if (novoNome) {
-                let usuarios = JSON.parse(localStorage.getItem('algoritmolab_usuarios')) || [];
-                const idx = usuarios.findIndex(u => u.email === usuarioLogadoData.email);
-                if(idx !== -1) usuarios[idx].nome = novoNome;
-                
-                localStorage.setItem('algoritmolab_usuarios', JSON.stringify(usuarios));
+            if (novoNome && userData) {
+                // Atualiza localmente (para refletir no banco de dados, precisa de rota de Update de Nome)
+                userData.nome = novoNome;
+                localStorage.setItem('userData', JSON.stringify(userData));
                 localStorage.setItem('userName', novoNome);
                 window.location.reload();
             }
@@ -274,6 +286,7 @@
         function zerarProgresso() {
             if (confirm("Deseja realmente resetar? Você terá que fazer a avaliação de novo.")) {
                 localStorage.removeItem('avaliacao_concluida');
+                localStorage.removeItem('nota_diagnostica');
                 localStorage.removeItem('mod1_concluido');
                 location.reload();
             }
