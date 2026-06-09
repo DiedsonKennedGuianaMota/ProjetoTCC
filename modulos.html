@@ -202,7 +202,7 @@
         </div>
     </div>
 
-    <script>
+   <script>
         let userData = null;
 
         // --- 1. CARREGAR PERFIL DO BANCO DE DADOS (VIA LOGIN) ---
@@ -231,17 +231,19 @@
 
         // --- 2. LÓGICA DE BLOQUEIO POR ETAPAS ---
         function verificarBloqueios() {
-            // Lemos as informações do navegador (no futuro, virá do banco de dados)
-            const avaliacaoOK = localStorage.getItem('avaliacao_concluida') === 'true';
-            const mod1OK = localStorage.getItem('mod1_concluido') === 'true';
-            const notaDiagnostica = localStorage.getItem('nota_diagnostica');
+            if (!userData) return;
+
+            // Agora lemos as informações de dentro do userData
+            const avaliacaoOK = userData.avaliacao_concluida === true || userData.avaliacao_concluida === 'true';
+            const mod1OK = userData.mod1_concluido === true || userData.mod1_concluido === 'true';
+            const notaDiagnostica = userData.nota_diagnostica;
 
             // Se terminou a Avaliação -> Mostra nota e Libera Unidade 1
             if (avaliacaoOK) {
                 document.getElementById('mod-0').classList.add('completed');
                 
                 let htmlStatus = '<i class="fas fa-check-circle" style="color:var(--success-green); font-size: 1.5rem;"></i>';
-                if(notaDiagnostica) {
+                if(notaDiagnostica !== undefined && notaDiagnostica !== null) {
                     htmlStatus += `<span class="grade-badge">Nota: ${notaDiagnostica}</span>`;
                 }
                 document.getElementById('status-0').innerHTML = htmlStatus;
@@ -260,7 +262,7 @@
                 // Destrava Modulo 2
                 const mod2 = document.getElementById('mod-2');
                 mod2.classList.remove('locked');
-                mod2.setAttribute('href', 'variaveis.html'); // Link real da unidade
+                mod2.setAttribute('href', 'variaveis.html');
                 document.getElementById('title-2').innerHTML = "Variáveis e Tipos";
             }
         }
@@ -275,19 +277,20 @@
         function salvarConfiguracoes() {
             const novoNome = document.getElementById('edit-nome').value.trim();
             if (novoNome && userData) {
-                // Atualiza localmente (para refletir no banco de dados, precisa de rota de Update de Nome)
                 userData.nome = novoNome;
                 localStorage.setItem('userData', JSON.stringify(userData));
-                localStorage.setItem('userName', novoNome);
                 window.location.reload();
             }
         }
 
         function zerarProgresso() {
             if (confirm("Deseja realmente resetar? Você terá que fazer a avaliação de novo.")) {
-                localStorage.removeItem('avaliacao_concluida');
-                localStorage.removeItem('nota_diagnostica');
-                localStorage.removeItem('mod1_concluido');
+                if (userData) {
+                    userData.avaliacao_concluida = false;
+                    userData.nota_diagnostica = null;
+                    userData.mod1_concluido = false;
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                }
                 location.reload();
             }
         }
