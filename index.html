@@ -233,8 +233,10 @@
             localStorage.setItem('userLogado', 'true');
             localStorage.setItem('userName', data.user.nome);
             
-            // Opcional: Você pode salvar os dados completos do usuário no localStorage
-            // para que a home.html consiga ler a foto, streak, etc. sem precisar chamar o banco de novo.
+
+            localStorage.setItem('userData', JSON.stringify(data.user));
+            // ==============================================================
+            
             let usuarios = JSON.parse(localStorage.getItem('algoritmolab_usuarios')) || [];
             // Remove o cache antigo se existir e adiciona o atualizado vindo do banco
             usuarios = usuarios.filter(u => u.nome !== data.user.nome); 
