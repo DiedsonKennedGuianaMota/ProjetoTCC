@@ -8,9 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* ==========================================
-           1. ESTILOS GERAIS E ACESSIBILIDADE
-           ========================================== */
         :root {
             --primary-blue: #1c3d5a; --accent-teal: #2b6cb0; --bg-color: #f4f7f6;
             --card-bg: #ffffff; --text-main: #333333; --text-muted: #718096;
@@ -27,9 +24,6 @@
         html { font-size: var(--font-scale); }
         body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; }
 
-        /* ==========================================
-           2. HEADER E NAV
-           ========================================== */
         .navbar { 
             background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color);
@@ -39,9 +33,6 @@
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .streak-badge { display: inline-flex; align-items: center; gap: 5px; color: var(--fire-color); font-weight: 700; font-size: 0.85rem; }
 
-        /* ==========================================
-           3. TELAS (INTRO, RESULTADO E BLOQUEIO)
-           ========================================== */
         .container { max-width: 800px; margin: 50px auto; padding: 0 20px; text-align: center; }
         .intro-card { background: var(--card-bg); padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .timer-display { font-size: 2rem; font-weight: 800; color: var(--accent-teal); margin: 20px 0; }
@@ -50,9 +41,6 @@
         .btn-primary { background: var(--accent-teal); color: white; }
         .btn-outline { background: transparent; color: var(--primary-blue); border: 2px solid var(--primary-blue); }
 
-        /* ==========================================
-           4. MODAL DE QUESTÕES
-           ========================================== */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .question-card { background: var(--card-bg); width: 90%; max-width: 600px; padding: 40px; border-radius: 25px; position: relative; }
         
@@ -65,7 +53,6 @@
         .option-item:hover { border-color: var(--accent-teal); background: #f0f7ff; }
         .option-item.selected { background: var(--accent-teal); color: white; border-color: var(--accent-teal); }
 
-        /* Acessibilidade Flutuante */
         .floating-actions { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 10px; z-index: 99; }
         .btn-floating { width: 50px; height: 50px; border-radius: 50%; background: var(--primary-blue); color: white; border: none; cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .menu-acessibilidade { position: absolute; bottom: 60px; right: 0; background: var(--card-bg); border: 1px solid var(--border-color); padding: 10px; border-radius: 12px; display: none; flex-direction: column; gap: 8px; width: 180px; }
@@ -146,7 +133,6 @@
     </div>
 
     <script>
-        // BANCO DE QUESTÕES
         const questoes = [
             { q: "O que é um Algoritmo?", o: ["Um tipo de computador", "Uma sequência de passos finitos para resolver um problema", "Um código secreto de hackers", "Um erro no sistema"], a: 1 },
             { q: "Qual o símbolo usado para representar o início/fim em um fluxograma?", o: ["Quadrado", "Círculo/Oval", "Losango", "Triângulo"], a: 1 },
@@ -162,18 +148,18 @@
 
         let perguntaAtual = 0;
         let acertos = 0;
-        let tempoRestante = 3600; // 1 hora
+        let tempoRestante = 3600; 
         let timerInterval;
         let opcaoSelecionada = null;
+        let userData = null;
 
-        // --- INICIALIZAÇÃO E PERFIL ---
         function carregarPerfil() {
             if (localStorage.getItem('userLogado') !== 'true') {
                 window.location.href = 'index.html';
                 return;
             }
 
-            const userData = JSON.parse(localStorage.getItem('userData'));
+            userData = JSON.parse(localStorage.getItem('userData'));
             if (userData) {
                 document.getElementById('user-name').innerText = userData.nome;
                 document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
@@ -184,22 +170,22 @@
                 } else {
                     avatarDiv.innerText = userData.nome.charAt(0).toUpperCase();
                 }
-            }
 
-            // --- VERIFICAÇÃO DE BLOQUEIO ---
-            // Se já fez a prova, bloqueia o acesso e exibe a tela de finalizado
-            if (localStorage.getItem('avaliacao_concluida') === 'true') {
-                document.getElementById('intro-screen').style.display = 'none';
-                document.getElementById('blocked-screen').style.display = 'block';
-                
-                const notaSalva = localStorage.getItem('nota_diagnostica');
-                if(notaSalva) {
-                    document.getElementById('saved-score-text').innerText = `Nota Registrada: ${notaSalva}`;
+                if (userData.avaliacao_concluida === true || userData.avaliacao_concluida === 'true') {
+                    document.getElementById('intro-screen').style.display = 'none';
+                    document.getElementById('blocked-screen').style.display = 'block';
+                    document.getElementById('saved-score-text').innerText = `Nota Registrada: ${userData.nota_diagnostica}/10`;
+                } else {
+                    userData.nota_diagnostica = null;
+                    userData.progresso = 0;
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                    
+                    document.getElementById('intro-screen').style.display = 'block';
+                    document.getElementById('blocked-screen').style.display = 'none';
                 }
             }
         }
 
-        // --- LÓGICA DO QUIZ ---
         function iniciarProva() {
             document.getElementById('intro-screen').style.display = 'none';
             document.getElementById('quiz-modal').style.display = 'flex';
@@ -252,11 +238,25 @@
             document.getElementById('result-screen').style.display = 'block';
             document.getElementById('score-text').innerText = `Sua Nota: ${acertos}/10`;
             
-            // --- SALVANDO NO BANCO DE DADOS (LOCAL) ---
-            localStorage.setItem('avaliacao_concluida', 'true');
-            localStorage.setItem('nota_diagnostica', `${acertos}/10`);
+            if (userData) {
+                userData.avaliacao_concluida = true;
+                userData.nota_diagnostica = acertos;
+                localStorage.setItem('userData', JSON.stringify(userData));
+            }
             
-            // Aqui futuramente entrará o Fetch/Axios para enviar a nota ao servidor MySQL
+            fetch('/api/salvar-nota', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    usuarioId: userData ? (userData.id || userData.nome) : 'desconhecido',
+                    nota: acertos
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log('Nota salva com sucesso no Railway:', data))
+            .catch(error => console.error('Erro ao sincronizar com o banco Railway:', error));
         }
 
         function startTimer() {
@@ -270,7 +270,6 @@
             }, 1000);
         }
 
-        // --- ACESSIBILIDADE ---
         function toggleMenuAcessibilidade() {
             const m = document.getElementById('menu-acess');
             m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
