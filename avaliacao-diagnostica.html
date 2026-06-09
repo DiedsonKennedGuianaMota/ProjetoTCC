@@ -23,7 +23,7 @@
             --card-bg: #1e1e1e; --text-main: #ffffff; --border-color: #4a5568;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: 0.3s; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background 0.3s, color 0.3s; }
         html { font-size: var(--font-scale); }
         body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; }
 
@@ -35,12 +35,12 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color);
         }
         .nav-profile { display: flex; align-items: center; gap: 15px; }
-        .avatar { width: 45px; height: 45px; background: var(--accent-teal); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 700; border: 2px solid var(--border-color); overflow: hidden; }
+        .avatar { width: 45px; height: 45px; background: var(--accent-teal); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; font-weight: 700; border: 2px solid var(--border-color); overflow: hidden; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .streak-badge { display: inline-flex; align-items: center; gap: 5px; color: var(--fire-color); font-weight: 700; font-size: 0.85rem; }
 
         /* ==========================================
-           3. TELA DE INTRODUÇÃO
+           3. TELAS (INTRO, RESULTADO E BLOQUEIO)
            ========================================== */
         .container { max-width: 800px; margin: 50px auto; padding: 0 20px; text-align: center; }
         .intro-card { background: var(--card-bg); padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
@@ -75,13 +75,13 @@
 
     <header class="navbar">
         <div class="nav-profile">
-            <div class="avatar" id="user-avatar">A</div>
+            <div class="avatar" id="user-avatar">...</div>
             <div>
                 <strong id="user-name">Carregando...</strong>
                 <div class="streak-badge"><i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span></div>
             </div>
         </div>
-        <button class="btn-outline" style="padding: 5px 15px; font-size: 0.8rem;" onclick="abrirConfiguracoes()"><i class="fas fa-cog"></i> Configs</button>
+        <a href="modulos.html" class="btn-outline" style="padding: 5px 15px; font-size: 0.8rem;"><i class="fas fa-arrow-left"></i> Sair</a>
     </header>
 
     <main class="container" id="intro-screen">
@@ -93,10 +93,21 @@
             <div class="timer-display"><i class="fas fa-clock"></i> 01:00:00</div>
             
             <div style="background: #fff5f5; color: #c53030; padding: 10px; border-radius: 8px; margin-bottom: 25px; font-size: 0.9rem;">
-                <i class="fas fa-exclamation-triangle"></i> Atenção: Uma vez iniciada, o cronômetro não para!
+                <i class="fas fa-exclamation-triangle"></i> Atenção: Uma vez iniciada, o cronômetro não para e não é possível refazer a prova!
             </div>
 
             <button class="btn btn-primary" onclick="iniciarProva()"><i class="fas fa-play"></i> Iniciar Avaliação Agora</button>
+        </div>
+    </main>
+
+    <main class="container" id="blocked-screen" style="display: none;">
+        <div class="intro-card">
+            <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success-green); margin-bottom: 15px;"></i>
+            <h2>Avaliação Já Concluída!</h2>
+            <p style="margin: 15px 0; color: var(--text-muted);">Você já realizou esta prova e sua nota está gravada no sistema. Prossiga com sua trilha de aprendizado.</p>
+            <p id="saved-score-text" style="font-size: 1.3rem; font-weight: 700; color: var(--accent-teal); margin-bottom: 25px;"></p>
+            
+            <a href="modulos.html" class="btn btn-primary"><i class="fas fa-map"></i> Ir para os Módulos</a>
         </div>
     </main>
 
@@ -108,8 +119,7 @@
             <p id="question-counter" style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">QUESTÃO 1 DE 10</p>
             <div class="question-text" id="pergunta">Carregando pergunta...</div>
             
-            <div class="options-list" id="opcoes">
-                </div>
+            <div class="options-list" id="opcoes"></div>
 
             <div style="margin-top: 30px; display: flex; justify-content: flex-end;">
                 <button class="btn btn-primary" id="btn-proxima" onclick="proximaQuestao()" disabled>Próxima <i class="fas fa-arrow-right"></i></button>
@@ -129,8 +139,8 @@
 
     <div class="floating-actions">
         <div class="menu-acessibilidade" id="menu-acess">
-            <button class="btn-primary" style="padding:5px; width:100%; font-size:0.8rem;" onclick="toggleAltoContraste()">Alto Contraste</button>
-            <button class="btn-outline" style="padding:5px; width:100%; font-size:0.8rem;" onclick="mudarFonte(2)">Aumentar Texto</button>
+            <button class="btn-primary" style="padding:5px; width:100%; font-size:0.8rem; border-radius: 6px; border:none; cursor: pointer;" onclick="toggleAltoContraste()">Alto Contraste</button>
+            <button class="btn-outline" style="padding:5px; width:100%; font-size:0.8rem; border-radius: 6px; cursor: pointer; background: var(--card-bg);" onclick="mudarFonte(2)">Aumentar Texto</button>
         </div>
         <button class="btn-floating" onclick="toggleMenuAcessibilidade()"><i class="fas fa-universal-access"></i></button>
     </div>
@@ -158,13 +168,34 @@
 
         // --- INICIALIZAÇÃO E PERFIL ---
         function carregarPerfil() {
-            const nomeLogado = localStorage.getItem('userName');
-            const usuarios = JSON.parse(localStorage.getItem('algoritmolab_usuarios')) || [];
-            const user = usuarios.find(u => u.nome === nomeLogado);
-            if (user) {
-                document.getElementById('user-name').innerText = user.nome;
-                document.getElementById('user-streak').innerText = `${user.streak || 0} Dias`;
-                if(user.foto) document.getElementById('user-avatar').innerHTML = `<img src="${user.foto}">`;
+            if (localStorage.getItem('userLogado') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('user-name').innerText = userData.nome;
+                document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
+                
+                const avatarDiv = document.getElementById('user-avatar');
+                if(userData.foto) {
+                    avatarDiv.innerHTML = `<img src="${userData.foto}">`;
+                } else {
+                    avatarDiv.innerText = userData.nome.charAt(0).toUpperCase();
+                }
+            }
+
+            // --- VERIFICAÇÃO DE BLOQUEIO ---
+            // Se já fez a prova, bloqueia o acesso e exibe a tela de finalizado
+            if (localStorage.getItem('avaliacao_concluida') === 'true') {
+                document.getElementById('intro-screen').style.display = 'none';
+                document.getElementById('blocked-screen').style.display = 'block';
+                
+                const notaSalva = localStorage.getItem('nota_diagnostica');
+                if(notaSalva) {
+                    document.getElementById('saved-score-text').innerText = `Nota Registrada: ${notaSalva}`;
+                }
             }
         }
 
@@ -221,8 +252,11 @@
             document.getElementById('result-screen').style.display = 'block';
             document.getElementById('score-text').innerText = `Sua Nota: ${acertos}/10`;
             
-            // BANCO DE DADOS: Libera o Módulo 1
+            // --- SALVANDO NO BANCO DE DADOS (LOCAL) ---
             localStorage.setItem('avaliacao_concluida', 'true');
+            localStorage.setItem('nota_diagnostica', `${acertos}/10`);
+            
+            // Aqui futuramente entrará o Fetch/Axios para enviar a nota ao servidor MySQL
         }
 
         function startTimer() {
@@ -241,13 +275,20 @@
             const m = document.getElementById('menu-acess');
             m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
         }
-        function toggleAltoContraste() { document.body.classList.toggle('high-contrast'); }
+        function toggleAltoContraste() { 
+            document.body.classList.toggle('high-contrast'); 
+            localStorage.setItem('acess_alto', document.body.classList.contains('high-contrast'));
+        }
+        let scale = 100;
         function mudarFonte(d) {
-            const current = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--font-scale')) || 100;
-            document.documentElement.style.setProperty('--font-scale', (current + d) + '%');
+            scale += d;
+            document.documentElement.style.setProperty('--font-scale', `${scale}%`);
         }
 
-        window.onload = carregarPerfil;
+        window.onload = () => {
+            carregarPerfil();
+            if(localStorage.getItem('acess_alto') === 'true') document.body.classList.add('high-contrast');
+        };
     </script>
 </body>
 </html>
