@@ -4,12 +4,9 @@ const cors = require('cors');
 
 const app = express();
 
-// Configuração do CORS (Permite que o seu front-end converse com este back-end)
 app.use(cors()); 
 app.use(express.json()); 
 
-// Usar createPool no lugar de createConnection é obrigatório na nuvem.
-// Ele reconecta automaticamente caso o banco de dados do Railway durma ou oscile.
 const db = mysql.createPool({
     uri: 'mysql://root:EBgJYHgtASfViyICRJKloXChVTJLXdYX@zephyr.proxy.rlwy.net:36227/railway',
     waitForConnections: true,
@@ -17,42 +14,30 @@ const db = mysql.createPool({
     queueLimit: 0
 });
 
-// Testa a conexão para garantir que o banco está respondendo
 db.getConnection((err, connection) => {
     if (err) {
-        console.error('Erro ao conectar ao banco de dados MySQL no Railway:', err.message);
+        console.error('Erro ao conectar ao banco de dados:', err.message);
     } else {
-        console.log('Conectado com sucesso ao banco de dados MySQL no Railway!');
-        connection.release(); // Libera a conexão de volta para o Pool
+        console.log('Conectado com sucesso ao banco de dados no Railway!');
+        connection.release();
     }
 });
 
 // ==========================================
-// ROTAS DA API
+// ROTAS
 // ==========================================
 
 // Rota de Cadastro
 app.post('/api/register', (req, res) => {
     const { nome, email, senha } = req.body;
 
-    // Verifica se o e-mail já existe
     db.query('SELECT email FROM usuarios WHERE email = ?', [email], (err, results) => {
-        if (err) {
-            console.error('Erro na query de verificação:', err);
-            return res.status(500).json({ error: 'Erro no servidor ao verificar usuário.' });
-        }
-        
-        if (results.length > 0) {
-            return res.status(400).json({ error: 'E-mail já cadastrado!' });
-        }
+        if (err) return res.status(500).json({ error: 'Erro no servidor' });
+        if (results.length > 0) return res.status(400).json({ error: 'E-mail já cadastrado!' });
 
-        // Insere o novo usuário
         const sql = 'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)';
         db.query(sql, [nome, email, senha], (err, result) => {
-            if (err) {
-                console.error('Erro ao inserir usuário:', err);
-                return res.status(500).json({ error: 'Erro ao cadastrar no banco de dados.' });
-            }
+            if (err) return res.status(500).json({ error: 'Erro ao cadastrar' });
             res.status(201).json({ message: 'Usuário cadastrado com sucesso!' });
         });
     });
@@ -64,13 +49,9 @@ app.post('/api/login', (req, res) => {
 
     const sql = 'SELECT * FROM usuarios WHERE email = ? AND senha = ?';
     db.query(sql, [email, senha], (err, results) => {
-        if (err) {
-            console.error('Erro na query de login:', err);
-            return res.status(500).json({ error: 'Erro no servidor ao tentar logar.' });
-        }
+        if (err) return res.status(500).json({ error: 'Erro no servidor' });
         
         if (results.length > 0) {
-            // Retorna os dados do usuário (exceto a senha)
             const user = results[0];
             res.status(200).json({ 
                 message: 'Login realizado com sucesso!', 
@@ -88,12 +69,25 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-// ==========================================
-// INICIALIZAÇÃO DO SERVIDOR
-// ==========================================
-// O process.env.PORT é obrigatório para o Render saber onde expor o servidor
-const PORT = process.env.PORT || 3000;
+// Rota para Atualizar a Foto
+app.post('/api/update-photo', (req, res) => {
+    const { email, foto } = req.body;
 
+    if (!email || !foto) {
+        return res.status(400).json({ error: 'E-mail e foto são obrigatórios.' });
+    }
+
+    const sql = 'UPDATE usuarios SET foto = ? WHERE email = ?';
+    db.query(sql, [foto, email], (err, results) => {
+        if (err) {
+            console.error('Erro ao atualizar foto:', err);
+            return res.status(500).json({ error: 'Erro no servidor ao salvar a foto.' });
+        }
+        res.status(200).json({ message: 'Foto atualizada com sucesso!' });
+    });
+});
+
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
