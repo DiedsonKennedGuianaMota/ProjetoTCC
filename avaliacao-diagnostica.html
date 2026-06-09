@@ -245,14 +245,13 @@
             }
             
             fetch('/api/salvar-nota', { 
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    usuarioId: userData ? (userData.id || userData.nome) : 'desconhecido',
-                    nota: acertos
-                })
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        email: userData.email, // <-- Enviando o email para o back-end achar o usuário
+        nota: `${acertos}/10`
+    })
+})
             })
             .then(response => response.json())
             .then(data => console.log('Nota salva com sucesso no Railway:', data))
