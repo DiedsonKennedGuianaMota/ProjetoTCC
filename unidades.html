@@ -8,9 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* ==========================================
-           1. VARIÁVEIS E TEMAS (PADRÃO ALGORITMOLAB)
-           ========================================== */
         :root {
             --primary-blue: #1c3d5a;
             --accent-teal: #2b6cb0;
@@ -37,13 +34,9 @@
         html { font-size: var(--font-scale); }
         body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 50px; }
 
-        /* Animações */
         @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes wave { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-        /* ==========================================
-           2. HEADER (SINCRONIZADO)
-           ========================================== */
         .navbar { 
             background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color);
@@ -61,22 +54,17 @@
         .btn { padding: 8px 18px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; text-decoration: none; }
         .btn-outline { background: transparent; color: var(--primary-blue); border: 2px solid var(--primary-blue); }
 
-        /* ==========================================
-           3. TRILHA DE UNIDADES (VISUAL)
-           ========================================== */
         .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
         .trilha-header { text-align: center; margin-bottom: 50px; }
         
         .trilha-feed { display: flex; flex-direction: column; align-items: center; gap: 0; }
 
-        /* Item da Trilha */
         .unidade-item {
             display: flex; flex-direction: column; align-items: center; width: 100%;
             text-decoration: none; color: inherit; position: relative;
             animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
         }
 
-        /* O Círculo da Unidade */
         .unidade-circle {
             width: 100px; height: 100px; border-radius: 50%;
             background: var(--card-bg); border: 6px solid var(--border-color);
@@ -91,28 +79,22 @@
         
         .unidade-item.completed .unidade-circle { background: var(--success-green); border-color: #38a169; color: white; }
 
-        /* Textos */
         .unidade-info { text-align: center; margin: 15px 0 30px 0; }
         .unidade-info h3 { color: var(--primary-blue); font-size: 1.1rem; }
         .unidade-info p { color: var(--text-muted); font-size: 0.85rem; }
 
-        /* Conector (Linha entre unidades) */
         .conector {
             width: 8px; height: 60px; background: var(--border-color);
             margin: -10px 0; border-radius: 4px; position: relative; transition: 0.5s;
         }
         .conector.active { background: var(--success-green); box-shadow: 0 0 10px var(--success-green); }
 
-        /* Status Label */
         .status-badge {
             position: absolute; top: -10px; right: -20px;
             background: var(--primary-blue); color: white;
             padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 700;
         }
 
-        /* ==========================================
-           4. MODAL E FLUTUANTES (IGUAL ÀS OUTRAS)
-           ========================================== */
         .floating-actions { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 10px; z-index: 99; }
         .btn-floating { width: 55px; height: 55px; border-radius: 50%; background: var(--primary-blue); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .menu-acessibilidade { position: absolute; bottom: 65px; right: 0; background: var(--card-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 15px; display: none; flex-direction: column; gap: 10px; width: 200px; box-shadow: 0 5px 25px rgba(0,0,0,0.15); }
@@ -125,7 +107,7 @@
 
     <header class="navbar">
         <div class="nav-profile">
-            <div class="avatar" id="user-avatar">A</div>
+            <div class="avatar" id="user-avatar">...</div>
             <div>
                 <strong id="user-name">Carregando...</strong>
                 <div class="streak-badge"><i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span></div>
@@ -209,48 +191,50 @@
     <script>
         let usuario = null;
 
-        // --- 1. CARREGAR DADOS E PROGRESSO ---
         function inicializar() {
-            const nomeLogado = localStorage.getItem('userName');
-            const usuarios = JSON.parse(localStorage.getItem('algoritmolab_usuarios')) || [];
-            usuario = usuarios.find(u => u.nome === nomeLogado);
+            if (localStorage.getItem('userLogado') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            usuario = JSON.parse(localStorage.getItem('userData'));
 
             if (usuario) {
                 document.getElementById('user-name').innerText = usuario.nome;
                 document.getElementById('user-streak').innerText = `${usuario.streak || 0} Dias`;
-                if(usuario.foto) document.getElementById('user-avatar').innerHTML = `<img src="${usuario.foto}">`;
-                else document.getElementById('user-avatar').innerText = usuario.nome.charAt(0).toUpperCase();
+                
+                const avatarDiv = document.getElementById('user-avatar');
+                if(usuario.foto) {
+                    avatarDiv.innerHTML = `<img src="${usuario.foto}">`;
+                } else {
+                    avatarDiv.innerText = usuario.nome.charAt(0).toUpperCase();
+                }
             }
 
             verificarProgresso();
         }
 
         function verificarProgresso() {
-            // Chaves do Banco de Dados Local
             const u1Feita = localStorage.getItem('unidade1_concluida') === 'true';
             const u2Feita = localStorage.getItem('unidade2_concluida') === 'true';
 
-            // Lógica Unidade 1
             if(u1Feita) {
                 document.getElementById('item-u1').classList.add('completed');
                 document.getElementById('circle-u1').innerHTML = '<i class="fas fa-check"></i>';
                 document.getElementById('line-1').classList.add('active');
                 
-                // Desbloqueia Unidade 2
                 const u2 = document.getElementById('item-u2');
                 u2.classList.add('unlocked');
                 const circle2 = document.getElementById('circle-u2');
                 circle2.innerHTML = '<i class="fas fa-bolt"></i>';
-                circle2.setAttribute('href', 'unidade-2-conteudo.html'); // Link da prox unidade
+                circle2.setAttribute('href', 'unidade-2-conteudo.html');
             }
 
-            // Lógica Unidade 2
             if(u2Feita) {
                 document.getElementById('item-u2').classList.add('completed');
                 document.getElementById('circle-u2').innerHTML = '<i class="fas fa-check"></i>';
                 document.getElementById('line-2').classList.add('active');
 
-                // Desbloqueia Unidade 3
                 const u3 = document.getElementById('item-u3');
                 u3.classList.add('unlocked');
                 const circle3 = document.getElementById('circle-u3');
@@ -259,17 +243,19 @@
             }
         }
 
-        // --- 2. FUNÇÕES DE CONFIGURAÇÕES ---
         function abrirConfiguracoes() {
             document.getElementById('edit-nome').value = usuario.nome;
             document.getElementById('config-modal').style.display = 'flex';
         }
-        function fecharConfiguracoes() { document.getElementById('config-modal').style.display = 'none'; }
+
+        function fecharConfiguracoes() { 
+            document.getElementById('config-modal').style.display = 'none'; 
+        }
         
         function salvarNome() {
             const novo = document.getElementById('edit-nome').value;
-            localStorage.setItem('userName', novo);
-            // Aqui você atualizaria no array de usuários também
+            usuario.nome = novo;
+            localStorage.setItem('userData', JSON.stringify(usuario));
             location.reload();
         }
 
@@ -277,34 +263,35 @@
             if(confirm("Deseja trancar as unidades novamente?")) {
                 localStorage.removeItem('unidade1_concluida');
                 localStorage.removeItem('unidade2_concluida');
+                localStorage.removeItem('unidade2Liberada');
                 location.reload();
             }
         }
 
-        // --- 3. ACESSIBILIDADE ---
         function toggleMenuAcessibilidade() {
             const m = document.getElementById('menu-acess');
             m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
         }
+
         function toggleAltoContraste() {
             document.body.classList.toggle('high-contrast');
             localStorage.setItem('acess_alto', document.body.classList.contains('high-contrast'));
         }
+
         function mudarFonte(d) {
             let s = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--font-scale')) || 100;
             document.documentElement.style.setProperty('--font-scale', (s + d) + '%');
         }
+
         document.addEventListener('DOMContentLoaded', () => {
-    // Verifica se a chave existe e é 'true'
-    if (localStorage.getItem('unidade2Liberada') === 'true') {
-        // Encontre o botão ou card da Unidade 2 pelo ID ou classe e remova o bloqueio
-        const cardUnidade2 = document.getElementById('card-unidade-2'); 
-        if(cardUnidade2) {
-            cardUnidade2.classList.remove('bloqueado'); // Remova a classe visual de cadeado
-            cardUnidade2.disabled = false; // Habilite o clique
-        }
-    }
-});
+            if (localStorage.getItem('unidade2Liberada') === 'true') {
+                const cardUnidade2 = document.getElementById('card-unidade-2'); 
+                if(cardUnidade2) {
+                    cardUnidade2.classList.remove('bloqueado');
+                    cardUnidade2.disabled = false;
+                }
+            }
+        });
 
         window.onload = () => {
             inicializar();
