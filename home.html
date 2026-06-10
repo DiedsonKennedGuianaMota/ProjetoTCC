@@ -385,10 +385,17 @@
             document.documentElement.style.setProperty('--font-scale', `${currentScale}%`);
         }
 
-        // DESLOGAR
+        // =====================================
+        // DESLOGAR (CORRIGIDO)
+        // =====================================
         function fazerLogout() {
+            // Apaga todos os registros de login do navegador
             localStorage.removeItem('userData');
-            window.location.href = 'index.html';
+            localStorage.removeItem('userLogado');
+            localStorage.removeItem('userName');
+            
+            // Vai para o index enviando a ordem de limpar os dados de lá também!
+            window.location.href = 'index.html?logout=true';
         }
 
         // Executa ao inicializar a página
