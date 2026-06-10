@@ -161,25 +161,24 @@
 
             userData = JSON.parse(localStorage.getItem('userData'));
             if (userData) {
-                document.getElementById('user-name').innerText = userData.nome;
+                document.getElementById('user-name').innerText = userData.nome || "Usuário";
                 document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
                 
                 const avatarDiv = document.getElementById('user-avatar');
                 if(userData.foto) {
                     avatarDiv.innerHTML = `<img src="${userData.foto}">`;
-                } else {
+                } else if (userData.nome) {
                     avatarDiv.innerText = userData.nome.charAt(0).toUpperCase();
+                } else {
+                    avatarDiv.innerText = "U";
                 }
 
-                if (userData.avaliacao_concluida === true || userData.avaliacao_concluida === 'true') {
+                // Verifica pelo nota_diagnostica ao invés do booleano antigo
+                if (userData.nota_diagnostica !== null && userData.nota_diagnostica !== undefined) {
                     document.getElementById('intro-screen').style.display = 'none';
                     document.getElementById('blocked-screen').style.display = 'block';
                     document.getElementById('saved-score-text').innerText = `Nota Registrada: ${userData.nota_diagnostica}/10`;
                 } else {
-                    userData.nota_diagnostica = null;
-                    userData.progresso = 0;
-                    localStorage.setItem('userData', JSON.stringify(userData));
-                    
                     document.getElementById('intro-screen').style.display = 'block';
                     document.getElementById('blocked-screen').style.display = 'none';
                 }
@@ -239,23 +238,22 @@
             document.getElementById('score-text').innerText = `Sua Nota: ${acertos}/10`;
             
             if (userData) {
-                userData.avaliacao_concluida = true;
                 userData.nota_diagnostica = acertos;
                 localStorage.setItem('userData', JSON.stringify(userData));
+                
+                // O erro de sintaxe estava bem aqui. Corrigido!
+                fetch('/api/salvar-nota', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: userData.email, // Enviando o email para identificar no banco
+                        nota: acertos          // Enviando como inteiro
+                    })
+                })
+                .then(response => response.json())
+                .then(data => console.log('Nota salva com sucesso no Railway:', data))
+                .catch(error => console.error('Erro ao sincronizar com o banco Railway:', error));
             }
-            
-            fetch('/api/salvar-nota', { 
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-        email: userData.email, // <-- Enviando o email para o back-end achar o usuário
-        nota: `${acertos}/10`
-    })
-})
-            })
-            .then(response => response.json())
-            .then(data => console.log('Nota salva com sucesso no Railway:', data))
-            .catch(error => console.error('Erro ao sincronizar com o banco Railway:', error));
         }
 
         function startTimer() {
