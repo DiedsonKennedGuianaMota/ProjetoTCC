@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
@@ -27,10 +28,11 @@ db.getConnection((err, connection) => {
 // ROTAS
 // ==========================================
 
-// ROTA ADICIONADA: Corrige o erro "Cannot GET /" no Render
+// Removemos a mensagem JSON e mandamos o arquivo HTML
 app.get('/', (req, res) => {
-    res.status(200).json({ message: 'Servidor rodando perfeitamente!' });
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
+
 
 // Rota de Cadastro
 app.post('/api/register', (req, res) => {
