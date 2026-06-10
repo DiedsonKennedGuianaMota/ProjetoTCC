@@ -212,7 +212,6 @@
                 return;
             }
 
-            // Puxa o pacote exato que salvamos na tela de Login
             userData = JSON.parse(localStorage.getItem('userData'));
 
             if (userData) {
@@ -233,9 +232,9 @@
         function verificarBloqueios() {
             if (!userData) return;
 
-            // Agora lemos as informações de dentro do userData
-            const avaliacaoOK = userData.avaliacao_concluida === true || userData.avaliacao_concluida === 'true';
-            const mod1OK = userData.mod1_concluido === true || userData.mod1_concluido === 'true';
+            // CORREÇÃO: MySQL devolve 1 para TRUE e 0 para FALSE. Lendo ambas as formas!
+            const avaliacaoOK = userData.avaliacao_concluida === true || userData.avaliacao_concluida === 'true' || userData.avaliacao_concluida === 1;
+            const mod1OK = userData.mod1_concluido === true || userData.mod1_concluido === 'true' || userData.mod1_concluido === 1;
             const notaDiagnostica = userData.nota_diagnostica;
 
             // Se terminou a Avaliação -> Mostra nota e Libera Unidade 1
