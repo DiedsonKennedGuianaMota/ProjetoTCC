@@ -28,7 +28,6 @@ db.getConnection((err, connection) => {
 // ROTAS
 // ==========================================
 
-// Removemos a mensagem JSON e mandamos o arquivo HTML
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -65,7 +64,11 @@ app.post('/api/login', (req, res) => {
                     email: user.email, 
                     streak: user.streak, 
                     foto: user.foto, 
-                    lastCompletion: user.lastCompletion 
+                    lastCompletion: user.lastCompletion,
+                    // CORREÇÃO AQUI: Agora o login devolve o progresso do aluno!
+                    nota_diagnostica: user.nota_diagnostica,
+                    avaliacao_concluida: user.avaliacao_concluida,
+                    mod1_concluido: user.mod1_concluido
                 }
             });
         } else {
@@ -92,12 +95,7 @@ app.post('/api/update-photo', (req, res) => {
     });
 });
 
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
-
-// Exemplo de rota no seu Back-end Node.js (usando Express e mysql2)
+// Rota para Salvar Nota
 app.post('/api/salvar-nota', (req, res) => {
     const { email, nota } = req.body;
 
@@ -105,7 +103,7 @@ app.post('/api/salvar-nota', (req, res) => {
         return res.status(400).json({ erro: "Email não fornecido." });
     }
 
-    //  Atualiza a coluna nota_diagnostica baseada no email do usuário
+    //  Atualiza a coluna nota_diagnostica e avaliacao_concluida
     const query = "UPDATE usuarios SET nota_diagnostica = ?, avaliacao_concluida = true WHERE email = ?";
     
     db.query(query, [nota, email], (err, results) => {
@@ -115,4 +113,9 @@ app.post('/api/salvar-nota', (req, res) => {
         }
         res.json({ sucesso: true, mensagem: "Nota salva com sucesso!" });
     });
+});
+
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
