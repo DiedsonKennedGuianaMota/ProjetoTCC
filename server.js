@@ -27,6 +27,11 @@ db.getConnection((err, connection) => {
 // ROTAS
 // ==========================================
 
+// ROTA ADICIONADA: Corrige o erro "Cannot GET /" no Render
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Servidor rodando perfeitamente!' });
+});
+
 // Rota de Cadastro
 app.post('/api/register', (req, res) => {
     const { nome, email, senha } = req.body;
@@ -91,6 +96,7 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
+
 // Exemplo de rota no seu Back-end Node.js (usando Express e mysql2)
 app.post('/api/salvar-nota', (req, res) => {
     const { email, nota } = req.body;
@@ -99,7 +105,7 @@ app.post('/api/salvar-nota', (req, res) => {
         return res.status(400).json({ erro: "Email não fornecido." });
     }
 
-    // Atualiza a coluna nota_diagnostica baseada no email do usuário
+    //  Atualiza a coluna nota_diagnostica baseada no email do usuário
     const query = "UPDATE usuarios SET nota_diagnostica = ?, avaliacao_concluida = true WHERE email = ?";
     
     db.query(query, [nota, email], (err, results) => {
