@@ -238,21 +238,28 @@
             document.getElementById('score-text').innerText = `Sua Nota: ${acertos}/10`;
             
             if (userData) {
+                // CORREÇÃO AQUI: Salva a nota e marca a avaliação como concluída localmente
                 userData.nota_diagnostica = acertos;
+                userData.avaliacao_concluida = true; 
                 localStorage.setItem('userData', JSON.stringify(userData));
                 
-                // O erro de sintaxe estava bem aqui. Corrigido!
-                fetch('/api/salvar-nota', { 
+                // CORREÇÃO AQUI: URL completa da sua API e envio dos dois dados cruciais
+                const API_URL = 'https://algoritmolab.onrender.com/api';
+                
+                // Nota: Estou enviando para /update-progress baseado no fluxo da sua Home, 
+                // mas se o seu backend exige a rota /salvar-nota, basta trocar abaixo.
+                fetch(`${API_URL}/update-progress`, { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        email: userData.email, // Enviando o email para identificar no banco
-                        nota: acertos          // Enviando como inteiro
+                        email: userData.email, 
+                        nota_diagnostica: acertos,
+                        avaliacao_concluida: true
                     })
                 })
                 .then(response => response.json())
-                .then(data => console.log('Nota salva com sucesso no Railway:', data))
-                .catch(error => console.error('Erro ao sincronizar com o banco Railway:', error));
+                .then(data => console.log('Nota salva com sucesso no banco de dados:', data))
+                .catch(error => console.error('Erro ao sincronizar com o banco:', error));
             }
         }
 
