@@ -173,7 +173,7 @@
                     avatarDiv.innerText = "U";
                 }
 
-                // Verifica pelo nota_diagnostica ao invés do booleano antigo
+                // Verifica pelo nota_diagnostica
                 if (userData.nota_diagnostica !== null && userData.nota_diagnostica !== undefined) {
                     document.getElementById('intro-screen').style.display = 'none';
                     document.getElementById('blocked-screen').style.display = 'block';
@@ -238,28 +238,30 @@
             document.getElementById('score-text').innerText = `Sua Nota: ${acertos}/10`;
             
             if (userData) {
-                // CORREÇÃO AQUI: Salva a nota e marca a avaliação como concluída localmente
+                // Atualiza localmente para a sessão atual
                 userData.nota_diagnostica = acertos;
                 userData.avaliacao_concluida = true; 
                 localStorage.setItem('userData', JSON.stringify(userData));
                 
-                // CORREÇÃO AQUI: URL completa da sua API e envio dos dois dados cruciais
-                const API_URL = 'https://algoritmolab.onrender.com/api';
+                // CORREÇÃO: Voltando para a rota e nome de variável corretos que seu backend espera!
+                const API_URL = 'https://algoritmolab.onrender.com';
                 
-                // Nota: Estou enviando para /update-progress baseado no fluxo da sua Home, 
-                // mas se o seu backend exige a rota /salvar-nota, basta trocar abaixo.
-                fetch(`${API_URL}/update-progress`, { 
+                fetch(`${API_URL}/api/salvar-nota`, { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         email: userData.email, 
-                        nota_diagnostica: acertos,
-                        avaliacao_concluida: true
+                        nota: acertos // Retornado para 'nota', exatamente como você tinha no início
                     })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Falha na resposta da API');
+                    }
+                    return response.json();
+                })
                 .then(data => console.log('Nota salva com sucesso no banco de dados:', data))
-                .catch(error => console.error('Erro ao sincronizar com o banco:', error));
+                .catch(error => console.error('Erro ao sincronizar com o banco Railway:', error));
             }
         }
 
