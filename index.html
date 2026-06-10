@@ -131,13 +131,25 @@
 
         </section>
     </main>
-
-   <script>
+       <script>
     /* ==========================================
        LÓGICA DE BANCO DE DADOS (VIA BACK-END API) E AUTENTICAÇÃO
        ========================================== */
     
-    // Verifica se já está logado
+    // 1. SISTEMA DE LOGOUT INTELIGENTE
+    // Verifica se o usuário chegou nesta página querendo sair da conta
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('logout') === 'true') {
+        // Apaga os dados do cache
+        localStorage.removeItem('userLogado');
+        localStorage.removeItem('userData');
+        localStorage.removeItem('userName');
+        
+        // Limpa a URL para remover o "?logout=true" e deixar bonito
+        window.history.replaceState({}, document.title, "index.html");
+    }
+
+    // 2. Verifica se já está logado
     if (localStorage.getItem('userLogado') === 'true') {
         window.location.href = 'home.html'; 
     }
@@ -232,10 +244,7 @@
             // Sucesso! O servidor validou a senha e devolveu os dados do usuário
             localStorage.setItem('userLogado', 'true');
             localStorage.setItem('userName', data.user.nome);
-            
-
             localStorage.setItem('userData', JSON.stringify(data.user));
-            // ==============================================================
             
             let usuarios = JSON.parse(localStorage.getItem('algoritmolab_usuarios')) || [];
             // Remove o cache antigo se existir e adiciona o atualizado vindo do banco
@@ -251,5 +260,6 @@
         }
     }
 </script>
+
 </body>
 </html>
