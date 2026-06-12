@@ -176,14 +176,34 @@ app.get('/api/forum/posts', async (req, res) => {
     }
 });
 
-// 4. Rota para CURTIR um post
+// 4. Rota para CURTIR / DESCURTIR um post
 app.put('/api/forum/post/:id/like', async (req, res) => {
+    const { user_email } = req.body;
+    const postId = req.params.id;
+
+    if (!user_email) return res.status(400).json({ error: "Email do usuário é obrigatório." });
+
     try {
-        await db.promise().query(`UPDATE forum_posts SET curtidas = curtidas + 1 WHERE id = ?`, [req.params.id]);
-        res.status(200).json({ message: "Post curtido!" });
+        // Verifica se esse usuário já curtiu esse post
+        const [jaCurtiu] = await db.promise().query(
+            `SELECT * FROM forum_curtidas WHERE post_id = ? AND user_email = ?`, 
+            [postId, user_email]
+        );
+
+        if (jaCurtiu.length > 0) {
+            // Se já curtiu, nós apagamos o registro e tiramos 1 curtida do post (Descurtir)
+            await db.promise().query(`DELETE FROM forum_curtidas WHERE post_id = ? AND user_email = ?`, [postId, user_email]);
+            await db.promise().query(`UPDATE forum_posts SET curtidas = curtidas - 1 WHERE id = ?`, [postId]);
+            return res.status(200).json({ message: "Post descurtido!" });
+        } else {
+            // Se não curtiu, nós salvamos o registro e somamos 1 curtida (Curtir)
+            await db.promise().query(`INSERT INTO forum_curtidas (post_id, user_email) VALUES (?, ?)`, [postId, user_email]);
+            await db.promise().query(`UPDATE forum_posts SET curtidas = curtidas + 1 WHERE id = ?`, [postId]);
+            return res.status(200).json({ message: "Post curtido!" });
+        }
     } catch (error) {
         console.error("Erro ao curtir post:", error);
-        res.status(500).json({ error: "Erro ao curtir post." });
+        res.status(500).json({ error: "Erro ao curtir/descurtir post." });
     }
 });
 
