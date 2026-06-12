@@ -279,8 +279,7 @@
     <script>
         // URL da sua API no Render
         const API_URL = 'https://algoritmolab.onrender.com/api';
-        const tema = localStorage.getItem('temaAtivo');
-if(tema && tema !== 'padrao') document.body.classList.add(tema);
+        
         let usuarioLogadoData = null; 
         let fotoSelecionadaTemp = "";
 
@@ -437,7 +436,8 @@ if(tema && tema !== 'padrao') document.body.classList.add(tema);
         // Executa ao inicializar a página para carregar dados e configurações salvas
         window.onload = function() {
             checkAuth();
-            
+            const tema = localStorage.getItem('temaAtivo');
+if(tema && tema !== 'padrao') document.body.classList.add(tema);
             // Restaura configurações de acessibilidade do LocalStorage
             if (localStorage.getItem('acess_alto_contraste') === 'true') document.body.classList.add('high-contrast');
             if (localStorage.getItem('acess_dislexia') === 'true') document.body.classList.add('dyslexic-font');
