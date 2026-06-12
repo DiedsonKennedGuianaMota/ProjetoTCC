@@ -35,7 +35,7 @@
             --fire-color: #ff3f34;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background 0.3s, color 0.3s; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background 0.3s, color 0.3s, font-size 0.3s; }
         
         html { font-size: var(--font-scale); }
         body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 60px; }
@@ -112,12 +112,13 @@
             border: 1px solid var(--border-color);
             animation: scaleUp 0.5s ease-out backwards;
         }
-        .dash-item i { font-size: 2.5rem; color: var(--accent-teal); }
+        .dash-item i { font-size: 2.5rem; color: var(--accent-teal); transition: transform 0.3s ease; }
         .dash-item:hover { 
             transform: translateY(-8px); 
             box-shadow: 0 15px 30px rgba(0,0,0,0.1); 
             border-color: var(--accent-teal);
         }
+        .dash-item:hover i { transform: scale(1.1); }
 
         /* Widgets Adicionais */
         .widget-missao {
@@ -132,23 +133,35 @@
         /* Botões */
         .btn { 
             padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer;
-            border: none; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem;
+            border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; width: 100%;
         }
+        .btn-auto { width: auto; }
         .btn-primary { background: var(--accent-teal); color: white; }
         .btn-primary:hover { filter: brightness(1.1); }
         .btn-logout { background: transparent; color: var(--text-main); border: 2px solid var(--border-color); }
-        .btn-logout:hover { background: #fed7d7; color: #e53e3e; border-color: #feb2b2; }
+        .btn-logout:hover { background: #e2e8f0; }
+        .btn-danger:hover { background: #fed7d7; color: #e53e3e; border-color: #feb2b2; }
 
         /* ==========================================
            3. ACESSIBILIDADE E ELEMENTOS FLUTUANTES
            ========================================== */
         .floating-actions { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 10px; z-index: 99; }
-        .btn-floating { width: 55px; height: 55px; border-radius: 50%; background: var(--primary-blue); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); justify-content: center; font-size: 1.3rem; }
+        .btn-floating { width: 55px; height: 55px; border-radius: 50%; background: var(--primary-blue); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); justify-content: center; font-size: 1.3rem; display: flex; align-items: center; border: none; cursor: pointer;}
+        .btn-floating:hover { background: var(--accent-teal); }
         
         .menu-acessibilidade {
             position: absolute; bottom: 65px; right: 0; background: var(--card-bg); border: 1px solid var(--border-color);
-            padding: 15px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.15); display: none; flex-direction: column; gap: 10px; width: 200px;
+            padding: 15px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.15); display: none; flex-direction: column; gap: 10px; width: 230px;
+            max-height: 400px; overflow-y: auto;
         }
+
+        .menu-title { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-align: center; margin-bottom: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;}
+
+        /* Classes Funcionais de Acessibilidade */
+        .dyslexic-font * { font-family: 'Comic Sans MS', 'Arial', sans-serif !important; }
+        .spacing-increased * { letter-spacing: 0.05em !important; line-height: 1.8 !important; }
+        .highlight-links a { text-decoration: underline !important; font-weight: bold !important; color: var(--accent-teal) !important; padding: 2px 4px; border-radius: 4px; background: rgba(43, 108, 176, 0.1); }
+        .high-contrast.highlight-links a { color: #ffff00 !important; background: rgba(255, 255, 0, 0.1); }
 
         /* ==========================================
            4. MODAIS (FOTO DE PERFIL)
@@ -173,7 +186,7 @@
 
     <header class="navbar">
         <div class="nav-profile">
-            <div class="avatar" id="user-avatar" onclick="abrirModalAvatar()"></div>
+            <div class="avatar" id="user-avatar" onclick="abrirModalAvatar()" title="Alterar Avatar"></div>
             <div>
                 <strong id="user-name" style="font-size: 1.1rem;">Carregando...</strong>
                 <div>
@@ -184,7 +197,7 @@
             </div>
         </div>
         <div>
-            <button class="btn btn-logout" onclick="fazerLogout()">
+            <button class="btn btn-logout btn-auto btn-danger" onclick="fazerLogout()">
                 <i class="fas fa-sign-out-alt"></i> Sair
             </button>
         </div>
@@ -197,7 +210,7 @@
                 <h3><i class="fas fa-bullseye"></i> Sua Ofensiva Diária</h3>
                 <p id="missao-status">Complete um exercício no módulo de estudos hoje para garantir seu +1 dia de ofensiva e manter seu fogo aceso!</p>
             </div>
-            </section>
+        </section>
 
         <h2><i class="fas fa-home"></i> Painel de Controle</h2>
         
@@ -207,30 +220,34 @@
                 Módulos de Estudo
             </a>
             
-            <a href="#" class="dash-item" style="animation-delay: 0.2s;" onclick="alert('Desafios Extras em desenvolvimento!')">
-                <i class="fas fa-trophy"></i>
-                Desafios Extras
+            <a href="pesquisador.html" class="dash-item" style="animation-delay: 0.2s;">
+                <i class="fas fa-search"></i>
+                Pesquisador
             </a>
             
-            <a href="progresso.html" class="dash-item" style="animation-delay: 0.3s;">
-                <i class="fas fa-chart-line"></i>
-                Meu Progresso
+            <a href="forum.html" class="dash-item" style="animation-delay: 0.3s;">
+                <i class="fas fa-comments"></i>
+                Fórum
             </a>
             
-            <a href="certificados.html" class="dash-item" style="animation-delay: 0.4s;">
-                <i class="fas fa-certificate"></i>
-                Certificados
+            <a href="configuracoes.html" class="dash-item" style="animation-delay: 0.4s;">
+                <i class="fas fa-cog"></i>
+                Configurações
             </a>
         </div>
     </main>
 
     <div class="floating-actions">
         <div class="menu-acessibilidade" id="menu-acess">
+            <div class="menu-title">Opções de Visualização</div>
             <button class="btn btn-primary" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto Contraste</button>
             <button class="btn btn-logout" onclick="mudarFonte(2)"><i class="fas fa-font"></i><i class="fas fa-plus"></i> Aumentar Texto</button>
             <button class="btn btn-logout" onclick="mudarFonte(-2)"><i class="fas fa-font"></i><i class="fas fa-minus"></i> Diminuir Texto</button>
+            <button class="btn btn-logout" onclick="toggleDislexia()"><i class="fas fa-book-reader"></i> Fonte Dislexia</button>
+            <button class="btn btn-logout" onclick="toggleEspacamento()"><i class="fas fa-text-height"></i> Mais Espaçamento</button>
+            <button class="btn btn-logout" onclick="toggleDestaqueLinks()"><i class="fas fa-link"></i> Destacar Links</button>
         </div>
-        <button class="btn btn-floating" onclick="toggleMenuAcessibilidade()">
+        <button class="btn btn-floating" onclick="toggleMenuAcessibilidade()" title="Acessibilidade">
             <i class="fas fa-universal-access"></i>
         </button>
     </div>
@@ -253,8 +270,8 @@
             <input type="file" id="avatar-file" accept="image/*" onchange="carregarArquivoLocal(event)" style="margin-bottom: 20px;">
 
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                <button class="btn btn-logout" onclick="fecharModalAvatar()">Cancelar</button>
-                <button class="btn btn-primary" onclick="salvarNovaFoto()" id="btn-salvar-foto">Salvar Foto</button>
+                <button class="btn btn-logout btn-auto" onclick="fecharModalAvatar()">Cancelar</button>
+                <button class="btn btn-primary btn-auto" onclick="salvarNovaFoto()" id="btn-salvar-foto">Salvar Foto</button>
             </div>
         </div>
     </div>
@@ -365,7 +382,9 @@
             }
         }
 
-        /* SISTEMA DE ACESSIBILIDADE */
+        /* ==========================================
+           SISTEMA DE ACESSIBILIDADE APRIMORADO
+           ========================================== */
         function toggleMenuAcessibilidade() {
             const menu = document.getElementById('menu-acess');
             menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
@@ -373,8 +392,7 @@
 
         function toggleAltoContraste() {
             document.body.classList.toggle('high-contrast');
-            const ativo = document.body.classList.contains('high-contrast');
-            localStorage.setItem('acess_alto_contraste', ativo);
+            localStorage.setItem('acess_alto_contraste', document.body.classList.contains('high-contrast'));
         }
 
         let currentScale = 100;
@@ -383,10 +401,26 @@
             if (currentScale < 80) currentScale = 80;
             if (currentScale > 140) currentScale = 140;
             document.documentElement.style.setProperty('--font-scale', `${currentScale}%`);
+            localStorage.setItem('acess_escala_fonte', currentScale);
+        }
+
+        function toggleDislexia() {
+            document.body.classList.toggle('dyslexic-font');
+            localStorage.setItem('acess_dislexia', document.body.classList.contains('dyslexic-font'));
+        }
+
+        function toggleEspacamento() {
+            document.body.classList.toggle('spacing-increased');
+            localStorage.setItem('acess_espacamento', document.body.classList.contains('spacing-increased'));
+        }
+
+        function toggleDestaqueLinks() {
+            document.body.classList.toggle('highlight-links');
+            localStorage.setItem('acess_links', document.body.classList.contains('highlight-links'));
         }
 
         // =====================================
-        // DESLOGAR (CORRIGIDO)
+        // DESLOGAR
         // =====================================
         function fazerLogout() {
             // Apaga todos os registros de login do navegador
@@ -398,13 +432,20 @@
             window.location.href = 'index.html?logout=true';
         }
 
-        // Executa ao inicializar a página
+        // Executa ao inicializar a página para carregar dados e configurações salvas
         window.onload = function() {
             checkAuth();
             
-            // Restaura configurações de acessibilidade
-            if (localStorage.getItem('acess_alto_contraste') === 'true') {
-                document.body.classList.add('high-contrast');
+            // Restaura configurações de acessibilidade do LocalStorage
+            if (localStorage.getItem('acess_alto_contraste') === 'true') document.body.classList.add('high-contrast');
+            if (localStorage.getItem('acess_dislexia') === 'true') document.body.classList.add('dyslexic-font');
+            if (localStorage.getItem('acess_espacamento') === 'true') document.body.classList.add('spacing-increased');
+            if (localStorage.getItem('acess_links') === 'true') document.body.classList.add('highlight-links');
+            
+            const savedScale = localStorage.getItem('acess_escala_fonte');
+            if (savedScale) {
+                currentScale = parseInt(savedScale);
+                document.documentElement.style.setProperty('--font-scale', `${currentScale}%`);
             }
         };
     </script>
