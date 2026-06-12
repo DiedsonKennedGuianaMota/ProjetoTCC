@@ -175,3 +175,39 @@ app.get('/api/forum/posts', async (req, res) => {
         res.status(500).json({ error: "Erro ao carregar o fórum." });
     }
 });
+
+// 4. Rota para CURTIR um post
+app.put('/api/forum/post/:id/like', async (req, res) => {
+    try {
+        await db.promise().query(`UPDATE forum_posts SET curtidas = curtidas + 1 WHERE id = ?`, [req.params.id]);
+        res.status(200).json({ message: "Post curtido!" });
+    } catch (error) {
+        console.error("Erro ao curtir post:", error);
+        res.status(500).json({ error: "Erro ao curtir post." });
+    }
+});
+
+// 5. Rota para DELETAR um post
+app.delete('/api/forum/post/:id', async (req, res) => {
+    try {
+        await db.promise().query(`DELETE FROM forum_posts WHERE id = ?`, [req.params.id]);
+        res.status(200).json({ message: "Post deletado!" });
+    } catch (error) {
+        console.error("Erro ao deletar post:", error);
+        res.status(500).json({ error: "Erro ao deletar post." });
+    }
+});
+
+// 6. Rota para EDITAR um post
+app.put('/api/forum/post/:id', async (req, res) => {
+    const { conteudo } = req.body;
+    try {
+        await db.promise().query(`UPDATE forum_posts SET conteudo = ? WHERE id = ?`, [conteudo, req.params.id]);
+        res.status(200).json({ message: "Post atualizado!" });
+    } catch (error) {
+        console.error("Erro ao atualizar post:", error);
+        res.status(500).json({ error: "Erro ao atualizar post." });
+    }
+});
+
+
