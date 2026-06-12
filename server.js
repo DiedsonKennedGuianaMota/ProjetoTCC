@@ -119,3 +119,58 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+// ==========================================
+// ROTAS DO FÓRUM
+// ==========================================
+
+// 1. Rota para CRIAR um post
+app.post('/api/forum/post', async (req, res) => {
+    const { user_email, user_nome, user_foto, conteudo, imagem_url } = req.body;
+    try {
+        const query = `INSERT INTO forum_posts (user_email, user_nome, user_foto, conteudo, imagem_url) VALUES (?, ?, ?, ?, ?)`;
+        await db.query(query, [user_email, user_nome, user_foto, conteudo, imagem_url || null]);
+        res.status(201).json({ message: "Post publicado com sucesso!" });
+    } catch (error) {
+        console.error("Erro ao publicar post:", error);
+        res.status(500).json({ error: "Erro ao publicar post." });
+    }
+});
+
+// 2. Rota para CRIAR um comentário
+app.post('/api/forum/comment', async (req, res) => {
+    const { post_id, user_email, user_nome, user_foto, comentario } = req.body;
+    try {
+        const query = `INSERT INTO forum_comentarios (post_id, user_email, user_nome, user_foto, comentario) VALUES (?, ?, ?, ?, ?)`;
+        await db.query(query, [post_id, user_email, user_nome, user_foto, comentario]);
+        res.status(201).json({ message: "Comentário adicionado!" });
+    } catch (error) {
+        console.error("Erro ao adicionar comentário:", error);
+        res.status(500).json({ error: "Erro ao adicionar comentário." });
+    }
+});
+
+// 3. Rota para BUSCAR todos os posts e seus comentários
+app.get('/api/forum/posts', async (req, res) => {
+    try {
+        // Busca os posts mais recentes
+        const [posts] = await db.query(`SELECT * FROM forum_posts ORDER BY criado_em DESC`);
+        
+        // Busca todos os comentários
+        const [comentarios] = await db.query(`SELECT * FROM forum_comentarios ORDER BY criado_em ASC`);
+        
+        // Agrupa os comentários dentro dos seus respectivos posts
+        const postsComComentarios = posts.map(post => {
+            return {
+                ...post,
+                comentarios: comentarios.filter(c => c.post_id === post.id)
+            };
+        });
+
+        res.status(200).json(postsComComentarios);
+    } catch (error) {
+        console.error("Erro ao carregar o fórum:", error);
+        res.status(500).json({ error: "Erro ao carregar o fórum." });
+    }
+});
+
