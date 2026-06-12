@@ -74,6 +74,9 @@
         .preset-img { width: 60px; height: 60px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
         .preset-img:hover, .preset-img.selected { border-color: var(--accent-teal); transform: scale(1.1); }
         .input-text { width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 8px; margin-bottom: 15px; background: var(--bg-color); color: var(--text-main); }
+        .post-action-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem; transition: color 0.2s;}
+        .post-action-btn:hover { color: var(--primary-blue); }
+        .post-action-delete:hover { color: red; }
     </style>
 </head>
 <body>
@@ -155,13 +158,13 @@
         let fotoSelecionadaTemp = "";
         let imagemPostBase64 = "";
 
-        // 1. CHECAGEM DE AUTENTICAÇÃO
+        // CHECAGEM DE AUTENTICAÇÃO
         function checkAuth() {
             const userString = localStorage.getItem('userData');
             if (!userString) { window.location.href = 'index.html'; return; }
             usuarioLogadoData = JSON.parse(userString);
             renderizarDadosUsuario();
-            carregarPostsReais(); // <-- Chama a função que busca dados do banco!
+            carregarPostsReais(); 
         }
 
         function renderizarDadosUsuario() {
@@ -175,46 +178,28 @@
             }
         }
 
-        /* ==========================================
-           LÓGICA REAL DE COMUNICAÇÃO COM O BANCO
-           ========================================== */
-        
-        // Puxar todos os posts do banco de dados
+        // CARREGAR POSTS DO BANCO
         async function carregarPostsReais() {
             const container = document.getElementById('feed-container');
             try {
                 const response = await fetch(`${API_URL}/forum/posts`);
-                
-                // Verifica se o servidor retornou erro 500 ou 404 antes de tentar ler
-                if (!response.ok) {
-                    throw new Error("Erro no servidor ao buscar posts.");
-                }
+                if (!response.ok) throw new Error("Erro no servidor ao buscar posts.");
                 
                 const posts = await response.json();
                 container.innerHTML = ''; 
                 
-                // Garante que é uma lista antes de usar o forEach
-                if(!Array.isArray(posts)) {
-                    container.innerHTML = `<div style="text-align:center; padding: 40px;">Nenhum post encontrado.</div>`;
-                    return;
-                }
-
-                if(posts.length === 0) {
-                    container.innerHTML = `<div style="text-align:center; color: var(--text-muted); padding: 40px;">Nenhum post encontrado. Seja o primeiro a postar!</div>`;
-                    return;
-                }
+                if(!Array.isArray(posts)) { container.innerHTML = `<div style="text-align:center; padding: 40px;">Nenhum post encontrado.</div>`; return; }
+                if(posts.length === 0) { container.innerHTML = `<div style="text-align:center; color: var(--text-muted); padding: 40px;">Nenhum post encontrado. Seja o primeiro a postar!</div>`; return; }
 
                 posts.forEach(post => {
                     container.innerHTML += criarHTMLdoPost(post);
                 });
-
             } catch (error) {
                 console.error("Erro ao buscar posts:", error);
                 container.innerHTML = `<div style="text-align:center; color: red; padding: 40px;">Erro de conexão com o banco de dados. Verifique o backend.</div>`;
             }
         }
 
-        // Converter imagem para Base64 antes de postar
         function previewImagemPost(event) {
             const file = event.target.files[0];
             const reader = new FileReader();
@@ -227,7 +212,6 @@
             if (file) reader.readAsDataURL(file);
         }
 
-        // Criar o Post no banco de dados
         async function publicarPost() {
             const texto = document.getElementById('novo-post-texto').value.trim();
             if(!texto && !imagemPostBase64) { alert("Escreva algo ou anexe uma imagem para postar."); return; }
@@ -244,67 +228,66 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/forum/post`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(postData)
-                });
-
+                const response = await fetch(`${API_URL}/forum/post`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(postData) });
                 if (response.ok) {
-                    // Limpar box
                     document.getElementById('novo-post-texto').value = '';
                     document.getElementById('img-preview').style.display = 'none';
                     imagemPostBase64 = '';
-                    
-                    // Recarrega o feed para mostrar o novo post!
                     carregarPostsReais();
-                } else {
-                    alert("Erro ao publicar postagem.");
-                }
-            } catch(e) {
-                console.error(e);
-                alert("Falha na comunicação com o servidor.");
-            } finally {
-                btnPublicar.innerText = "Publicar"; btnPublicar.disabled = false;
-            }
+                } else { alert("Erro ao publicar postagem."); }
+            } catch(e) { console.error(e); alert("Falha na comunicação com o servidor."); } 
+            finally { btnPublicar.innerText = "Publicar"; btnPublicar.disabled = false; }
         }
 
-        // Criar um Comentário no banco de dados
+        // --- NOVAS FUNÇÕES: CURTIR, EDITAR E DELETAR ---
+
+        async function curtirPost(postId) {
+            try {
+                const response = await fetch(`${API_URL}/forum/post/${postId}/like`, { method: 'PUT' });
+                if (response.ok) carregarPostsReais(); // Recarrega para atualizar o número
+            } catch(e) { console.error("Erro ao curtir:", e); }
+        }
+
+        async function deletarPost(postId) {
+            if(!confirm("Tem certeza que deseja apagar este post? Isso não pode ser desfeito.")) return;
+            try {
+                const response = await fetch(`${API_URL}/forum/post/${postId}`, { method: 'DELETE' });
+                if (response.ok) carregarPostsReais();
+                else alert("Erro ao deletar o post.");
+            } catch(e) { console.error("Erro ao deletar:", e); }
+        }
+
+        async function editarPost(postId, conteudoAtual) {
+            const novoConteudo = prompt("Edite sua postagem:", conteudoAtual);
+            if(novoConteudo === null || novoConteudo.trim() === "") return; // Cancelou ou deixou vazio
+            
+            try {
+                const response = await fetch(`${API_URL}/forum/post/${postId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ conteudo: novoConteudo })
+                });
+                if (response.ok) carregarPostsReais();
+                else alert("Erro ao editar o post.");
+            } catch(e) { console.error("Erro ao editar:", e); }
+        }
+
+        // -----------------------------------------------
+
         async function enviarComentario(event, postId) {
             if (event.key !== 'Enter') return;
-            
             const input = event.target;
             const texto = input.value.trim();
             if (!texto) return;
 
             input.disabled = true;
-
-            const commentData = {
-                post_id: postId,
-                user_email: usuarioLogadoData.email,
-                user_nome: usuarioLogadoData.nome,
-                user_foto: usuarioLogadoData.foto,
-                comentario: texto
-            };
+            const commentData = { post_id: postId, user_email: usuarioLogadoData.email, user_nome: usuarioLogadoData.nome, user_foto: usuarioLogadoData.foto, comentario: texto };
 
             try {
-                const response = await fetch(`${API_URL}/forum/comment`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(commentData)
-                });
-
-                if(response.ok) {
-                    carregarPostsReais(); // Atualiza a página para mostrar o comentário
-                } else {
-                    alert("Erro ao enviar comentário.");
-                    input.disabled = false;
-                }
-            } catch(e) {
-                console.error(e);
-                alert("Erro de conexão ao comentar.");
-                input.disabled = false;
-            }
+                const response = await fetch(`${API_URL}/forum/comment`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(commentData) });
+                if(response.ok) carregarPostsReais();
+                else { alert("Erro ao enviar comentário."); input.disabled = false; }
+            } catch(e) { console.error(e); alert("Erro de conexão ao comentar."); input.disabled = false; }
         }
 
         function toggleComentarios(postId) {
@@ -312,7 +295,6 @@
             sec.style.display = sec.style.display === 'block' ? 'none' : 'block';
         }
 
-        // Função para formatar a data que vem do banco
         function formatarData(dataISO) {
             if (!dataISO) return "Agora mesmo";
             const data = new Date(dataISO);
@@ -323,7 +305,20 @@
             const imgHTML = post.imagem_url ? `<img src="${post.imagem_url}" class="post-image" alt="Imagem do post">` : '';
             const fotoTag = post.user_foto ? `<img src="${post.user_foto}" style="width:100%; height:100%; object-fit:cover;">` : post.user_nome.charAt(0);
             
-            // Cria o HTML de cada comentário associado a esse post
+            // Lógica para mostrar botões de Editar/Deletar APENAS se o usuário logado for o dono do post
+            const isDonoDoPost = post.user_email === usuarioLogadoData.email;
+            let acoesHTML = '';
+            if (isDonoDoPost) {
+                // Passamos o conteúdo atual escapado para o prompt da função de editar
+                const conteudoEscapado = post.conteudo.replace(/"/g, '&quot;').replace(/'/g, "\\'");
+                acoesHTML = `
+                    <div style="margin-left: auto; display: flex; gap: 12px;">
+                        <button class="post-action-btn" onclick="editarPost(${post.id}, '${conteudoEscapado}')" title="Editar Post"><i class="fas fa-edit"></i></button>
+                        <button class="post-action-btn post-action-delete" onclick="deletarPost(${post.id})" title="Apagar Post"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                `;
+            }
+
             let comentariosHTML = '';
             if(post.comentarios && post.comentarios.length > 0) {
                 post.comentarios.forEach(c => {
@@ -349,11 +344,14 @@
                         <div class="post-author">${post.user_nome}</div>
                         <div class="post-time">${formatarData(post.criado_em)}</div>
                     </div>
+                    ${acoesHTML}
                 </div>
                 <div class="post-content">${post.conteudo.replace(/\n/g, '<br>')}</div>
                 ${imgHTML}
                 
                 <div class="post-footer">
+                    <button class="interaction-btn" onclick="curtirPost(${post.id})"><i class="far fa-heart"></i> ${post.curtidas || 0} Curtidas</button>
+                    
                     <button class="interaction-btn" onclick="toggleComentarios(${post.id})"><i class="far fa-comment"></i> ${post.comentarios ? post.comentarios.length : 0} Comentários</button>
                 </div>
 
@@ -368,9 +366,7 @@
             </div>`;
         }
 
-        /* ==========================================
-           MODAL DE AVATAR & ACESSIBILIDADE 
-           ========================================== */
+        /* ACESSIBILIDADE MANTIDA */
         function abrirModalAvatar() { document.getElementById('avatar-modal').style.display = 'flex'; }
         function fecharModalAvatar() { document.getElementById('avatar-modal').style.display = 'none'; }
         function selecionarPreset(src) { fotoSelecionadaTemp = src; document.querySelectorAll('.preset-img').forEach(img => img.classList.remove('selected')); event.target.classList.add('selected'); }
