@@ -230,4 +230,71 @@ app.put('/api/forum/post/:id', async (req, res) => {
     }
 });
 
+// ROTA PARA ATUALIZAR PERFIL (Nome e Senha)
+app.post('/api/update-profile', async (req, res) => {
+    const { email, nome, senha } = req.body;
+    
+    if (!email || !nome) return res.status(400).json({ error: "Email e nome são obrigatórios." });
+
+    try {
+        if (senha) {
+            // Se o usuário digitou uma senha nova, atualiza o nome e a senha
+            await db.promise().query(
+                `UPDATE usuarios SET nome = ?, senha = ? WHERE email = ?`, 
+                [nome, senha, email]
+            );
+        } else {
+            // Se não, atualiza só o nome
+            await db.promise().query(
+                `UPDATE usuarios SET nome = ? WHERE email = ?`, 
+                [nome, email]
+            );
+        }
+        res.status(200).json({ message: "Perfil atualizado!" });
+    } catch (error) {
+        console.error("Erro ao atualizar perfil:", error);
+        res.status(500).json({ error: "Erro interno no servidor." });
+    }
+});
+
+// ROTA PARA COMPRAR ITENS DA LOJA (Gastar XP)
+app.post('/api/buy-item', async (req, res) => {
+    const { email, item_id, custo } = req.body;
+
+    try {
+        // 1. Busca os dados atuais do usuário
+        const [rows] = await db.promise().query(`SELECT xp, streak, itens_comprados FROM usuarios WHERE email = ?`, [email]);
+        if (rows.length === 0) return res.status(404).json({ error: "Usuário não encontrado." });
+
+        const user = rows[0];
+
+        // 2. Verifica se tem XP suficiente (Segurança no backend)
+        if (user.xp < custo) {
+            return res.status(400).json({ error: "XP insuficiente!" });
+        }
+
+        // 3. Aplica a lógica dependendo do que ele comprou
+        let novoXp = user.xp - custo;
+
+        if (item_id === 'restaurar_ofensiva') {
+            // Soma +1 no streak
+            let novoStreak = (user.streak || 0) + 1;
+            await db.promise().query(`UPDATE usuarios SET xp = ?, streak = ? WHERE email = ?`, [novoXp, novoStreak, email]);
+        } else {
+            // É um tema. Salva na lista de itens comprados
+            let itens = user.itens_comprados ? JSON.parse(user.itens_comprados) : [];
+            if (!itens.includes(item_id)) {
+                itens.push(item_id);
+            }
+            await db.promise().query(`UPDATE usuarios SET xp = ?, itens_comprados = ? WHERE email = ?`, [novoXp, JSON.stringify(itens), email]);
+        }
+
+        res.status(200).json({ message: "Compra realizada com sucesso!" });
+
+    } catch (error) {
+        console.error("Erro ao processar compra:", error);
+        res.status(500).json({ error: "Erro ao processar a compra no servidor." });
+    }
+});
+
 
