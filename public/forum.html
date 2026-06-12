@@ -184,23 +184,33 @@
             const container = document.getElementById('feed-container');
             try {
                 const response = await fetch(`${API_URL}/forum/posts`);
+                
+                // Verifica se o servidor retornou erro 500 ou 404 antes de tentar ler
+                if (!response.ok) {
+                    throw new Error("Erro no servidor ao buscar posts.");
+                }
+                
                 const posts = await response.json();
+                container.innerHTML = ''; 
                 
-                container.innerHTML = ''; // Limpa o "carregando"
-                
+                // Garante que é uma lista antes de usar o forEach
+                if(!Array.isArray(posts)) {
+                    container.innerHTML = `<div style="text-align:center; padding: 40px;">Nenhum post encontrado.</div>`;
+                    return;
+                }
+
                 if(posts.length === 0) {
                     container.innerHTML = `<div style="text-align:center; color: var(--text-muted); padding: 40px;">Nenhum post encontrado. Seja o primeiro a postar!</div>`;
                     return;
                 }
 
-                // Renderiza cada post retornado pelo backend
                 posts.forEach(post => {
                     container.innerHTML += criarHTMLdoPost(post);
                 });
 
             } catch (error) {
                 console.error("Erro ao buscar posts:", error);
-                container.innerHTML = `<div style="text-align:center; color: red; padding: 40px;">Erro ao carregar o fórum. Conecte sua API.</div>`;
+                container.innerHTML = `<div style="text-align:center; color: red; padding: 40px;">Erro de conexão com o banco de dados. Verifique o backend.</div>`;
             }
         }
 
