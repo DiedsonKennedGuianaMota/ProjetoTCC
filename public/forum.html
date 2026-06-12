@@ -243,9 +243,19 @@
 
         async function curtirPost(postId) {
             try {
-                const response = await fetch(`${API_URL}/forum/post/${postId}/like`, { method: 'PUT' });
-                if (response.ok) carregarPostsReais(); // Recarrega para atualizar o número
-            } catch(e) { console.error("Erro ao curtir:", e); }
+                const response = await fetch(`${API_URL}/forum/post/${postId}/like`, { 
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    // Agora enviamos o email do usuário logado para o servidor conferir!
+                    body: JSON.stringify({ user_email: usuarioLogadoData.email }) 
+                });
+                
+                if (response.ok) {
+                    carregarPostsReais(); // Atualiza a tela para mostrar a contagem certa
+                }
+            } catch(e) { 
+                console.error("Erro ao curtir:", e); 
+            }
         }
 
         async function deletarPost(postId) {
