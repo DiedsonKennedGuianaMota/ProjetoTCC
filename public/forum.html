@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fórum de Discussão - ALGORITMOLAB</title>
+    <title>Fórum - ALGORITMOLAB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* ==========================================
+           1. DIRETIVAS DE DESIGN E ANIMAÇÕES
+           ========================================== */
         :root {
             --primary-blue: #1c3d5a;
             --accent-teal: #2b6cb0;
@@ -21,429 +24,360 @@
         }
 
         .high-contrast {
-            --primary-blue: #00ebff; --bg-color: #121212; --card-bg: #1e1e1e; 
-            --text-main: #ffffff; --text-muted: #aaaaaa; --border-color: #333333;
+            --primary-blue: #00ebff;
+            --accent-teal: #ffff00;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #ffffff;
+            --text-muted: #a0aec0;
+            --border-color: #4a5568;
+            --fire-color: #ff3f34;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background 0.3s, color 0.3s, font-size 0.3s; }
+        
         html { font-size: var(--font-scale); }
-        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
+        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 60px; }
 
-        .navbar { 
-            background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; 
-            align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100;
-        }
-        .nav-profile { display: flex; align-items: center; gap: 12px; }
-        .avatar { width: 45px; height: 45px; background: var(--accent-teal); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 700; border: 2px solid var(--border-color); overflow: hidden; }
-        .avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .streak-badge { color: var(--fire-color); font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes burn { 0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255,159,67,0.5)); } 50% { transform: scale(1.1); filter: drop-shadow(0 0 10px rgba(255,159,67,0.9)); } 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255,159,67,0.5)); } }
 
-        .nav-actions { display: flex; gap: 10px; }
-        .btn-icon { background: transparent; border: 2px solid var(--primary-blue); color: var(--primary-blue); border-radius: 10px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; }
-        .btn-icon:hover { background: var(--primary-blue); color: white; transform: translateY(-2px); }
+        /* ==========================================
+           2. HEADER E NAV
+           ========================================== */
+        .navbar { background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color); }
+        .nav-profile { display: flex; align-items: center; gap: 15px; }
+        .avatar { width: 55px; height: 55px; background: var(--accent-teal); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 700; cursor: pointer; border: 3px solid var(--border-color); box-shadow: 0 4px 8px rgba(0,0,0,0.1); overflow: hidden; object-fit: cover; }
+        .avatar:hover { transform: scale(1.05); border-color: var(--primary-blue); }
+        .streak-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 159, 67, 0.15); color: var(--fire-color); padding: 3px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; margin-top: 2px; }
+        .streak-badge i { animation: burn 1.5s infinite ease-in-out; }
 
-        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; padding-bottom: 100px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 30px 20px; }
+
+        /* Botões */
+        .btn { padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; text-decoration: none; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; width: 100%; }
+        .btn-auto { width: auto; }
+        .btn-primary { background: var(--accent-teal); color: white; }
+        .btn-primary:hover { filter: brightness(1.1); }
+        .btn-outline { background: transparent; color: var(--primary-blue); border: 2px solid var(--primary-blue); }
+        .btn-outline:hover { background: var(--primary-blue); color: white; }
+        .btn-logout { background: transparent; color: var(--text-main); border: 2px solid var(--border-color); }
+        .btn-logout:hover { background: #e2e8f0; }
+
+        /* ==========================================
+           3. FÓRUM - ESTRUTURA
+           ========================================== */
+        .page-header { margin: 20px 0 30px 0; }
+        .page-header h2 { color: var(--primary-blue); font-size: 2rem; display: flex; align-items: center; gap: 10px;}
         
-        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
-        .page-title { color: var(--primary-blue); font-size: 1.8rem; display: flex; align-items: center; gap: 10px; }
+        /* Criar Post */
+        .create-post-box { background: var(--card-bg); padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid var(--border-color); margin-bottom: 30px; }
+        .post-textarea { width: 100%; border: none; resize: none; outline: none; background: transparent; color: var(--text-main); font-size: 1.05rem; min-height: 80px; }
+        .post-actions-bar { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 10px; }
+        .btn-icon { background: rgba(43, 108, 176, 0.1); color: var(--accent-teal); border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; gap: 5px; font-weight: 600;}
+        .btn-icon:hover { background: rgba(43, 108, 176, 0.2); }
+        #img-preview { max-width: 100%; max-height: 200px; border-radius: 10px; display: none; margin-top: 10px; object-fit: cover; }
 
-        .btn { padding: 12px 25px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; justify-content: center; transition: 0.3s; }
-        .btn-teal { background: var(--accent-teal); color: white; }
-        .btn-teal:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(43, 108, 176, 0.3); }
-        .btn-outline { background: transparent; color: var(--primary-blue); border: 2px solid var(--border-color); }
-
-        .post-card { background: var(--card-bg); border-radius: 15px; padding: 25px; margin-bottom: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); animation: slideUp 0.4s ease-out forwards; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* Feed de Posts */
+        .feed-container { display: flex; flex-direction: column; gap: 25px; }
         
+        .post-card { background: var(--card-bg); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid var(--border-color); padding: 20px; animation: fadeIn 0.4s ease-out; }
         .post-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
-        .post-author-info { display: flex; flex-direction: column; }
-        .post-author-name { font-weight: 700; color: var(--primary-blue); }
+        .post-avatar { width: 45px; height: 45px; background: var(--primary-blue); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; overflow: hidden; }
+        .post-author { font-weight: 700; color: var(--primary-blue); font-size: 1.05rem;}
         .post-time { font-size: 0.8rem; color: var(--text-muted); }
         
-        .post-content { line-height: 1.6; margin-bottom: 20px; font-size: 0.95rem; white-space: pre-wrap; }
+        .post-content { color: var(--text-main); font-size: 1rem; line-height: 1.6; margin-bottom: 15px; }
+        .post-image { width: 100%; border-radius: 10px; margin-bottom: 15px; max-height: 400px; object-fit: cover; }
         
-        .post-actions { display: flex; gap: 15px; border-top: 1px solid var(--border-color); padding-top: 15px; margin-bottom: 15px; }
-        .action-btn { background: transparent; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.9rem; transition: 0.2s; }
-        .action-btn:hover { color: var(--accent-teal); }
-
-        .comments-section { background: var(--bg-color); border-radius: 10px; padding: 15px; margin-top: 10px; }
-        .comment-item { display: flex; gap: 10px; margin-bottom: 12px; font-size: 0.85rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .comment-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .comment-content { background: var(--card-bg); padding: 10px; border-radius: 10px; width: 100%; }
+        .post-footer { display: flex; gap: 15px; border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .interaction-btn { background: transparent; border: none; color: var(--text-muted); font-size: 1rem; display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; transition: color 0.2s;}
+        .interaction-btn:hover, .interaction-btn.active { color: var(--accent-teal); }
         
-        .comment-input-area { display: flex; gap: 10px; margin-top: 15px; }
+        /* Comentários */
+        .comments-section { margin-top: 15px; background: var(--bg-color); padding: 15px; border-radius: 10px; display: none; }
+        .comment-item { display: flex; gap: 10px; margin-bottom: 15px; }
+        .comment-avatar { width: 35px; height: 35px; min-width: 35px; border-radius: 50%; background: var(--accent-teal); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; overflow: hidden;}
+        .comment-bubble { background: var(--card-bg); padding: 10px 15px; border-radius: 15px; border: 1px solid var(--border-color); width: 100%; }
+        .comment-author { font-weight: 700; font-size: 0.9rem; color: var(--primary-blue); }
+        .comment-text { font-size: 0.9rem; color: var(--text-main); margin-top: 2px;}
+        
+        .add-comment-box { display: flex; gap: 10px; margin-top: 10px; }
         .comment-input { flex: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-main); outline: none; }
-        .comment-input:focus { border-color: var(--accent-teal); }
 
-        .floating-actions { position: fixed; bottom: 25px; right: 25px; z-index: 50; }
-        .floating-actions .btn { background: var(--card-bg); color: var(--text-main); box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid var(--border-color); }
+        /* ==========================================
+           4. ACESSIBILIDADE E MODAIS
+           ========================================== */
+        .floating-actions { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 10px; z-index: 99; }
+        .btn-floating { width: 55px; height: 55px; border-radius: 50%; background: var(--primary-blue); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); justify-content: center; font-size: 1.3rem; display: flex; align-items: center; border: none; cursor: pointer;}
+        .btn-floating:hover { background: var(--accent-teal); }
+        .menu-acessibilidade { position: absolute; bottom: 65px; right: 0; background: var(--card-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.15); display: none; flex-direction: column; gap: 10px; width: 230px; max-height: 400px; overflow-y: auto; }
+        .menu-title { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-align: center; margin-bottom: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;}
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 200; opacity: 0; pointer-events: none; transition: 0.3s; backdrop-filter: blur(5px); }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content { background: var(--card-bg); width: 90%; max-width: 500px; border-radius: 20px; padding: 30px; transform: scale(0.9); transition: 0.3s; }
-        .modal-overlay.active .modal-content { transform: scale(1); }
-        
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; color: var(--primary-blue); }
-        .btn-close { background: transparent; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; }
-        
-        .form-input { width: 100%; height: 120px; padding: 15px; border-radius: 12px; border: 2px solid var(--border-color); background: var(--bg-color); color: var(--text-main); resize: none; outline: none; margin-bottom: 15px; font-family: inherit; }
-        .form-input:focus { border-color: var(--accent-teal); }
-        
-        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; align-items: center; }
+        .dyslexic-font * { font-family: 'Comic Sans MS', 'Arial', sans-serif !important; }
+        .spacing-increased * { letter-spacing: 0.05em !important; line-height: 1.8 !important; }
+        .highlight-links a { text-decoration: underline !important; font-weight: bold !important; color: var(--accent-teal) !important; padding: 2px 4px; border-radius: 4px; background: rgba(43, 108, 176, 0.1); }
+        .high-contrast.highlight-links a { color: #ffff00 !important; background: rgba(255, 255, 0, 0.1); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 100; }
+        .modal-card { background: var(--card-bg); padding: 30px; border-radius: 20px; width: 90%; max-width: 450px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
+        .modal-card h3 { margin-bottom: 20px; color: var(--primary-blue); }
+        .avatar-presets { display: flex; justify-content: space-around; margin: 20px 0; }
+        .preset-img { width: 60px; height: 60px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
+        .preset-img:hover, .preset-img.selected { border-color: var(--accent-teal); transform: scale(1.1); }
+        .input-text { width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 8px; margin-bottom: 15px; background: var(--bg-color); color: var(--text-main); }
     </style>
 </head>
 <body>
 
     <header class="navbar">
         <div class="nav-profile">
-            <div class="avatar" id="user-avatar">...</div>
+            <div class="avatar" id="user-avatar" onclick="abrirModalAvatar()" title="Alterar Avatar"></div>
             <div>
-                <strong id="user-name">Carregando...</strong>
-                <div class="streak-badge"><i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span></div>
+                <strong id="user-name" style="font-size: 1.1rem;">Carregando...</strong>
+                <div>
+                    <div class="streak-badge"><i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span></div>
+                </div>
             </div>
-        </div>
-        <div class="nav-actions">
-            <button type="button" class="btn-icon" onclick="toggleAcessibilidade()" title="Acessibilidade">
-                <i class="fas fa-universal-access"></i>
-            </button>
-            <button type="button" class="btn-icon" onclick="abrirModalConfig()" title="Configurações">
-                <i class="fas fa-cog"></i>
-            </button>
-            <button type="button" class="btn-icon" onclick="handleLogout()" title="Sair">
-                <i class="fas fa-sign-out-alt"></i>
-            </button>
         </div>
     </header>
 
     <main class="container">
+        
+        <a href="home.html" class="btn btn-outline btn-auto" style="margin-bottom: 10px;"><i class="fas fa-arrow-left"></i> Voltar ao Painel</a>
+
         <div class="page-header">
-            <h2 class="page-title"><i class="fas fa-comments"></i> Fórum da Comunidade</h2>
-            <button type="button" class="btn btn-teal" onclick="abrirModalPost()">
-                <i class="fas fa-pen"></i> Nova Publicação
-            </button>
+            <h2><i class="fas fa-comments"></i> Fórum da Comunidade</h2>
         </div>
 
-        <div id="forum-feed"></div>
+        <div class="create-post-box">
+            <textarea id="novo-post-texto" class="post-textarea" placeholder="Compartilhe uma dúvida, descoberta ou reflexão com a comunidade..."></textarea>
+            <img id="img-preview" src="" alt="Pré-visualização">
+            
+            <div class="post-actions-bar">
+                <input type="file" id="upload-imagem-post" accept="image/*" style="display: none;" onchange="previewImagemPost(event)">
+                <button class="btn-icon" onclick="document.getElementById('upload-imagem-post').click()">
+                    <i class="fas fa-image"></i> Anexar Foto
+                </button>
+                <button class="btn btn-primary btn-auto" onclick="publicarPost()" id="btn-publicar">Publicar</button>
+            </div>
+        </div>
+
+        <div class="feed-container" id="feed-container">
+            <div style="text-align:center; color: var(--text-muted); padding: 40px;"><i class="fas fa-spinner fa-spin fa-2x"></i><br>Carregando discussões...</div>
+        </div>
+
     </main>
 
     <div class="floating-actions">
-        <button type="button" class="btn" onclick="location.href='opcoes-unidade.html'">
-            <i class="fas fa-arrow-left"></i> Voltar
-        </button>
-    </div>
-
-    <div id="modal-post" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-edit"></i> Criar Publicação</h3>
-                <button type="button" class="btn-close" onclick="fecharModalPost()"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="modal-body">
-                <textarea id="novo-post-texto" placeholder="Tem alguma dúvida, dica ou código para compartilhar com a turma? Escreva aqui..." class="form-input"></textarea>
-                
-                <div style="margin-bottom: 20px;">
-                    <input type="file" id="novo-post-foto" accept="image/*" style="display: none;" onchange="previewImagem(event)">
-                    <button type="button" class="btn btn-outline" style="width: 100%;" onclick="document.getElementById('novo-post-foto').click()">
-                        <i class="fas fa-camera"></i> Adicionar Foto
-                    </button>
-                    <div id="preview-container" style="display: none; margin-top: 15px; text-align: center;">
-                        <img id="preview-img" style="max-width: 100%; max-height: 200px; border-radius: 10px; border: 1px solid var(--border-color);">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);" onclick="fecharModalPost()">Cancelar</button>
-                <button type="button" class="btn btn-teal" onclick="criarPost()">
-                    <i class="fas fa-paper-plane"></i> Publicar
-                </button>
-            </div>
+        <div class="menu-acessibilidade" id="menu-acess">
+            <div class="menu-title">Opções de Visualização</div>
+            <button class="btn btn-primary" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto Contraste</button>
+            <button class="btn btn-logout" onclick="mudarFonte(2)"><i class="fas fa-font"></i><i class="fas fa-plus"></i> Aumentar Texto</button>
+            <button class="btn btn-logout" onclick="mudarFonte(-2)"><i class="fas fa-font"></i><i class="fas fa-minus"></i> Diminuir Texto</button>
+            <button class="btn btn-logout" onclick="toggleDislexia()"><i class="fas fa-book-reader"></i> Fonte Dislexia</button>
+            <button class="btn btn-logout" onclick="toggleEspacamento()"><i class="fas fa-text-height"></i> Mais Espaçamento</button>
+            <button class="btn btn-logout" onclick="toggleDestaqueLinks()"><i class="fas fa-link"></i> Destacar Links</button>
         </div>
+        <button class="btn btn-floating" onclick="toggleMenuAcessibilidade()" title="Acessibilidade"><i class="fas fa-universal-access"></i></button>
     </div>
 
-    <div id="modal-config" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-cog"></i> Configurações & Acessibilidade</h3>
-                <button type="button" class="btn-close" onclick="fecharModalConfig()"><i class="fas fa-times"></i></button>
+    <div class="modal-overlay" id="avatar-modal">
+        <div class="modal-card">
+            <h3><i class="fas fa-camera"></i> Alterar Foto de Perfil</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 10px; color: var(--text-muted);">Escolha um avatar pronto:</p>
+            <div class="avatar-presets">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Felix" class="preset-img" onclick="selecionarPreset(this.src)">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Ane" class="preset-img" onclick="selecionarPreset(this.src)">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Jack" class="preset-img" onclick="selecionarPreset(this.src)">
             </div>
-            <div class="modal-body" style="display: flex; flex-direction: column; gap: 20px;">
-                <div>
-                    <label style="font-weight: 600; font-size: 0.9rem; color: var(--text-main);">Seu Nome:</label>
-                    <input type="text" id="edit-nome" class="comment-input" style="width: 100%; border-radius: 10px; margin-top: 5px;">
-                </div>
-                
-                <div style="border-top: 1px solid var(--border-color); padding-top: 15px; display: flex; flex-direction: column; gap: 12px;">
-                    <span style="font-weight: 600; font-size: 0.9rem;">Acessibilidade Avançada</span>
-                    
-                    <button type="button" class="btn btn-outline" style="width: 100%; justify-content: flex-start; color: var(--text-main);" onclick="toggleAcessibilidade()">
-                        <i class="fas fa-adjust"></i> Alternar Alto Contraste
-                    </button>
-                    
-                    <div style="display: flex; gap: 10px;">
-                        <button type="button" class="btn btn-outline" style="flex: 1; color: var(--text-main);" onclick="mudarFonte(2)">
-                            <i class="fas fa-text-height"></i> Aumentar Fonte
-                        </button>
-                        <button type="button" class="btn btn-outline" style="flex: 1; color: var(--text-main);" onclick="mudarFonte(-2)">
-                            <i class="fas fa-text-width"></i> Diminuir Fonte
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="margin-top: 10px;">
-                <button type="button" class="btn" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);" onclick="fecharModalConfig()">Cancelar</button>
-                <button type="button" class="btn btn-teal" onclick="salvarConfiguracoes()">
-                    <i class="fas fa-save"></i> Salvar Alterações
-                </button>
+            <p style="font-size: 0.9rem; margin-bottom: 5px; color: var(--text-muted);">Ou cole a URL de uma imagem:</p>
+            <input type="text" id="avatar-url" class="input-text" placeholder="https://linkdafoto.com/foto.jpg">
+            <p style="font-size: 0.9rem; margin-bottom: 5px; color: var(--text-muted);">Ou envie do seu computador:</p>
+            <input type="file" id="avatar-file" accept="image/*" onchange="carregarArquivoLocal(event)" style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-logout btn-auto" onclick="fecharModalAvatar()">Cancelar</button>
+                <button class="btn btn-primary btn-auto" onclick="salvarNovaFoto()" id="btn-salvar-foto">Salvar Foto</button>
             </div>
         </div>
     </div>
 
     <script>
-        let usuarioAtual = null;
-        let postsDoForum = [];
-        let imagemPublicacaoBase64 = "";
+        const API_URL = 'https://algoritmolab.onrender.com/api';
+        let usuarioLogadoData = null; 
+        let fotoSelecionadaTemp = "";
+        let imagemPostBase64 = "";
 
-        function inicializarForum() {
-            if (localStorage.getItem('userLogado') !== 'true') {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            usuarioAtual = JSON.parse(localStorage.getItem('userData'));
-
-            if (usuarioAtual) {
-                document.getElementById('user-name').innerText = usuarioAtual.nome;
-                document.getElementById('user-streak').innerText = `${usuarioAtual.streak || 0} Dias`;
-                
-                const avatarDiv = document.getElementById('user-avatar');
-                if(usuarioAtual.foto) {
-                    avatarDiv.innerHTML = `<img src="${usuarioAtual.foto}">`;
-                } else {
-                    avatarDiv.innerText = usuarioAtual.nome.charAt(0).toUpperCase();
-                }
-            }
-
-            if(localStorage.getItem('acess_alto') === 'true') {
-                document.body.classList.add('high-contrast');
-            }
-            if(localStorage.getItem('acess_fonte')) {
-                document.documentElement.style.setProperty('--font-scale', localStorage.getItem('acess_fonte'));
-            }
-
-            carregarPostsDoDB();
-            renderizarPosts();
+        // TRAVA DE SEGURANÇA
+        function checkAuth() {
+            const userString = localStorage.getItem('userData');
+            if (!userString) { window.location.href = 'index.html'; return; }
+            usuarioLogadoData = JSON.parse(userString);
+            renderizarDadosUsuario();
+            carregarPostsMock(); // Aqui carregaremos os posts (Mock temporário até conectar a rota do backend)
         }
 
-        function carregarPostsDoDB() {
-            const dbPosts = localStorage.getItem('algoritmolab_forum_posts');
-            if (dbPosts) {
-                postsDoForum = JSON.parse(dbPosts);
+        function renderizarDadosUsuario() {
+            document.getElementById('user-name').innerText = usuarioLogadoData.nome;
+            document.getElementById('user-streak').innerText = `${usuarioLogadoData.streak || 0} Dias`;
+            
+            const avatarDiv = document.getElementById('user-avatar');
+            if (usuarioLogadoData.foto && usuarioLogadoData.foto !== "") {
+                avatarDiv.innerHTML = `<img src="${usuarioLogadoData.foto}" style="width:100%; height:100%; object-fit:cover;">`;
             } else {
-                postsDoForum = [{
-                    id: Date.now(),
-                    autorNome: "Prof. AlgoritmoLab",
-                    autorFoto: null,
-                    conteudo: "Bem-vindos ao fórum oficial! Usem este espaço para tirar dúvidas, compartilhar soluções de exercícios e ajudar uns aos outros.",
-                    postFoto: null,
-                    data: new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }),
-                    likes: 5,
-                    comentarios: []
-                }];
-                salvarPostsNoDB();
+                avatarDiv.innerText = usuarioLogadoData.nome.charAt(0).toUpperCase();
             }
         }
 
-        function salvarPostsNoDB() {
-            localStorage.setItem('algoritmolab_forum_posts', JSON.stringify(postsDoForum));
-        }
-
-        function renderizarPosts() {
-            const feed = document.getElementById('forum-feed');
-            feed.innerHTML = '';
-
-            if (postsDoForum.length === 0) {
-                feed.innerHTML = `<p style="text-align:center; color: var(--text-muted); margin-top: 50px;">Nenhuma publicação ainda. Seja o primeiro a postar!</p>`;
-                return;
+        /* ==========================================
+           LÓGICA DO FÓRUM (POSTS E COMENTÁRIOS)
+           ========================================== */
+        
+        function previewImagemPost(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                imagemPostBase64 = reader.result;
+                const preview = document.getElementById('img-preview');
+                preview.src = imagemPostBase64;
+                preview.style.display = 'block';
             }
-
-            postsDoForum.forEach(post => {
-                let avatarAutor = post.autorFoto 
-                    ? `<img src="${post.autorFoto}">` 
-                    : post.autorNome.charAt(0).toUpperCase();
-
-                let fotoPublicadaHTML = post.postFoto 
-                    ? `<div style="margin-top: 15px; text-align: center;"><img src="${post.postFoto}" style="max-width: 100%; max-height: 350px; border-radius: 12px; border: 1px solid var(--border-color);"></div>` 
-                    : '';
-
-                let comentariosHTML = post.comentarios.map(com => `
-                    <div class="comment-item">
-                        <div class="avatar" style="width: 30px; height: 30px; font-size: 0.8rem;">
-                            ${com.autorFoto ? `<img src="${com.autorFoto}">` : com.autorNome.charAt(0).toUpperCase()}
-                        </div>
-                        <div class="comment-content">
-                            <strong>${com.autorNome}</strong> <span style="color: var(--text-muted); font-size: 0.7rem;">${com.data}</span>
-                            <p style="margin-top: 3px;">${com.texto}</p>
-                        </div>
-                    </div>
-                `).join('');
-
-                const postHTML = `
-                    <div class="post-card">
-                        <div class="post-header">
-                            <div class="avatar">${avatarAutor}</div>
-                            <div class="post-author-info">
-                                <span class="post-author-name">${post.autorNome}</span>
-                                <span class="post-time">${post.data}</span>
-                            </div>
-                        </div>
-                        
-                        <div class="post-content">${post.conteudo}</div>
-                        ${fotoPublicadaHTML}
-                        
-                        <div class="post-actions">
-                            <button type="button" class="action-btn" onclick="darLike(${post.id})">
-                                <i class="fas fa-heart" style="color: #e53e3e;"></i> Curtir (${post.likes})
-                            </button>
-                            <button type="button" class="action-btn" onclick="focarComentario(${post.id})">
-                                <i class="fas fa-comment"></i> Comentar (${post.comentarios.length})
-                            </button>
-                        </div>
-
-                        <div class="comments-section">
-                            ${comentariosHTML}
-                            <div class="comment-input-area">
-                                <input type="text" id="input-comentario-${post.id}" class="comment-input" placeholder="Escreva um comentário...">
-                                <button type="button" class="btn btn-teal" style="padding: 10px 15px;" onclick="adicionarComentario(${post.id})">
-                                    <i class="fas fa-paper-plane"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                feed.innerHTML += postHTML;
-            });
+            if (file) reader.readAsDataURL(file);
         }
 
-        function abrirModalPost() {
-            document.getElementById('modal-post').classList.add('active');
-            document.getElementById('novo-post-texto').focus();
-        }
-
-        function fecharModalPost() {
-            document.getElementById('modal-post').classList.remove('active');
-            document.getElementById('novo-post-texto').value = '';
-            document.getElementById('novo-post-foto').value = '';
-            document.getElementById('preview-container').style.display = 'none';
-            document.getElementById('preview-img').src = '';
-            imagemPublicacaoBase64 = "";
-        }
-
-        function previewImagem(event) {
-            const f = event.target.files[0];
-            if (f) {
-                const r = new FileReader();
-                r.onload = function(e) {
-                    imagemPublicacaoBase64 = e.target.result;
-                    document.getElementById('preview-img').src = imagemPublicacaoBase64;
-                    document.getElementById('preview-container').style.display = 'block';
-                };
-                r.readAsDataURL(f);
-            }
-        }
-
-        function criarPost() {
+        async function publicarPost() {
             const texto = document.getElementById('novo-post-texto').value.trim();
-            if (!texto && !imagemPublicacaoBase64) {
-                alert('Escreva algo ou adicione uma foto antes de publicar!');
-                return;
-            }
+            if(!texto && !imagemPostBase64) { alert("Escreva algo ou anexe uma imagem para postar."); return; }
 
-            const novoPost = {
-                id: Date.now(),
-                autorNome: usuarioAtual.nome,
-                autorFoto: usuarioAtual.foto,
+            const btnPublicar = document.getElementById('btn-publicar');
+            btnPublicar.innerText = "Publicando..."; btnPublicar.disabled = true;
+
+            const postData = {
+                user_email: usuarioLogadoData.email,
+                user_nome: usuarioLogadoData.nome,
+                user_foto: usuarioLogadoData.foto,
                 conteudo: texto,
-                postFoto: imagemPublicacaoBase64,
-                data: new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }),
-                likes: 0,
-                comentarios: []
+                imagem_url: imagemPostBase64
             };
 
-            postsDoForum.unshift(novoPost);
-            salvarPostsNoDB();
-            renderizarPosts();
-            fecharModalPost();
-        }
+            try {
+                // Aqui você conectará com seu endpoint do backend. Exemplo:
+                // const res = await fetch(`${API_URL}/forum/post`, { method: 'POST', body: JSON.stringify(postData)... })
+                
+                // Simulação visual de sucesso (Adicionando diretamente na tela por enquanto)
+                setTimeout(() => {
+                    const postHTML = criarHTMLdoPost({
+                        id: Date.now(), ...postData, curtidas: 0, criado_em: "Agora mesmo", comentarios: []
+                    });
+                    
+                    document.getElementById('feed-container').insertAdjacentHTML('afterbegin', postHTML);
+                    
+                    // Limpar box
+                    document.getElementById('novo-post-texto').value = '';
+                    document.getElementById('img-preview').style.display = 'none';
+                    imagemPostBase64 = '';
+                    
+                    btnPublicar.innerText = "Publicar"; btnPublicar.disabled = false;
+                }, 800);
 
-        function darLike(postId) {
-            const post = postsDoForum.find(p => p.id === postId);
-            if (post) {
-                post.likes += 1;
-                salvarPostsNoDB();
-                renderizarPosts();
+            } catch(e) {
+                alert("Erro ao publicar.");
+                btnPublicar.innerText = "Publicar"; btnPublicar.disabled = false;
             }
         }
 
-        function focarComentario(postId) {
-            document.getElementById(`input-comentario-${postId}`).focus();
+        function toggleComentarios(postId) {
+            const sec = document.getElementById(`comentarios-${postId}`);
+            sec.style.display = sec.style.display === 'block' ? 'none' : 'block';
         }
 
-        function adicionarComentario(postId) {
-            const input = document.getElementById(`input-comentario-${postId}`);
-            const texto = input.value.trim();
+        function curtirPost(btnElement) {
+            // Lógica para curtir via API seria adicionada aqui.
+            btnElement.classList.toggle('active');
+            const icon = btnElement.querySelector('i');
+            if(btnElement.classList.contains('active')) {
+                icon.classList.remove('far'); icon.classList.add('fas');
+                btnElement.innerHTML = `<i class="fas fa-heart" style="color:#e53e3e;"></i> Curtido`;
+            } else {
+                icon.classList.remove('fas'); icon.classList.add('far');
+                btnElement.innerHTML = `<i class="far fa-heart"></i> Curtir`;
+            }
+        }
+
+        // Simula o carregamento inicial de posts
+        function carregarPostsMock() {
+            const container = document.getElementById('feed-container');
+            const mockPost = {
+                id: 1,
+                user_nome: "Professor Algoritmo",
+                user_foto: "https://api.dicebear.com/7.x/bottts/svg?seed=Prof",
+                conteudo: "Sejam bem-vindos ao Fórum! Utilizem este espaço para debater sobre segurança digital e compartilhar artigos interessantes que encontrarem no Pesquisador.",
+                imagem_url: "",
+                curtidas: 12,
+                criado_em: "Há 2 horas",
+                comentarios: []
+            };
+            container.innerHTML = criarHTMLdoPost(mockPost);
+        }
+
+        function criarHTMLdoPost(post) {
+            const imgHTML = post.imagem_url ? `<img src="${post.imagem_url}" class="post-image" alt="Imagem do post">` : '';
+            const fotoTag = post.user_foto ? `<img src="${post.user_foto}" style="width:100%; height:100%; object-fit:cover;">` : post.user_nome.charAt(0);
             
-            if (!texto) return;
+            return `
+            <div class="post-card" id="post-${post.id}">
+                <div class="post-header">
+                    <div class="post-avatar">${fotoTag}</div>
+                    <div>
+                        <div class="post-author">${post.user_nome}</div>
+                        <div class="post-time">${post.criado_em}</div>
+                    </div>
+                </div>
+                <div class="post-content">${post.conteudo.replace(/\n/g, '<br>')}</div>
+                ${imgHTML}
+                
+                <div class="post-footer">
+                    <button class="interaction-btn" onclick="curtirPost(this)"><i class="far fa-heart"></i> ${post.curtidas > 0 ? post.curtidas : 'Curtir'}</button>
+                    <button class="interaction-btn" onclick="toggleComentarios(${post.id})"><i class="far fa-comment"></i> Comentar</button>
+                </div>
 
-            const post = postsDoForum.find(p => p.id === postId);
-            if (post) {
-                post.comentarios.push({
-                    autorNome: usuarioAtual.nome,
-                    autorFoto: usuarioAtual.foto,
-                    texto: texto,
-                    data: new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
-                });
-                salvarPostsNoDB();
-                renderizarPosts();
-            }
+                <div class="comments-section" id="comentarios-${post.id}">
+                    <div id="lista-comentarios-${post.id}">
+                        </div>
+                    <div class="add-comment-box">
+                        <input type="text" class="comment-input" placeholder="Escreva um comentário..." onkeypress="if(event.key === 'Enter') alert('Conecte ao backend para salvar!')">
+                        <button class="btn-icon"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>`;
         }
 
-        function abrirModalConfig() {
-            document.getElementById('edit-nome').value = usuarioAtual ? usuarioAtual.nome : '';
-            document.getElementById('modal-config').classList.add('active');
-        }
+        /* ==========================================
+           MODAL DE AVATAR & ACESSIBILIDADE (IGUAL AO RESTANTE)
+           ========================================== */
+        function abrirModalAvatar() { document.getElementById('avatar-modal').style.display = 'flex'; }
+        function fecharModalAvatar() { document.getElementById('avatar-modal').style.display = 'none'; }
+        function selecionarPreset(src) { fotoSelecionadaTemp = src; document.querySelectorAll('.preset-img').forEach(img => img.classList.remove('selected')); event.target.classList.add('selected'); }
+        function carregarArquivoLocal(event) { const file = event.target.files[0]; const reader = new FileReader(); reader.onloadend = function() { fotoSelecionadaTemp = reader.result; }; if (file) reader.readAsDataURL(file); }
+        async function salvarNovaFoto() { /* Igual as outras telas */ }
 
-        function fecharModalConfig() {
-            document.getElementById('modal-config').classList.remove('active');
-        }
+        function toggleMenuAcessibilidade() { const menu = document.getElementById('menu-acess'); menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex'; }
+        function toggleAltoContraste() { document.body.classList.toggle('high-contrast'); localStorage.setItem('acess_alto_contraste', document.body.classList.contains('high-contrast')); }
+        let currentScale = 100;
+        function mudarFonte(delta) { currentScale += delta; if(currentScale < 80) currentScale = 80; if(currentScale > 140) currentScale = 140; document.documentElement.style.setProperty('--font-scale', `${currentScale}%`); localStorage.setItem('acess_escala_fonte', currentScale); }
+        function toggleDislexia() { document.body.classList.toggle('dyslexic-font'); localStorage.setItem('acess_dislexia', document.body.classList.contains('dyslexic-font')); }
+        function toggleEspacamento() { document.body.classList.toggle('spacing-increased'); localStorage.setItem('acess_espacamento', document.body.classList.contains('spacing-increased')); }
+        function toggleDestaqueLinks() { document.body.classList.toggle('highlight-links'); localStorage.setItem('acess_links', document.body.classList.contains('highlight-links')); }
 
-        function salvarConfiguracoes() {
-            const novoNome = document.getElementById('edit-nome').value.trim();
-            if (novoNome) {
-                usuarioAtual.nome = novoNome;
-                localStorage.setItem('userData', JSON.stringify(usuarioAtual));
-            }
-            fecharModalConfig();
-            location.reload();
-        }
-
-        function toggleAcessibilidade() {
-            document.body.classList.toggle('high-contrast');
-            localStorage.setItem('acess_alto', document.body.classList.contains('high-contrast'));
-        }
-
-        function mudarFonte(d) {
-            let s = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--font-scale')) || 100;
-            let novaEscala = (s + d) + '%';
-            document.documentElement.style.setProperty('--font-scale', novaEscala);
-            localStorage.setItem('acess_fonte', novaEscala);
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('userLogado');
-            window.location.href = 'index.html';
-        }
-
-        window.onload = inicializarForum;
+        window.onload = function() {
+            checkAuth();
+            if (localStorage.getItem('acess_alto_contraste') === 'true') document.body.classList.add('high-contrast');
+            if (localStorage.getItem('acess_dislexia') === 'true') document.body.classList.add('dyslexic-font');
+            if (localStorage.getItem('acess_espacamento') === 'true') document.body.classList.add('spacing-increased');
+            if (localStorage.getItem('acess_links') === 'true') document.body.classList.add('highlight-links');
+            const savedScale = localStorage.getItem('acess_escala_fonte');
+            if (savedScale) { currentScale = parseInt(savedScale); document.documentElement.style.setProperty('--font-scale', `${currentScale}%`); }
+        };
     </script>
 </body>
 </html>
