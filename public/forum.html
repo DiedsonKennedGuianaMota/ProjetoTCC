@@ -311,15 +311,14 @@
             return data.toLocaleDateString('pt-BR') + ' às ' + data.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
         }
 
-        function criarHTMLdoPost(post) {
+       function criarHTMLdoPost(post) {
             const imgHTML = post.imagem_url ? `<img src="${post.imagem_url}" class="post-image" alt="Imagem do post">` : '';
             const fotoTag = post.user_foto ? `<img src="${post.user_foto}" style="width:100%; height:100%; object-fit:cover;">` : post.user_nome.charAt(0);
             
-            // Lógica para mostrar botões de Editar/Deletar APENAS se o usuário logado for o dono do post
+            // Verifica se é dono do post para mostrar botões de editar/deletar
             const isDonoDoPost = post.user_email === usuarioLogadoData.email;
             let acoesHTML = '';
             if (isDonoDoPost) {
-                // Passamos o conteúdo atual escapado para o prompt da função de editar
                 const conteudoEscapado = post.conteudo.replace(/"/g, '&quot;').replace(/'/g, "\\'");
                 acoesHTML = `
                     <div style="margin-left: auto; display: flex; gap: 12px;">
@@ -329,6 +328,7 @@
                 `;
             }
 
+            // Lógica dos comentários
             let comentariosHTML = '';
             if(post.comentarios && post.comentarios.length > 0) {
                 post.comentarios.forEach(c => {
@@ -346,6 +346,11 @@
                 comentariosHTML = `<p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Seja o primeiro a comentar.</p>`;
             }
             
+            // NOVA LÓGICA DO CORAÇÃO (VERIFICA SE O USUÁRIO JÁ CURTIU)
+            const jaCurtiu = post.usuarios_que_curtiram && post.usuarios_que_curtiram.includes(usuarioLogadoData.email);
+            const iconeCoracao = jaCurtiu ? 'fas fa-heart' : 'far fa-heart'; // fas = preenchido, far = vazio
+            const corCoracao = jaCurtiu ? 'color: #ff4757;' : ''; // Vermelho se curtiu
+            
             return `
             <div class="post-card" id="post-${post.id}">
                 <div class="post-header">
@@ -360,9 +365,13 @@
                 ${imgHTML}
                 
                 <div class="post-footer">
-                    <button class="interaction-btn" onclick="curtirPost(${post.id})"><i class="far fa-heart"></i> ${post.curtidas || 0} Curtidas</button>
+                    <button class="interaction-btn" style="${corCoracao} transition: 0.3s;" onclick="curtirPost(${post.id})">
+                        <i class="${iconeCoracao}"></i> ${post.curtidas || 0} Curtidas
+                    </button>
                     
-                    <button class="interaction-btn" onclick="toggleComentarios(${post.id})"><i class="far fa-comment"></i> ${post.comentarios ? post.comentarios.length : 0} Comentários</button>
+                    <button class="interaction-btn" onclick="toggleComentarios(${post.id})">
+                        <i class="far fa-comment"></i> ${post.comentarios ? post.comentarios.length : 0} Comentários
+                    </button>
                 </div>
 
                 <div class="comments-section" id="comentarios-${post.id}">
@@ -375,7 +384,6 @@
                 </div>
             </div>`;
         }
-
         /* ACESSIBILIDADE MANTIDA */
         function abrirModalAvatar() { document.getElementById('avatar-modal').style.display = 'flex'; }
         function fecharModalAvatar() { document.getElementById('avatar-modal').style.display = 'none'; }
