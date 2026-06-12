@@ -279,7 +279,8 @@
     <script>
         // URL da sua API no Render
         const API_URL = 'https://algoritmolab.onrender.com/api';
-        
+        const tema = localStorage.getItem('temaAtivo');
+if(tema && tema !== 'padrao') document.body.classList.add(tema);
         let usuarioLogadoData = null; 
         let fotoSelecionadaTemp = "";
 
@@ -418,6 +419,7 @@
             document.body.classList.toggle('highlight-links');
             localStorage.setItem('acess_links', document.body.classList.contains('highlight-links'));
         }
+        
 
         // =====================================
         // DESLOGAR
