@@ -121,7 +121,7 @@ app.listen(PORT, () => {
 });
 
 // ==========================================
-// ROTAS DO FÓRUM
+// ROTAS DO FÓRUM (CORRIGIDAS COM .promise())
 // ==========================================
 
 // 1. Rota para CRIAR um post
@@ -129,7 +129,8 @@ app.post('/api/forum/post', async (req, res) => {
     const { user_email, user_nome, user_foto, conteudo, imagem_url } = req.body;
     try {
         const query = `INSERT INTO forum_posts (user_email, user_nome, user_foto, conteudo, imagem_url) VALUES (?, ?, ?, ?, ?)`;
-        await db.query(query, [user_email, user_nome, user_foto, conteudo, imagem_url || null]);
+        // Adicionado .promise() antes de .query()
+        await db.promise().query(query, [user_email, user_nome, user_foto, conteudo, imagem_url || null]);
         res.status(201).json({ message: "Post publicado com sucesso!" });
     } catch (error) {
         console.error("Erro ao publicar post:", error);
@@ -142,7 +143,8 @@ app.post('/api/forum/comment', async (req, res) => {
     const { post_id, user_email, user_nome, user_foto, comentario } = req.body;
     try {
         const query = `INSERT INTO forum_comentarios (post_id, user_email, user_nome, user_foto, comentario) VALUES (?, ?, ?, ?, ?)`;
-        await db.query(query, [post_id, user_email, user_nome, user_foto, comentario]);
+        // Adicionado .promise() antes de .query()
+        await db.promise().query(query, [post_id, user_email, user_nome, user_foto, comentario]);
         res.status(201).json({ message: "Comentário adicionado!" });
     } catch (error) {
         console.error("Erro ao adicionar comentário:", error);
@@ -153,11 +155,11 @@ app.post('/api/forum/comment', async (req, res) => {
 // 3. Rota para BUSCAR todos os posts e seus comentários
 app.get('/api/forum/posts', async (req, res) => {
     try {
-        // Busca os posts mais recentes
-        const [posts] = await db.query(`SELECT * FROM forum_posts ORDER BY criado_em DESC`);
+        // Adicionado .promise() antes de .query()
+        const [posts] = await db.promise().query(`SELECT * FROM forum_posts ORDER BY criado_em DESC`);
         
-        // Busca todos os comentários
-        const [comentarios] = await db.query(`SELECT * FROM forum_comentarios ORDER BY criado_em ASC`);
+        // Adicionado .promise() antes de .query()
+        const [comentarios] = await db.promise().query(`SELECT * FROM forum_comentarios ORDER BY criado_em ASC`);
         
         // Agrupa os comentários dentro dos seus respectivos posts
         const postsComComentarios = posts.map(post => {
@@ -173,4 +175,3 @@ app.get('/api/forum/posts', async (req, res) => {
         res.status(500).json({ error: "Erro ao carregar o fórum." });
     }
 });
-
