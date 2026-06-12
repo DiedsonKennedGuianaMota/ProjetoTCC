@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trilha de Ética - ALGORITMOLAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. VARIÁVEIS E ACESSIBILIDADE 
+           ========================================== */
+        :root {
+            --primary-blue: #1c3d5a;
+            --accent-teal: #2b6cb0;
+            --accent-purple: #805ad5;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            --fire-color: #ff9f43;
+            --success-green: #48bb78;
+            --font-scale: 100%;
+        }
+
+        .high-contrast {
+            --primary-blue: #00ebff;
+            --accent-teal: #ffff00;
+            --accent-purple: #ff00ff;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #ffffff;
+            --text-muted: #a0aec0;
+            --border-color: #4a5568;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background 0.3s, color 0.3s; }
+        html { font-size: var(--font-scale); overflow-x: hidden; }
+        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 80px; position: relative; }
+
+        /* ==========================================
+           2. ANIMAÇÕES E FUNDO DECORATIVO
+           ========================================== */
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(43, 108, 176, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(43, 108, 176, 0); } 100% { box-shadow: 0 0 0 0 rgba(43, 108, 176, 0); } }
+
+        /* Bolhas animadas no fundo */
+        .bg-shape {
+            position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.4; z-index: -1; animation: float 6s infinite ease-in-out;
+        }
+        .shape-1 { width: 300px; height: 300px; background: var(--accent-teal); top: -50px; left: -100px; }
+        .shape-2 { width: 250px; height: 250px; background: var(--accent-purple); bottom: 100px; right: -50px; animation-delay: -3s; }
+
+        /* ==========================================
+           3. HEADER E NAV
+           ========================================== */
+        .navbar { 
+            background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 50;
+        }
+        .nav-profile { display: flex; align-items: center; gap: 15px; }
+        .avatar { 
+            width: 55px; height: 55px; background: linear-gradient(135deg, var(--accent-teal), var(--accent-purple)); color: white; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 700; 
+            border: 3px solid var(--card-bg); box-shadow: 0 5px 15px rgba(0,0,0,0.15); overflow: hidden;
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .streak-badge { display: inline-flex; align-items: center; gap: 5px; color: var(--fire-color); font-weight: 800; font-size: 0.95rem; }
+
+        .btn { padding: 10px 20px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; text-decoration: none; }
+        .btn-primary { background: var(--accent-teal); color: white; box-shadow: 0 4px 10px rgba(43, 108, 176, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(43, 108, 176, 0.4); }
+        .btn-outline { background: transparent; color: var(--primary-blue); border: 2px solid var(--border-color); }
+        .btn-outline:hover { border-color: var(--primary-blue); }
+
+        /* ==========================================
+           4. TRILHA DE MÓDULOS (DESIGN APRIMORADO)
+           ========================================== */
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        
+        .hero-section { text-align: center; margin-bottom: 40px; animation: slideInUp 0.6s ease-out; }
+        .hero-section h2 { font-size: 2.2rem; color: var(--primary-blue); margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .hero-section p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 10px auto 0; }
+        .hero-icon { font-size: 3rem; color: var(--accent-purple); animation: float 3s infinite ease-in-out; }
+
+        .module-list { display: flex; flex-direction: column; gap: 25px; position: relative; }
+        
+        /* Linha conectando as fases */
+        .module-list::before {
+            content: ''; position: absolute; left: 55px; top: 20px; bottom: 20px; width: 4px; background: var(--border-color); z-index: -1; border-radius: 5px;
+        }
+
+        .module-card {
+            background: var(--card-bg); display: flex; align-items: center; gap: 25px; padding: 25px; 
+            border-radius: 20px; text-decoration: none; color: inherit; position: relative;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.04); border: 2px solid transparent;
+            animation: slideInUp 0.6s ease-out backwards; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Efeito Hover 3D */
+        .module-card:hover:not(.locked) { 
+            transform: translateY(-8px) scale(1.02); border-color: var(--accent-purple); box-shadow: 0 15px 35px rgba(128, 90, 213, 0.15); 
+        }
+
+        /* Atrasos na animação para efeito escadinha */
+        #mod-1 { animation-delay: 0.1s; }
+        #mod-2 { animation-delay: 0.2s; }
+        #mod-3 { animation-delay: 0.3s; }
+        #mod-cert { animation-delay: 0.4s; }
+
+        .module-card.locked { 
+            opacity: 0.7; filter: grayscale(0.8); cursor: not-allowed; pointer-events: none; 
+        }
+
+        .module-card.active { border-color: var(--accent-teal); animation: slideInUp 0.6s ease-out backwards, pulseGlow 2s infinite; }
+        .module-card.completed { border-color: var(--success-green); }
+        .module-card.completed .module-icon-box { background: var(--success-green); color: white; }
+
+        .module-icon-box {
+            width: 65px; height: 65px; border-radius: 18px; background: var(--bg-color); color: var(--accent-purple);
+            display: flex; justify-content: center; align-items: center; font-size: 1.8rem; flex-shrink: 0; border: 2px solid var(--border-color);
+        }
+        
+        .module-card.active .module-icon-box { background: var(--accent-teal); color: white; border-color: transparent; }
+
+        .module-info h3 { font-size: 1.3rem; color: var(--primary-blue); margin-bottom: 5px; display: flex; align-items: center; gap: 10px; }
+        .module-info p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.4; }
+
+        .status-indicator { margin-left: auto; display: flex; align-items: center; font-size: 1.5rem; color: var(--text-muted); }
+
+        /* ==========================================
+           5. ACESSIBILIDADE E BOTOES FLUTUANTES
+           ========================================== */
+        .floating-actions { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 99; }
+        .btn-floating { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal)); color: white; box-shadow: 0 8px 25px rgba(0,0,0,0.25); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: transform 0.3s; }
+        .btn-floating:hover { transform: scale(1.1) rotate(5deg); }
+        
+        .menu-acessibilidade {
+            position: absolute; bottom: 75px; right: 0; background: var(--card-bg); border: 1px solid var(--border-color);
+            padding: 15px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: none; flex-direction: column; gap: 10px; width: 220px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <header class="navbar">
+        <div class="nav-profile">
+            <div class="avatar" id="user-avatar">...</div>
+            <div>
+                <strong id="user-name" style="font-size: 1.1rem; display: block;">Carregando...</strong>
+                <div class="streak-badge"><i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span></div>
+            </div>
+        </div>
+        <a href="modulos.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Voltar aos Módulos</a>
+    </header>
+
+    <main class="container">
+        
+        <div class="hero-section">
+            <i class="fas fa-shield-alt hero-icon"></i>
+            <h2>Trilha de Ética e Segurança</h2>
+            <p>Aprenda a se proteger no mundo digital, identifique ameaças virtuais e saiba como combater o Cyberbullying.</p>
+        </div>
+
+        <div class="module-list">
+            
+            <a href="conteudo-cidadania.html" class="module-card active" id="mod-1">
+                <div class="module-icon-box"><i class="fas fa-globe"></i></div>
+                <div class="module-info">
+                    <h3 id="title-1">1. Cidadania Digital</h3>
+                    <p>Entenda o seu papel, seus direitos e deveres como um cidadão no ambiente online.</p>
+                </div>
+                <div class="status-indicator" id="status-1">
+                    <i class="fas fa-play-circle" style="color: var(--accent-teal);"></i>
+                </div>
+            </a>
+
+            <a href="conteudo-cyberbullying.html" class="module-card locked" id="mod-2">
+                <div class="module-icon-box"><i class="fas fa-ban"></i></div>
+                <div class="module-info">
+                    <h3 id="title-2">2. Cyberbullying <i class="fas fa-lock" style="font-size: 0.9rem; color: var(--text-muted);"></i></h3>
+                    <p>O que é, como identificar agressores e as melhores formas de denunciar e se proteger.</p>
+                </div>
+                <div class="status-indicator" id="status-2">
+                    <i class="fas fa-lock"></i>
+                </div>
+            </a>
+
+            <a href="#" class="module-card locked" id="mod-3">
+                <div class="module-icon-box"><i class="fas fa-user-shield"></i></div>
+                <div class="module-info">
+                    <h3 id="title-3">3. Privacidade e Dados <i class="fas fa-lock" style="font-size: 0.9rem; color: var(--text-muted);"></i></h3>
+                    <p>Como blindar suas redes sociais e evitar roubo de dados pessoais.</p>
+                </div>
+                <div class="status-indicator" id="status-3">
+                    <i class="fas fa-lock"></i>
+                </div>
+            </a>
+
+            <div class="module-card locked" id="mod-cert" style="border: 2px dashed #ffd700;">
+                <div class="module-icon-box" style="background: #fff9e6; color: #ffd700; border-color: #ffd700;"><i class="fas fa-award"></i></div>
+                <div class="module-info">
+                    <h3>Certificado de Especialista</h3>
+                    <p>Desbloqueado automaticamente após a conclusão de todas as unidades de Ética.</p>
+                </div>
+                <div class="status-indicator"><i class="fas fa-lock" style="color: #ffd700;"></i></div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="floating-actions">
+        <div class="menu-acessibilidade" id="menu-acess">
+            <button class="btn btn-primary" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto Contraste</button>
+            <button class="btn btn-outline" style="background:var(--card-bg)" onclick="mudarFonte(2)"><i class="fas fa-font"></i><i class="fas fa-plus"></i> Aumentar Texto</button>
+            <button class="btn btn-outline" style="background:var(--card-bg)" onclick="mudarFonte(-2)"><i class="fas fa-font"></i><i class="fas fa-minus"></i> Diminuir Texto</button>
+        </div>
+        <button class="btn-floating" onclick="toggleMenuAcessibilidade()">
+            <i class="fas fa-universal-access"></i>
+        </button>
+    </div>
+
+   <script>
+        let userData = null;
+
+        // --- 1. CARREGAR PERFIL DO BANCO DE DADOS (VIA LOGIN) ---
+        function carregarPerfil() {
+            if (localStorage.getItem('userLogado') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            userData = JSON.parse(localStorage.getItem('userData'));
+
+            if (userData) {
+                document.getElementById('user-name').innerText = userData.nome;
+                document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
+                
+                const avatarDiv = document.getElementById('user-avatar');
+                if (userData.foto) {
+                    avatarDiv.innerHTML = `<img src="${userData.foto}">`;
+                } else {
+                    avatarDiv.innerText = userData.nome.charAt(0).toUpperCase();
+                }
+            }
+            verificarBloqueiosEtica();
+        }
+
+        // --- 2. LÓGICA DE BLOQUEIO POR ETAPAS (TRILHA ÉTICA) ---
+        function verificarBloqueiosEtica() {
+            if (!userData) return;
+
+            // Criando variáveis específicas para essa trilha no banco do usuário se não existirem
+            const unidade1OK = userData.etica_unidade1_concluida === true || userData.etica_unidade1_concluida === 'true';
+            const unidade2OK = userData.etica_unidade2_concluida === true || userData.etica_unidade2_concluida === 'true';
+
+            // Se terminou Unidade 1 (Cidadania) -> Libera Unidade 2 (Cyberbullying)
+            if (unidade1OK) {
+                document.getElementById('mod-1').classList.remove('active');
+                document.getElementById('mod-1').classList.add('completed');
+                document.getElementById('status-1').innerHTML = '<i class="fas fa-check-circle" style="color:var(--success-green);"></i>';
+                
+                const mod2 = document.getElementById('mod-2');
+                mod2.classList.remove('locked');
+                mod2.classList.add('active');
+                document.getElementById('title-2').innerHTML = "2. Cyberbullying"; // Remove cadeado
+                document.getElementById('status-2').innerHTML = '<i class="fas fa-play-circle" style="color: var(--accent-teal);"></i>';
+            }
+
+            // Se terminou Unidade 2 (Cyberbullying) -> Libera Unidade 3 (Privacidade)
+            if (unidade2OK) {
+                document.getElementById('mod-2').classList.remove('active');
+                document.getElementById('mod-2').classList.add('completed');
+                document.getElementById('status-2').innerHTML = '<i class="fas fa-check-circle" style="color:var(--success-green);"></i>';
+                
+                const mod3 = document.getElementById('mod-3');
+                mod3.classList.remove('locked');
+                mod3.classList.add('active');
+                document.getElementById('title-3').innerHTML = "3. Privacidade e Dados"; // Remove cadeado
+                document.getElementById('status-3').innerHTML = '<i class="fas fa-play-circle" style="color: var(--accent-teal);"></i>';
+            }
+        }
+
+        // --- 3. ACESSIBILIDADE ---
+        function toggleMenuAcessibilidade() {
+            const m = document.getElementById('menu-acess');
+            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+        }
+        function toggleAltoContraste() {
+            document.body.classList.toggle('high-contrast');
+            localStorage.setItem('acess_alto', document.body.classList.contains('high-contrast'));
+        }
+        let scale = 100;
+        function mudarFonte(d) {
+            scale += d;
+            document.documentElement.style.setProperty('--font-scale', `${scale}%`);
+        }
+
+        window.onload = () => {
+            carregarPerfil();
+            if(localStorage.getItem('acess_alto') === 'true') document.body.classList.add('high-contrast');
+        };
+    </script>
+</body>
+</html>
