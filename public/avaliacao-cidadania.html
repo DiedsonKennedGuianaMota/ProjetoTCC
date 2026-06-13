@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação: Cidadania Digital - ALGORITMOLAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. VARIÁVEIS E TEMAS
+           ========================================== */
+        :root {
+            --primary-blue: #1c3d5a; --accent-teal: #2b6cb0; --accent-purple: #805ad5;
+            --bg-color: #f4f7f6; --card-bg: #ffffff; --text-main: #333333;
+            --text-muted: #718096; --border-color: #e2e8f0; --fire-color: #ff9f43;
+            --success-green: #48bb78; --danger-red: #e53e3e; --warning-yellow: #f6ad55;
+            --font-scale: 100%;
+        }
+
+        .high-contrast {
+            --primary-blue: #00ebff; --accent-teal: #ffff00; --accent-purple: #ff00ff;
+            --bg-color: #121212; --card-bg: #1e1e1e; --text-main: #ffffff;
+            --text-muted: #a0aec0; --border-color: #4a5568; --danger-red: #ff3333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; }
+        html { font-size: var(--font-scale); overflow-x: hidden; scroll-behavior: smooth; }
+        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 80px; position: relative; }
+
+        /* Background Shapes */
+        @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } 100% { transform: translateY(0px) rotate(0deg); } }
+        .bg-shape { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.2; z-index: -1; animation: float 8s infinite ease-in-out; }
+        .shape-1 { width: 400px; height: 400px; background: var(--warning-yellow); top: -100px; right: -100px; }
+        .shape-2 { width: 350px; height: 350px; background: var(--danger-red); bottom: 50px; left: -100px; animation-delay: -3s; }
+
+        /* ==========================================
+           2. NAVBAR E PERFIL
+           ========================================== */
+        .navbar { 
+            background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 50;
+        }
+        .nav-profile { display: flex; align-items: center; gap: 15px; }
+        .avatar { 
+            width: 55px; height: 55px; background: linear-gradient(135deg, var(--accent-teal), var(--primary-blue)); color: white; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 700; 
+            border: 3px solid var(--card-bg); box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden;
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .streak-badge { display: inline-flex; align-items: center; gap: 5px; color: var(--fire-color); font-weight: 800; font-size: 0.95rem; }
+
+        .btn { padding: 12px 25px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; font-size: 1rem; text-decoration: none; }
+        .btn-primary { background: var(--accent-teal); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(43,108,176,0.3); }
+        .btn-danger { background: var(--danger-red); color: white; }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(229,62,62,0.3); }
+        .btn-outline { background: transparent; color: var(--primary-blue); border: 2px solid var(--border-color); }
+
+        /* ==========================================
+           3. TELAS E CONTAINERS
+           ========================================== */
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        
+        .card { background: var(--card-bg); padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); border: 1px solid var(--border-color); text-align: center; }
+        
+        #tela-intro h1 { color: var(--primary-blue); font-size: 2.2rem; margin-bottom: 15px; }
+        .rules-list { text-align: left; background: var(--bg-color); padding: 25px; border-radius: 15px; margin: 25px 0; border-left: 5px solid var(--warning-yellow); }
+        .rules-list li { margin-bottom: 10px; color: var(--text-main); font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+        .rules-list li i { color: var(--danger-red); font-size: 1.2rem; }
+
+        #tela-prova { display: none; text-align: left; }
+
+        /* ==========================================
+           4. HUD DA PROVA (TIMER E STRIKES)
+           ========================================== */
+        .exam-hud { display: flex; justify-content: space-between; align-items: center; background: var(--primary-blue); color: white; padding: 15px 25px; border-radius: 15px; margin-bottom: 30px; position: sticky; top: 90px; z-index: 40; box-shadow: 0 10px 30px rgba(28,61,90,0.2); }
+        .timer { font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .timer.urgent { color: var(--danger-red); animation: pulse 1s infinite; }
+        @keyframes pulse { 50% { opacity: 0.6; } }
+        .strikes { display: flex; gap: 8px; font-size: 1.2rem; color: rgba(255,255,255,0.3); }
+        .strikes .active { color: var(--danger-red); }
+
+        /* ==========================================
+           5. ESTILO DAS PERGUNTAS
+           ========================================== */
+        .question-block { margin-bottom: 40px; padding-bottom: 30px; border-bottom: 2px dashed var(--border-color); animation: slideUp 0.5s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .q-badge { background: var(--accent-teal); color: white; padding: 5px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; }
+        .q-badge.dissertativa { background: var(--accent-purple); }
+        
+        .q-text { font-size: 1.2rem; color: var(--text-main); font-weight: 700; margin-bottom: 20px; line-height: 1.5; }
+
+        /* Múltipla Escolha */
+        .radio-group { display: flex; flex-direction: column; gap: 12px; }
+        .radio-label { display: flex; align-items: center; padding: 15px 20px; border: 2px solid var(--border-color); border-radius: 12px; cursor: pointer; font-weight: 600; background: var(--bg-color); transition: all 0.2s; }
+        .radio-label:hover { border-color: var(--accent-teal); }
+        .radio-label input { margin-right: 15px; width: 20px; height: 20px; accent-color: var(--accent-teal); }
+        .radio-label:has(input:checked) { background: rgba(43, 108, 176, 0.05); border-color: var(--accent-teal); }
+
+        /* Dissertativa */
+        .textarea-input { width: 100%; min-height: 150px; padding: 20px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 1rem; color: var(--text-main); background: var(--bg-color); resize: vertical; }
+        .textarea-input:focus { outline: none; border-color: var(--accent-purple); background: var(--card-bg); box-shadow: 0 0 0 4px rgba(128, 90, 213, 0.1); }
+
+        /* ==========================================
+           6. MODAIS (ANTI-COLA E RESULTADO)
+           ========================================== */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 999; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(5px); }
+        .modal.open { display: flex; opacity: 1; }
+        .modal-content { background: var(--card-bg); width: 90%; max-width: 500px; padding: 40px; border-radius: 20px; text-align: center; transform: scale(0.8); transition: transform 0.3s; }
+        .modal.open .modal-content { transform: scale(1); }
+        
+        #icon-strike { font-size: 5rem; color: var(--danger-red); margin-bottom: 20px; animation: shake 0.5s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+
+        /* ACESSIBILIDADE */
+        .floating-actions { position: fixed; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 99; }
+        .btn-floating { width: 60px; height: 60px; border-radius: 50%; background: var(--primary-blue); color: white; box-shadow: 0 8px 25px rgba(0,0,0,0.25); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .menu-acessibilidade { position: absolute; bottom: 75px; left: 0; background: var(--card-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: none; flex-direction: column; gap: 10px; width: 220px; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <header class="navbar">
+        <div class="nav-profile">
+            <div class="avatar" id="user-avatar">...</div>
+            <div>
+                <strong id="user-name" style="font-size: 1.1rem; display: block;">Carregando...</strong>
+                <div class="streak-badge"><i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span></div>
+            </div>
+        </div>
+        <a href="conteudo-cidadania.html" class="btn btn-outline" id="btn-voltar"><i class="fas fa-arrow-left"></i> Voltar</a>
+    </header>
+
+    <main class="container">
+        
+        <section class="card" id="tela-intro">
+            <i class="fas fa-graduation-cap" style="font-size: 4rem; color: var(--primary-blue); margin-bottom: 20px;"></i>
+            <h1>Avaliação Final: Cidadania Digital</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Chegou a hora de provar que você domina a cidadania digital!</p>
+            
+            <ul class="rules-list">
+                <li><i class="fas fa-stopwatch"></i> Você terá <strong>30 Minutos</strong> para concluir.</li>
+                <li><i class="fas fa-list-ol"></i> 10 Questões de Múltipla Escolha (10 XP cada)</li>
+                <li><i class="fas fa-keyboard"></i> 5 Questões Dissertativas (20 XP cada)</li>
+                <li><i class="fas fa-user-secret"></i> <strong>SISTEMA ANTI-COLA ATIVADO:</strong> Se você sair desta aba, minimizar a janela ou abrir outro programa, receberá uma advertência. No 3º aviso, sua prova é zerada!</li>
+            </ul>
+
+            <button class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 40px;" onclick="iniciarProva()"><i class="fas fa-play"></i> Iniciar Prova Agora</button>
+        </section>
+
+        <section id="tela-prova">
+            
+            <div class="exam-hud">
+                <div>
+                    <span style="font-size: 0.9rem; text-transform: uppercase; font-weight: 700; opacity: 0.8;">Tempo Restante</span>
+                    <div class="timer" id="timer-display"><i class="fas fa-clock"></i> 30:00</div>
+                </div>
+                <div style="text-align: right;">
+                    <span style="font-size: 0.9rem; text-transform: uppercase; font-weight: 700; opacity: 0.8;">Strikes (Anti-Cola)</span>
+                    <div class="strikes" id="strikes-display">
+                        <i class="fas fa-times-circle" id="strike-1"></i>
+                        <i class="fas fa-times-circle" id="strike-2"></i>
+                        <i class="fas fa-times-circle" id="strike-3"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="text-align: left;" id="questions-container">
+                </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn btn-primary" style="font-size: 1.3rem; padding: 15px 50px;" onclick="confirmarEntrega()"><i class="fas fa-paper-plane"></i> Entregar Prova</button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <div class="modal" id="modal-anticola">
+        <div class="modal-content">
+            <i class="fas fa-exclamation-triangle" id="icon-strike"></i>
+            <h2 style="color: var(--danger-red); margin-bottom: 15px;">Atenção! Foco na Prova!</h2>
+            <p style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 20px;">Detectamos que você saiu da tela da prova. Isso não é permitido e conta como tentativa de consulta externa.</p>
+            <div style="background: var(--bg-color); padding: 15px; border-radius: 10px; margin-bottom: 25px; font-weight: bold; color: var(--danger-red);">
+                Você recebeu 1 STRIKE. (No 3º, a prova é encerrada com nota zero).
+            </div>
+            <button class="btn btn-danger" onclick="fecharModalAntiCola()">Entendi, vou focar</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-resultado">
+        <div class="modal-content">
+            <i class="fas fa-trophy" style="font-size: 5rem; color: var(--warning-yellow); margin-bottom: 20px;"></i>
+            <h2 style="color: var(--primary-blue); margin-bottom: 15px;">Avaliação Concluída!</h2>
+            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 20px;" id="resultado-texto">Analisando suas respostas...</p>
+            <h3 style="font-size: 2rem; color: var(--success-green); margin-bottom: 25px;" id="resultado-xp">+0 XP</h3>
+            <button class="btn btn-primary" onclick="voltarParaTrilha()">Voltar para a Trilha</button>
+        </div>
+    </div>
+
+    <div class="floating-actions">
+        <div class="menu-acessibilidade" id="menu-acess">
+            <button class="btn btn-primary" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto Contraste</button>
+            <button class="btn btn-outline" style="background:var(--card-bg)" onclick="mudarFonte(2)"><i class="fas fa-font"></i>+ Aumentar</button>
+            <button class="btn btn-outline" style="background:var(--card-bg)" onclick="mudarFonte(-2)"><i class="fas fa-font"></i>- Diminuir</button>
+        </div>
+        <button class="btn-floating" onclick="toggleMenuAcessibilidade()"><i class="fas fa-universal-access"></i></button>
+    </div>
+
+    <script>
+        const API_URL = 'https://algoritmolab.onrender.com/api';
+        let userData = null;
+
+        // BANCO DE QUESTÕES
+        const objetivas = [
+            { id: "obj1", p: "O que é considerado Cidadania Digital?", r: ["Acesso à internet gratuita", "O uso responsável, ético e seguro da tecnologia", "Ter muitos seguidores", "Saber programar jogos"], c: 1 },
+            { id: "obj2", p: "O que é 'Pegada Digital'?", r: ["O tamanho do seu monitor", "Um vírus rastreador", "O rastro de dados que você deixa ao usar a internet", "Um aplicativo de fitness"], c: 2 },
+            { id: "obj3", p: "Ao receber uma notícia chocante no WhatsApp, o que você deve fazer antes de repassar?", r: ["Repassar rápido para alertar a todos", "Ignorar e apagar", "Verificar a fonte e pesquisar no Google", "Mudar o título para ficar mais chamativo"], c: 2 },
+            { id: "obj4", p: "Qual atitude caracteriza o Cyberbullying?", r: ["Discordar da opinião de alguém", "Ameaças, ofensas e humilhações repetidas online", "Bloquear uma pessoa chata", "Parar de seguir um amigo"], c: 1 },
+            { id: "obj5", p: "Para criar uma senha segura, você deve:", r: ["Usar sua data de nascimento", "Usar '123456'", "Misturar letras maiúsculas, minúsculas, números e símbolos", "Usar o nome do seu cachorro"], c: 2 },
+            { id: "obj6", p: "No Brasil, qual lei principal regula os direitos e deveres na internet?", r: ["Estatuto da Criança", "Marco Civil da Internet", "Lei Maria da Penha", "Constituição de 1988 apenas"], c: 1 },
+            { id: "obj7", p: "O que é Phishing?", r: ["Um jogo de pescaria online", "Uma técnica para roubar dados enganando o usuário", "Um filtro do Instagram", "Uma marca de computador"], c: 1 },
+            { id: "obj8", p: "Sobre direitos autorais na internet, é correto afirmar:", r: ["Se está no Google Imagens, posso usar como quiser", "Posso baixar filmes de graça", "Devo dar os créditos e respeitar as licenças (como Creative Commons)", "Nada tem dono na internet"], c: 2 },
+            { id: "obj9", p: "Qual das opções abaixo previne invasões em suas redes sociais?", r: ["Autenticação de Dois Fatores (2FA)", "Deixar a conta pública", "Aceitar amizades de desconhecidos", "Usar Wi-Fi público sem VPN"], c: 0 },
+            { id: "obj10", p: "Ao presenciar um amigo sofrendo Cyberbullying num grupo, você deve:", r: ["Rir junto para não ser a próxima vítima", "Sair do grupo e não fazer nada", "Tirar prints, apoiar o amigo e denunciar aos responsáveis", "Xingar o agressor"], c: 2 }
+        ];
+
+        const dissertativas = [
+            { id: "dis1", p: "Explique com suas palavras por que é importante pensar antes de publicar uma foto pessoal na internet." },
+            { id: "dis2", p: "Descreva um cenário de Fake News e como ela poderia causar um dano real na sociedade." },
+            { id: "dis3", p: "Qual o papel da 'empatia' nas interações online e nos comentários de redes sociais?" },
+            { id: "dis4", p: "O que você faria se percebesse que clicou em um link suspeito de Phishing?" },
+            { id: "dis5", p: "Cite 3 regras básicas de segurança cibernética que você se compromete a usar a partir de hoje." }
+        ];
+
+        // VARIÁVEIS DE ESTADO DA PROVA
+        let provaIniciada = false;
+        let strikes = 0;
+        let tempoRestante = 30 * 60; // 30 minutos em segundos
+        let timerInterval;
+
+        // ==========================================
+        // 1. CARREGAR PERFIL
+        // ==========================================
+        function carregarPerfil() {
+            if (localStorage.getItem('userLogado') !== 'true') {
+                window.location.href = 'index.html'; return;
+            }
+            userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('user-name').innerText = userData.nome;
+                document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
+                const avatarDiv = document.getElementById('user-avatar');
+                if (userData.foto) avatarDiv.innerHTML = `<img src="${userData.foto}">`;
+                else avatarDiv.innerText = userData.nome.charAt(0).toUpperCase();
+            }
+            
+            // Se já concluiu, não deixa refazer
+            if(userData.etica_unidade1_concluida === true || userData.etica_unidade1_concluida === 'true') {
+                alert("Você já concluiu esta avaliação e obteve a nota máxima!");
+                window.location.href = 'conteudo-cidadania.html';
+            }
+        }
+
+        // ==========================================
+        // 2. RENDERIZAR E INICIAR PROVA
+        // ==========================================
+        function renderizarQuestoes() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = "";
+            let html = "";
+
+            // Objetivas
+            objetivas.forEach((q, i) => {
+                html += `
+                <div class="question-block">
+                    <div class="q-header">
+                        <span class="q-badge">Q${i+1} - Múltipla Escolha</span>
+                    </div>
+                    <h3 class="q-text">${q.p}</h3>
+                    <div class="radio-group">
+                        ${q.r.map((resp, rIndex) => `
+                            <label class="radio-label">
+                                <input type="radio" name="${q.id}" value="${rIndex}">
+                                ${resp}
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>`;
+            });
+
+            // Dissertativas
+            dissertativas.forEach((q, i) => {
+                html += `
+                <div class="question-block">
+                    <div class="q-header">
+                        <span class="q-badge dissertativa">Q${i+11} - Dissertativa</span>
+                    </div>
+                    <h3 class="q-text">${q.p}</h3>
+                    <textarea class="textarea-input" id="${q.id}" placeholder="Escreva sua resposta detalhada aqui..."></textarea>
+                </div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function iniciarProva() {
+            document.getElementById('tela-intro').style.display = 'none';
+            document.getElementById('tela-prova').style.display = 'block';
+            document.getElementById('btn-voltar').style.display = 'none'; // Impede de voltar fácil
+            
+            renderizarQuestoes();
+            provaIniciada = true;
+
+            // Iniciar Timer
+            timerInterval = setInterval(atualizarTimer, 1000);
+
+            // ATIVAR ANTI-COLA
+            document.addEventListener("visibilitychange", checarVisibilidade);
+            window.addEventListener("blur", darStrike);
+        }
+
+        // ==========================================
+        // 3. LÓGICA DO TIMER
+        // ==========================================
+        function atualizarTimer() {
+            tempoRestante--;
+            if(tempoRestante <= 0) {
+                clearInterval(timerInterval);
+                finalizarProva(true); // Finaliza por tempo
+                return;
+            }
+
+            let m = Math.floor(tempoRestante / 60).toString().padStart(2, '0');
+            let s = (tempoRestante % 60).toString().padStart(2, '0');
+            const display = document.getElementById('timer-display');
+            display.innerHTML = `<i class="fas fa-clock"></i> ${m}:${s}`;
+
+            if(tempoRestante <= 300) { // Menos de 5 minutos
+                display.classList.add('urgent');
+            }
+        }
+
+        // ==========================================
+        // 4. LÓGICA ANTI-COLA (STRIKES)
+        // ==========================================
+        function checarVisibilidade() {
+            if (document.hidden && provaIniciada) darStrike();
+        }
+
+        function darStrike() {
+            if(!provaIniciada) return;
+            strikes++;
+            
+            if(strikes <= 3) {
+                document.getElementById(`strike-${strikes}`).classList.add('active');
+            }
+
+            if(strikes >= 3) {
+                // Fim de jogo
+                document.getElementById('modal-anticola').classList.remove('open');
+                alert("Você atingiu 3 strikes. A prova foi encerrada por violação das regras.");
+                finalizarProva(false, true); // Finaliza zerando a prova
+            } else {
+                document.getElementById('modal-anticola').classList.add('open');
+            }
+        }
+
+        function fecharModalAntiCola() {
+            document.getElementById('modal-anticola').classList.remove('open');
+        }
+
+        // ==========================================
+        // 5. AVALIAÇÃO E SUBMISSÃO
+        // ==========================================
+        function confirmarEntrega() {
+            if(confirm("Tem certeza que deseja entregar a prova? Revise suas respostas antes.")) {
+                finalizarProva(false);
+            }
+        }
+
+        async function finalizarProva(tempoEsgotado = false, cheat = false) {
+            provaIniciada = false;
+            clearInterval(timerInterval);
+            document.removeEventListener("visibilitychange", checarVisibilidade);
+            window.removeEventListener("blur", darStrike);
+
+            let xpGanho = 0;
+            let acertosObj = 0;
+
+            if(cheat) {
+                // Zerou por colar
+                xpGanho = 0;
+                document.getElementById('resultado-texto').innerText = "Prova anulada por uso de consultas externas.";
+            } else {
+                // Corrigir Objetivas (10 XP cada)
+                objetivas.forEach(q => {
+                    const selected = document.querySelector(`input[name="${q.id}"]:checked`);
+                    if(selected && parseInt(selected.value) === q.c) {
+                        acertosObj++;
+                        xpGanho += 10;
+                    }
+                });
+
+                // Corrigir Dissertativas (Simulação: Se escreveu mais de 30 caracteres, ganha os 20 XP de cada)
+                let dissertativasRespondidas = 0;
+                dissertativas.forEach(q => {
+                    const texto = document.getElementById(q.id).value.trim();
+                    if(texto.length > 30) {
+                        dissertativasRespondidas++;
+                        xpGanho += 20;
+                    }
+                });
+
+                if(tempoEsgotado) {
+                    document.getElementById('resultado-texto').innerText = "O tempo acabou! Enviamos as respostas que você preencheu.";
+                } else {
+                    document.getElementById('resultado-texto').innerText = `Você acertou ${acertosObj}/10 questões fechadas e respondeu adequadamente ${dissertativasRespondidas}/5 questões abertas.`;
+                }
+            }
+
+            // Exibir Resultado Visualmente
+            document.getElementById('resultado-xp').innerText = `+${xpGanho} XP`;
+            document.getElementById('modal-resultado').classList.add('open');
+
+            // Salvar Progresso (Mesmo se colar, ele tira a nota que der, vamos considerar que passou para liberar o curso, ou no futuro você trava se XP < 100)
+            userData.xp = (parseInt(userData.xp) || 0) + xpGanho;
+            userData.etica_unidade1_concluida = true;
+            localStorage.setItem('userData', JSON.stringify(userData));
+
+            try {
+                await fetch(`${API_URL}/update-progress`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: userData.email, 
+                        xp: userData.xp, 
+                        etica_unidade1_concluida: true 
+                    })
+                });
+            } catch (error) {
+                console.error("Erro ao salvar no servidor:", error);
+            }
+        }
+
+        function voltarParaTrilha() {
+            window.location.href = "trilha-etica.html";
+        }
+
+        // ==========================================
+        // 6. ACESSIBILIDADE E OUTROS
+        // ==========================================
+        function toggleMenuAcessibilidade() {
+            const m = document.getElementById('menu-acess');
+            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+        }
+        function toggleAltoContraste() {
+            document.body.classList.toggle('high-contrast');
+        }
+        let scale = 100;
+        function mudarFonte(d) {
+            scale += d;
+            document.documentElement.style.setProperty('--font-scale', `${scale}%`);
+        }
+
+        window.onload = carregarPerfil;
+    </script>
+</body>
+</html>
