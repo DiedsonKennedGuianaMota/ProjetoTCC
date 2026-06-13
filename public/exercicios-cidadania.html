@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercícios: Cidadania Digital - ALGORITMOLAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. VARIÁVEIS E TEMAS
+           ========================================== */
+        :root {
+            --primary-blue: #1c3d5a; --accent-teal: #2b6cb0; --accent-purple: #805ad5;
+            --bg-color: #f4f7f6; --card-bg: #ffffff; --text-main: #333333;
+            --text-muted: #718096; --border-color: #e2e8f0; --fire-color: #ff9f43;
+            --success-green: #48bb78; --tiktok-red: #ff0050; --tiktok-cyan: #00f2fe;
+            --font-scale: 100%;
+        }
+
+        .high-contrast {
+            --primary-blue: #00ebff; --accent-teal: #ffff00; --accent-purple: #ff00ff;
+            --bg-color: #121212; --card-bg: #1e1e1e; --text-main: #ffffff;
+            --text-muted: #a0aec0; --border-color: #4a5568;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; }
+        html { font-size: var(--font-scale); overflow-x: hidden; scroll-behavior: smooth; }
+        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 80px; }
+
+        /* ==========================================
+           2. NAVBAR E PERFIL
+           ========================================== */
+        .navbar { 
+            background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 50;
+        }
+        .nav-profile { display: flex; align-items: center; gap: 15px; }
+        .avatar { 
+            width: 55px; height: 55px; background: linear-gradient(135deg, var(--accent-teal), var(--primary-blue)); color: white; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 700; 
+            border: 3px solid var(--card-bg); box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden;
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .streak-badge { display: inline-flex; align-items: center; gap: 5px; color: var(--fire-color); font-weight: 800; font-size: 0.95rem; }
+
+        .btn { padding: 10px 20px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; text-decoration: none; }
+        .btn-primary { background: var(--accent-teal); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-outline { background: transparent; color: var(--primary-blue); border: 2px solid var(--border-color); }
+        .btn-outline:hover { border-color: var(--primary-blue); background: var(--bg-color); }
+
+        /* ==========================================
+           3. ESTRUTURA DE ABAS (TABS)
+           ========================================== */
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        
+        .tabs { display: flex; gap: 15px; margin-bottom: 30px; justify-content: center; }
+        .tab-btn { padding: 15px 30px; background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 15px; font-size: 1.1rem; font-weight: 700; cursor: pointer; color: var(--text-muted); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .tab-btn.active { background: var(--primary-blue); color: white; border-color: var(--primary-blue); transform: scale(1.05); }
+        
+        .tab-content { display: none; animation: fadeIn 0.4s ease-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ==========================================
+           4. EXERCÍCIO 1: QUIZ (8 PERGUNTAS)
+           ========================================== */
+        .quiz-card { background: var(--card-bg); padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); position: relative; overflow: hidden; }
+        .progress-bar-container { width: 100%; height: 10px; background: var(--bg-color); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent-teal), var(--success-green)); width: 0%; transition: width 0.4s ease; }
+        
+        .question-text { font-size: 1.4rem; color: var(--primary-blue); margin-bottom: 25px; font-weight: 700; }
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .option-btn { background: var(--bg-color); border: 2px solid var(--border-color); padding: 15px 20px; border-radius: 12px; text-align: left; font-size: 1.05rem; font-weight: 600; cursor: pointer; color: var(--text-main); }
+        .option-btn:hover { border-color: var(--accent-teal); background: rgba(43, 108, 176, 0.05); }
+        .option-btn.correct { background: var(--success-green); color: white; border-color: var(--success-green); }
+        .option-btn.wrong { background: var(--tiktok-red); color: white; border-color: var(--tiktok-red); }
+
+        /* ==========================================
+           5. EXERCÍCIO 2: ESTÚDIO TIKTOK
+           ========================================== */
+        .studio-container { display: flex; gap: 30px; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
+        .studio-instructions { flex: 1; min-width: 300px; background: var(--card-bg); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        .studio-instructions h2 { color: var(--primary-blue); margin-bottom: 15px; }
+        .studio-instructions ul { margin-left: 20px; margin-bottom: 20px; color: var(--text-muted); line-height: 1.8; }
+
+        /* Câmera Mockup TikTok */
+        .camera-wrapper { width: 340px; height: 600px; background: #000; border-radius: 30px; position: relative; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.3); border: 6px solid #222; }
+        .video-stream { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* UI por cima do vídeo */
+        .camera-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; }
+        
+        .camera-top { display: flex; justify-content: center; align-items: center; }
+        .timer-badge { background: rgba(0,0,0,0.5); color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; pointer-events: auto; }
+        .timer-badge.recording { color: var(--tiktok-red); animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .camera-right { position: absolute; right: 15px; top: 20px; display: flex; flex-direction: column; gap: 15px; pointer-events: auto; }
+        .tool-btn { background: rgba(0,0,0,0.4); width: 45px; height: 45px; border-radius: 50%; color: white; border: none; font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+        .tool-btn:hover { background: rgba(255,255,255,0.2); }
+
+        .camera-bottom { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 10px; pointer-events: auto; }
+        .record-btn-wrapper { width: 80px; height: 80px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.8); display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        .record-inner { width: 60px; height: 60px; background: var(--tiktok-red); border-radius: 50%; transition: all 0.3s; }
+        .record-btn-wrapper.recording .record-inner { border-radius: 15px; transform: scale(0.6); }
+
+        /* ==========================================
+           6. ACESSIBILIDADE E MODAIS
+           ========================================== */
+        .floating-actions { position: fixed; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 99; }
+        .btn-floating { width: 60px; height: 60px; border-radius: 50%; background: var(--primary-blue); color: white; box-shadow: 0 8px 25px rgba(0,0,0,0.25); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 100; opacity: 0; transition: opacity 0.3s; }
+        .modal.open { display: flex; opacity: 1; }
+        .modal-content { background: var(--card-bg); width: 400px; padding: 40px; border-radius: 20px; text-align: center; transform: translateY(-50px); transition: transform 0.3s; }
+        .modal.open .modal-content { transform: translateY(0); }
+        .modal-icon { font-size: 4rem; color: var(--success-green); margin-bottom: 20px; }
+        
+        .menu-acessibilidade { position: absolute; bottom: 75px; left: 0; background: var(--card-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: none; flex-direction: column; gap: 10px; width: 220px; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-profile">
+            <div class="avatar" id="user-avatar">...</div>
+            <div>
+                <strong id="user-name" style="font-size: 1.1rem; display: block;">Carregando...</strong>
+                <div class="streak-badge"><i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span></div>
+            </div>
+        </div>
+        <a href="conteudo-cidadania.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Voltar</a>
+    </header>
+
+    <main class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="mudarAba('quiz', this)"><i class="fas fa-list-ol"></i> 1. Quiz Rápido</button>
+            <button class="tab-btn" onclick="mudarAba('studio', this)"><i class="fas fa-video"></i> 2. Estúdio Criativo</button>
+        </div>
+
+        <section id="tab-quiz" class="tab-content active">
+            <div class="quiz-card">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="quiz-progress"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; color: var(--text-muted); margin-bottom: 10px; font-weight: 600;">
+                    <span id="quiz-counter">Pergunta 1 de 8</span>
+                    <span>Vale 50 XP</span>
+                </div>
+                
+                <h2 class="question-text" id="question-title">Carregando pergunta...</h2>
+                <div class="options-grid" id="options-container">
+                    </div>
+            </div>
+        </section>
+
+        <section id="tab-studio" class="tab-content">
+            <div class="studio-container">
+                
+                <div class="studio-instructions">
+                    <h2><i class="fab fa-tiktok"></i> Crie seu material educativo!</h2>
+                    <p>Agora é sua vez de ser o professor. Grave um vídeo curto (máx. 1 minuto) explicando o que você aprendeu sobre Cidadania Digital.</p>
+                    <br>
+                    <strong>Dicas de roteiro:</strong>
+                    <ul>
+                        <li>Apresente-se rapidamente.</li>
+                        <li>Explique o que é a "Pegada Digital".</li>
+                        <li>Dê 1 dica de como evitar Fake News.</li>
+                    </ul>
+                    <button class="btn btn-primary" id="btn-submit-video" onclick="enviarVideo()" style="width: 100%; padding: 15px; margin-top: 20px; font-size: 1.1rem; display: none;">
+                        <i class="fas fa-cloud-upload-alt"></i> Postar e Ganhar +100 XP
+                    </button>
+                </div>
+
+                <div class="camera-wrapper">
+                    <video id="live-video" class="video-stream" autoplay muted playsinline></video>
+                    <video id="playback-video" class="video-stream" controls style="display: none;"></video>
+
+                    <div class="camera-ui" id="camera-ui">
+                        <div class="camera-top">
+                            <div class="timer-badge" id="camera-timer">00:00</div>
+                        </div>
+                        <div class="camera-right">
+                            <button class="tool-btn" onclick="iniciarCamera()" title="Ligar Câmera"><i class="fas fa-camera-rotate"></i></button>
+                            <button class="tool-btn" title="Filtros (Em breve)"><i class="fas fa-wand-magic-sparkles"></i></button>
+                            <button class="tool-btn" title="Velocidade"><i class="fas fa-gauge-high"></i></button>
+                        </div>
+                        <div class="camera-bottom">
+                            <div class="record-btn-wrapper" id="btn-record" onclick="toggleRecording()">
+                                <div class="record-inner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <div class="modal" id="modal-sucesso">
+        <div class="modal-content">
+            <div class="modal-icon"><i class="fas fa-check-circle"></i></div>
+            <h2 style="color: var(--primary-blue); margin-bottom: 15px;" id="modal-title">Exercício Concluído!</h2>
+            <p style="color: var(--text-muted); margin-bottom: 25px;" id="modal-desc">Você ganhou XP.</p>
+            <button class="btn btn-primary" onclick="fecharModal()">Continuar</button>
+        </div>
+    </div>
+
+    <div class="floating-actions">
+        <div class="menu-acessibilidade" id="menu-acess">
+            <button class="btn btn-primary" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto Contraste</button>
+            <button class="btn btn-outline" style="background:var(--card-bg)" onclick="mudarFonte(2)"><i class="fas fa-font"></i>+ Aumentar</button>
+            <button class="btn btn-outline" style="background:var(--card-bg)" onclick="mudarFonte(-2)"><i class="fas fa-font"></i>- Diminuir</button>
+        </div>
+        <button class="btn-floating" onclick="toggleMenuAcessibilidade()"><i class="fas fa-universal-access"></i></button>
+    </div>
+
+    <script>
+        const API_URL = 'https://algoritmolab.onrender.com/api';
+        let userData = null;
+
+        // ==========================================
+        // LÓGICA GERAL E PERFIL
+        // ==========================================
+        function carregarPerfil() {
+            if (localStorage.getItem('userLogado') !== 'true') {
+                window.location.href = 'index.html'; return;
+            }
+            userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('user-name').innerText = userData.nome;
+                document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
+                const avatarDiv = document.getElementById('user-avatar');
+                if (userData.foto) avatarDiv.innerHTML = `<img src="${userData.foto}">`;
+                else avatarDiv.innerText = userData.nome.charAt(0).toUpperCase();
+            }
+        }
+
+        function mudarAba(aba, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(`tab-${aba}`).classList.add('active');
+            btn.classList.add('active');
+
+            // Inicia câmera automaticamente se for a aba studio
+            if(aba === 'studio' && !stream) iniciarCamera();
+        }
+
+        async function sincronizarServidor(xpGanho) {
+            userData.xp = (parseInt(userData.xp) || 0) + xpGanho;
+            localStorage.setItem('userData', JSON.stringify(userData));
+            document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`; // Atualiza UI
+            
+            try {
+                await fetch(`${API_URL}/update-progress`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: userData.email, xp: userData.xp, streak: userData.streak })
+                });
+            } catch (error) {
+                console.error("Erro no servidor:", error);
+            }
+        }
+
+        // ==========================================
+        // LÓGICA DO QUIZ (8 Perguntas)
+        // ==========================================
+        const perguntas = [
+            { p: "O que é Cidadania Digital?", r: ["Uso de redes sociais apenas", "Uso consciente e ético da tecnologia", "Ter um CPF online", "Saber programar"], correta: 1 },
+            { p: "O anonimato na internet é absoluto?", r: ["Sim, ninguém sabe quem sou", "Sim, com guia anônima", "Não, deixamos rastros (IP)", "Apenas no celular"], correta: 2 },
+            { p: "O que assegura nossos direitos online no Brasil?", r: ["Constituição de 1988", "Marco Civil da Internet", "Lei de Informática", "Regras do Facebook"], correta: 1 },
+            { p: "Qual atitude previne o vazamento de dados?", r: ["Usar a mesma senha para tudo", "Clicar em todos os links de SMS", "Autenticação em 2 fatores", "Desativar o antivírus"], correta: 2 },
+            { p: "O que caracteriza o Cyberbullying?", r: ["Fazer piadas com amigos", "Ofensas sistemáticas via internet", "Criticar um filme", "Bloquear alguém"], correta: 1 },
+            { p: "A Pirataria Digital é considerada:", r: ["Um crime contra direitos autorais", "Um compartilhamento justo", "Algo permitido no Brasil", "Uma infração leve sem punição"], correta: 0 },
+            { p: "Antes de repassar uma notícia chocante, você deve:", r: ["Mandar para todos os grupos", "Verificar a fonte e pesquisar", "Apagar a mensagem", "Mudar o título"], correta: 1 },
+            { p: "Qual o maior perigo das Fake News?", r: ["Ocupar espaço no celular", "Manipular a opinião e causar danos", "Serem longas de ler", "Vírus de computador"], correta: 1 }
+        ];
+
+        let perguntaAtual = 0;
+        let acertos = 0;
+
+        function carregarPergunta() {
+            const q = perguntas[perguntaAtual];
+            document.getElementById('quiz-counter').innerText = `Pergunta ${perguntaAtual + 1} de 8`;
+            document.getElementById('question-title').innerText = q.p;
+            
+            const pct = (perguntaAtual / perguntas.length) * 100;
+            document.getElementById('quiz-progress').style.width = `${pct}%`;
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            q.r.forEach((opcao, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opcao;
+                btn.onclick = () => responderQuiz(btn, index === q.correta);
+                container.appendChild(btn);
+            });
+        }
+
+        function responderQuiz(btnClicado, isCorrect) {
+            // Desativa botões
+            document.querySelectorAll('.option-btn').forEach(b => b.style.pointerEvents = 'none');
+            
+            if(isCorrect) {
+                btnClicado.classList.add('correct');
+                acertos++;
+            } else {
+                btnClicado.classList.add('wrong');
+                // Pinta a certa de verde
+                const botoes = document.querySelectorAll('.option-btn');
+                botoes[perguntas[perguntaAtual].correta].classList.add('correct');
+            }
+
+            setTimeout(() => {
+                perguntaAtual++;
+                if(perguntaAtual < perguntas.length) {
+                    carregarPergunta();
+                } else {
+                    finalizarQuiz();
+                }
+            }, 1500);
+        }
+
+        function finalizarQuiz() {
+            document.getElementById('quiz-progress').style.width = `100%`;
+            document.getElementById('options-container').innerHTML = `
+                <div style="text-align:center; padding: 20px;">
+                    <h3 style="color:var(--success-green); font-size: 1.5rem;">Quiz Concluído!</h3>
+                    <p>Você acertou ${acertos} de 8 perguntas.</p>
+                </div>
+            `;
+            
+            // Recompensa XP
+            sincronizarServidor(50);
+            localStorage.setItem('exercicio1_concluido', 'true');
+            
+            abrirModal("Quiz Finalizado!", "Excelente! Você ganhou +50 XP. Agora, vamos para o Estúdio Criativo na próxima aba!");
+        }
+
+        // ==========================================
+        // LÓGICA DO ESTÚDIO DE VÍDEO (MediaRecorder)
+        // ==========================================
+        let stream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let isRecording = false;
+        let timerInterval = null;
+        let seconds = 0;
+
+        async function iniciarCamera() {
+            const videoEl = document.getElementById('live-video');
+            try {
+                // Solicita permissão para vídeo e áudio
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: true });
+                videoEl.srcObject = stream;
+            } catch (err) {
+                console.error("Erro ao acessar câmera:", err);
+                alert("Para usar o estúdio, permita o acesso à câmera e microfone no seu navegador.");
+            }
+        }
+
+        function toggleRecording() {
+            if(!stream) return;
+
+            const btnWrapper = document.getElementById('btn-record');
+            const timerBadge = document.getElementById('camera-timer');
+
+            if (!isRecording) {
+                // COMEÇAR A GRAVAR
+                recordedChunks = [];
+                mediaRecorder = new MediaRecorder(stream);
+                
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) recordedChunks.push(e.data);
+                };
+
+                mediaRecorder.onstop = mostrarPreviewVideo;
+
+                mediaRecorder.start();
+                isRecording = true;
+                btnWrapper.classList.add('recording');
+                timerBadge.classList.add('recording');
+                
+                // Timer
+                seconds = 0;
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    let m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                    let s = (seconds % 60).toString().padStart(2, '0');
+                    timerBadge.innerText = `${m}:${s}`;
+                    
+                    // Limite de 60 segundos
+                    if(seconds >= 60) toggleRecording();
+                }, 1000);
+
+            } else {
+                // PARAR DE GRAVAR
+                mediaRecorder.stop();
+                isRecording = false;
+                btnWrapper.classList.remove('recording');
+                timerBadge.classList.remove('recording');
+                clearInterval(timerInterval);
+            }
+        }
+
+        function mostrarPreviewVideo() {
+            // Oculta UI e Live Video, mostra Playback e botão de postar
+            const liveVideo = document.getElementById('live-video');
+            const playbackVideo = document.getElementById('playback-video');
+            const ui = document.getElementById('camera-ui');
+            const btnSubmit = document.getElementById('btn-submit-video');
+
+            liveVideo.style.display = 'none';
+            ui.style.display = 'none';
+            
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const url = URL.createObjectURL(blob);
+            
+            playbackVideo.src = url;
+            playbackVideo.style.display = 'block';
+            btnSubmit.style.display = 'block';
+
+            // Parar a câmera real para economizar bateria
+            stream.getTracks().forEach(track => track.stop());
+        }
+
+        function enviarVideo() {
+            // Aqui seria a lógica para enviar o "Blob" para um AWS S3, Cloudinary ou seu servidor Node.
+            // Por enquanto, apenas validamos e damos o XP.
+            sincronizarServidor(100);
+            
+            abrirModal("Material Postado!", "Vídeo gerado com sucesso! Você ganhou +100 XP por ser um criador de conteúdo digital ético.");
+            
+            // Esconde botão e volta
+            setTimeout(() => {
+                window.location.href = "conteudo-cidadania.html"; // Volta pra tela de trilha
+            }, 3000);
+        }
+
+        // ==========================================
+        // MODAIS E ACESSIBILIDADE
+        // ==========================================
+        function abrirModal(titulo, desc) {
+            document.getElementById('modal-title').innerText = titulo;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-sucesso').classList.add('open');
+        }
+        function fecharModal() {
+            document.getElementById('modal-sucesso').classList.remove('open');
+        }
+
+        function toggleMenuAcessibilidade() {
+            const m = document.getElementById('menu-acess');
+            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+        }
+        function toggleAltoContraste() {
+            document.body.classList.toggle('high-contrast');
+        }
+        let scale = 100;
+        function mudarFonte(d) {
+            scale += d;
+            document.documentElement.style.setProperty('--font-scale', `${scale}%`);
+        }
+
+        // Inicialização
+        window.onload = () => {
+            carregarPerfil();
+            carregarPergunta();
+        };
+    </script>
+</body>
+</html>
