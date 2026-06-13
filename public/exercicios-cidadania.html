@@ -219,7 +219,6 @@
         </div>
         <button class="btn-floating" onclick="toggleMenuAcessibilidade()"><i class="fas fa-universal-access"></i></button>
     </div>
-
     <script>
         const API_URL = 'https://algoritmolab.onrender.com/api';
         let userData = null;
@@ -227,24 +226,22 @@
         // ==========================================
         // LÓGICA GERAL E PERFIL
         // ==========================================
-                async function carregarPerfil() {
+        async function carregarPerfil() {
             if (localStorage.getItem('userLogado') !== 'true') {
                 window.location.href = 'index.html'; return;
             }
             
-            // Pega os dados básicos (como o email) do login
             userData = JSON.parse(localStorage.getItem('userData'));
             
             if (userData && userData.email) {
                 try {
-                    // BUSCA OS DADOS REAIS DIRETO DO BANCO DE DADOS (RAILWAY)
-                    // Aqui estou supondo que você tenha uma rota '/get-user' que busque pelo email
+                    // Busca os dados atualizados direto do banco de dados (Railway)
                     const resposta = await fetch(`${API_URL}/get-user?email=${userData.email}`);
                     
                     if (resposta.ok) {
                         const dadosDoBanco = await resposta.json();
                         
-                        // Atualiza a memória local com os dados fresquinhos do banco
+                        // Atualiza a memória local com a ofensiva real do banco
                         userData.streak = dadosDoBanco.streak || 0;
                         userData.xp = dadosDoBanco.xp || 0;
                         
@@ -254,9 +251,9 @@
                     console.error("Erro ao buscar dados do banco:", erro);
                 }
 
-                // Renderiza na tela os valores (agora garantidos pelo banco)
+                // Renderiza na tela
                 document.getElementById('user-name').innerText = userData.nome;
-                document.getElementById('user-streak').innerText = `${userData.streak} Dias`;
+                document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
                 
                 const avatarDiv = document.getElementById('user-avatar');
                 if (userData.foto) {
@@ -278,16 +275,28 @@
         }
 
         async function sincronizarServidor(xpGanho) {
+            // 1. Atualiza o XP
             userData.xp = (parseInt(userData.xp) || 0) + xpGanho;
+
+            // 2. Lógica para contar a ofensiva (streak) apenas 1 vez por dia
+            const dataHoje = new Date().toDateString();
+            if (localStorage.getItem('ultimaOfensiva') !== dataHoje) {
+                userData.streak = (parseInt(userData.streak) || 0) + 1;
+                localStorage.setItem('ultimaOfensiva', dataHoje);
+            }
+
+            // 3. Salva localmente e atualiza a interface
             localStorage.setItem('userData', JSON.stringify(userData));
-            document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`; // Atualiza UI
+            document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
             
+            // 4. Salva a ofensiva > NO BANCO DE DADOS <
             try {
                 await fetch(`${API_URL}/update-progress`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: userData.email, xp: userData.xp, streak: userData.streak })
                 });
+                console.log("Ofensiva e XP salvos no banco!");
             } catch (error) {
                 console.error("Erro no servidor:", error);
             }
@@ -331,7 +340,6 @@
         }
 
         function responderQuiz(btnClicado, isCorrect) {
-            // Desativa botões
             document.querySelectorAll('.option-btn').forEach(b => b.style.pointerEvents = 'none');
             
             if(isCorrect) {
@@ -339,7 +347,6 @@
                 acertos++;
             } else {
                 btnClicado.classList.add('wrong');
-                // Pinta a certa de verde
                 const botoes = document.querySelectorAll('.option-btn');
                 botoes[perguntas[perguntaAtual].correta].classList.add('correct');
             }
@@ -363,42 +370,14 @@
                 </div>
             `;
             
-            // Recompensa XP
             sincronizarServidor(50);
             localStorage.setItem('exercicio1_concluido', 'true');
             
             abrirModal("Quiz Finalizado!", "Excelente! Você ganhou +50 XP. Agora, vamos para o Estúdio Criativo na próxima aba!");
         }
-                async function sincronizarServidor(xpGanho) {
-            // 1. Atualiza o XP
-            userData.xp = (parseInt(userData.xp) || 0) + xpGanho;
-
-            // 2. Lógica para contar a ofensiva (streak) - 1 vez por dia
-            const dataHoje = new Date().toDateString();
-            if (localStorage.getItem('ultimaOfensiva') !== dataHoje) {
-                userData.streak = (parseInt(userData.streak) || 0) + 1;
-                localStorage.setItem('ultimaOfensiva', dataHoje);
-            }
-
-            // 3. Salva localmente e atualiza a interface com o novo valor
-            localStorage.setItem('userData', JSON.stringify(userData));
-            document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
-            
-            // 4. Envia o XP e a Ofensiva atualizada para o banco de dados
-            try {
-                await fetch(`${API_URL}/update-progress`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: userData.email, xp: userData.xp, streak: userData.streak })
-                });
-            } catch (error) {
-                console.error("Erro no servidor:", error);
-            }
-        }
-
 
         // ==========================================
-        // LÓGICA DO ESTÚDIO DE VÍDEO (MediaRecorder)
+        // LÓGICA DO ESTÚDIO DE VÍDEO
         // ==========================================
         let stream = null;
         let mediaRecorder = null;
@@ -410,7 +389,6 @@
         async function iniciarCamera() {
             const videoEl = document.getElementById('live-video');
             try {
-                // Solicita permissão para vídeo e áudio
                 stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: true });
                 videoEl.srcObject = stream;
             } catch (err) {
@@ -426,7 +404,6 @@
             const timerBadge = document.getElementById('camera-timer');
 
             if (!isRecording) {
-                // COMEÇAR A GRAVAR
                 recordedChunks = [];
                 mediaRecorder = new MediaRecorder(stream);
                 
@@ -435,26 +412,21 @@
                 };
 
                 mediaRecorder.onstop = mostrarPreviewVideo;
-
                 mediaRecorder.start();
                 isRecording = true;
                 btnWrapper.classList.add('recording');
                 timerBadge.classList.add('recording');
                 
-                // Timer
                 seconds = 0;
                 timerInterval = setInterval(() => {
                     seconds++;
                     let m = Math.floor(seconds / 60).toString().padStart(2, '0');
                     let s = (seconds % 60).toString().padStart(2, '0');
                     timerBadge.innerText = `${m}:${s}`;
-                    
-                    // Limite de 60 segundos
                     if(seconds >= 60) toggleRecording();
                 }, 1000);
 
             } else {
-                // PARAR DE GRAVAR
                 mediaRecorder.stop();
                 isRecording = false;
                 btnWrapper.classList.remove('recording');
@@ -464,7 +436,6 @@
         }
 
         function mostrarPreviewVideo() {
-            // Oculta UI e Live Video, mostra Playback e botão de postar
             const liveVideo = document.getElementById('live-video');
             const playbackVideo = document.getElementById('playback-video');
             const ui = document.getElementById('camera-ui');
@@ -480,20 +451,14 @@
             playbackVideo.style.display = 'block';
             btnSubmit.style.display = 'block';
 
-            // Parar a câmera real para economizar bateria
             stream.getTracks().forEach(track => track.stop());
         }
 
         function enviarVideo() {
-            // Aqui seria a lógica para enviar o "Blob" para um AWS S3, Cloudinary ou seu servidor Node.
-            // Por enquanto, apenas validamos e damos o XP.
             sincronizarServidor(100);
-            
             abrirModal("Material Postado!", "Vídeo gerado com sucesso! Você ganhou +100 XP por ser um criador de conteúdo digital ético.");
-            
-            // Esconde botão e volta
             setTimeout(() => {
-                window.location.href = "conteudo-cidadania.html"; // Volta pra tela de trilha
+                window.location.href = "conteudo-cidadania.html"; 
             }, 3000);
         }
 
@@ -522,7 +487,6 @@
             document.documentElement.style.setProperty('--font-scale', `${scale}%`);
         }
 
-        // Inicialização
         window.onload = () => {
             carregarPerfil();
             carregarPergunta();
