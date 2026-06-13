@@ -303,31 +303,38 @@
             renderizarComentarios();
         }
 
-        // --- 3. FINALIZAR LEITURA E SALVAR NO SERVIDOR ---
+       // --- 3. FINALIZAR LEITURA E SALVAR NO SERVIDOR ---
         async function finalizarLeitura() {
             try {
                 // Adiciona 30 XP pela leitura
                 userData.xp = (parseInt(userData.xp) || 0) + 30;
+                
+                // === CORREÇÃO: ADICIONANDO AS FLAGS DE LIBERAÇÃO ===
+                userData.leitura_cidadania_concluida = true; 
+                localStorage.setItem('leitura_concluida', 'true'); // Flag direta para a tela da trilha
+                // ====================================================
+
                 localStorage.setItem('userData', JSON.stringify(userData));
                 carregarPerfil(); // Atualiza contador no topo
 
-                // Dispara o fetch correto enviando a carteira sincronizada para o Railway
+                // Dispara o fetch enviando o progresso para o servidor
                 await fetch(`${API_URL}/update-progress`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         email: userData.email, 
                         xp: userData.xp,
-                        streak: userData.streak
+                        streak: userData.streak,
+                        leitura_cidadania_concluida: true // Envia a flag para o banco de dados
                     })
                 });
 
-                alert("📚 Artigo e Vídeos validados! +30 XP adicionados e gravados com sucesso no banco de dados.");
+                alert("📚 Artigo e Vídeos validados! +30 XP adicionados e exercícios liberados.");
                 window.location.href = "conteudo-cidadania.html";
 
             } catch (error) {
                 console.error("Erro ao salvar progresso:", error);
-                alert("Progresso salvo apenas localmente. Erro ao conectar com o Railway.");
+                alert("Progresso salvo apenas localmente. Erro ao conectar com o servidor.");
                 window.location.href = "conteudo-cidadania.html";
             }
         }
