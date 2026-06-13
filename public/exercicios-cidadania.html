@@ -274,33 +274,46 @@
             if(aba === 'studio' && !stream) iniciarCamera();
         }
 
-        async function sincronizarServidor(xpGanho) {
-            // 1. Atualiza o XP
-            userData.xp = (parseInt(userData.xp) || 0) + xpGanho;
+                async function sincronizarServidor(xpGanho) {
+            // Garante de forma absoluta que XP e Streak são números (se for null, vira 0)
+            let xpAtual = parseInt(userData.xp) || 0;
+            let streakAtual = parseInt(userData.streak) || 0;
 
-            // 2. Lógica para contar a ofensiva (streak) apenas 1 vez por dia
+            // 1. Atualiza o XP
+            userData.xp = xpAtual + xpGanho;
+
+            // 2. Lógica para contar a ofensiva (streak)
             const dataHoje = new Date().toDateString();
             if (localStorage.getItem('ultimaOfensiva') !== dataHoje) {
-                userData.streak = (parseInt(userData.streak) || 0) + 1;
+                // Se é o primeiro exercício do dia, soma +1
+                userData.streak = streakAtual + 1;
                 localStorage.setItem('ultimaOfensiva', dataHoje);
+            } else {
+                // Se já fez exercício hoje, apenas mantém o número seguro
+                userData.streak = streakAtual;
             }
 
             // 3. Salva localmente e atualiza a interface
             localStorage.setItem('userData', JSON.stringify(userData));
-            document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
+            document.getElementById('user-streak').innerText = `${userData.streak} Dias`;
             
-            // 4. Salva a ofensiva > NO BANCO DE DADOS <
+            // 4. Salva no banco de dados (Agora é IMPOSSÍVEL ir como null)
             try {
                 await fetch(`${API_URL}/update-progress`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: userData.email, xp: userData.xp, streak: userData.streak })
+                    body: JSON.stringify({ 
+                        email: userData.email, 
+                        xp: userData.xp, 
+                        streak: userData.streak 
+                    })
                 });
-                console.log("Ofensiva e XP salvos no banco!");
+                console.log("Ofensiva e XP salvos no banco com sucesso!");
             } catch (error) {
                 console.error("Erro no servidor:", error);
             }
         }
+
 
         // ==========================================
         // LÓGICA DO QUIZ (8 Perguntas)
