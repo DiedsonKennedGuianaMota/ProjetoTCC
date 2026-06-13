@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidade 1: Cidadania Digital - ALGORITMOLAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. VARIÁVEIS E TEMAS
+           ========================================== */
+        :root {
+            --primary-blue: #1c3d5a;
+            --accent-teal: #2b6cb0;
+            --accent-purple: #805ad5;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            --fire-color: #ff9f43;
+            --success-green: #48bb78;
+            --warning-yellow: #f6ad55;
+            --font-scale: 100%;
+        }
+
+        .high-contrast {
+            --primary-blue: #00ebff; --accent-teal: #ffff00; --accent-purple: #ff00ff;
+            --bg-color: #121212; --card-bg: #1e1e1e; --text-main: #ffffff;
+            --text-muted: #a0aec0; --border-color: #4a5568;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; }
+        html { font-size: var(--font-scale); overflow-x: hidden; scroll-behavior: smooth; }
+        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 80px; position: relative; }
+
+        /* ==========================================
+           2. ANIMAÇÕES E BACKGROUND
+           ========================================== */
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } 100% { transform: translateY(0px) rotate(0deg); } }
+        @keyframes pulseBorder { 0% { box-shadow: 0 0 0 0 rgba(43, 108, 176, 0.4); } 70% { box-shadow: 0 0 0 12px rgba(43, 108, 176, 0); } 100% { box-shadow: 0 0 0 0 rgba(43, 108, 176, 0); } }
+
+        .bg-shape { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.3; z-index: -1; animation: float 8s infinite ease-in-out; }
+        .shape-1 { width: 350px; height: 350px; background: var(--accent-teal); top: -100px; right: -100px; }
+        .shape-2 { width: 300px; height: 300px; background: var(--success-green); bottom: 50px; left: -100px; animation-delay: -4s; }
+
+        /* ==========================================
+           3. NAVBAR E BOTOES
+           ========================================== */
+        .navbar { 
+            background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 50;
+        }
+        .nav-profile { display: flex; align-items: center; gap: 15px; }
+        .avatar { 
+            width: 55px; height: 55px; background: linear-gradient(135deg, var(--accent-teal), var(--primary-blue)); color: white; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 700; 
+            border: 3px solid var(--card-bg); box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden;
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .streak-badge { display: inline-flex; align-items: center; gap: 5px; color: var(--fire-color); font-weight: 800; font-size: 0.95rem; }
+
+        .btn { padding: 10px 20px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; text-decoration: none; }
+        .btn-primary { background: var(--accent-teal); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-outline { background: transparent; color: var(--primary-blue); border: 2px solid var(--border-color); }
+        .btn-outline:hover { border-color: var(--primary-blue); background: var(--bg-color); }
+
+        /* ==========================================
+           4. CONTEÚDO SEQUENCIAL
+           ========================================== */
+        .container { max-width: 850px; margin: 0 auto; padding: 40px 20px; }
+        
+        .hero-section { background: var(--card-bg); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid var(--border-color); margin-bottom: 40px; animation: slideInUp 0.5s ease-out; position: relative; overflow: hidden; }
+        .hero-section::after { content: '\f0ac'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; right: -20px; bottom: -20px; font-size: 8rem; color: var(--accent-teal); opacity: 0.05; z-index: 0; }
+        .hero-section h2 { color: var(--primary-blue); font-size: 2rem; margin-bottom: 10px; position: relative; z-index: 1; }
+        .hero-section p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; position: relative; z-index: 1; }
+
+        .step-list { display: flex; flex-direction: column; gap: 20px; position: relative; }
+        
+        /* Linha de progresso lateral */
+        .step-list::before { content: ''; position: absolute; left: 40px; top: 20px; bottom: 20px; width: 4px; background: var(--border-color); z-index: -1; border-radius: 5px; }
+
+        .step-card {
+            background: var(--card-bg); display: flex; align-items: center; gap: 20px; padding: 25px; 
+            border-radius: 20px; text-decoration: none; color: inherit; position: relative;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04); border: 2px solid transparent; cursor: pointer;
+            animation: slideInRight 0.5s ease-out backwards;
+        }
+
+        .step-card:hover:not(.locked) { transform: translateX(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+
+        #step-1 { animation-delay: 0.1s; }
+        #step-2 { animation-delay: 0.2s; }
+        #step-3 { animation-delay: 0.3s; }
+
+        .step-icon-box {
+            width: 80px; height: 80px; border-radius: 50%; background: var(--bg-color); color: var(--text-muted);
+            display: flex; justify-content: center; align-items: center; font-size: 2rem; flex-shrink: 0; border: 4px solid var(--card-bg); box-shadow: 0 0 0 2px var(--border-color); z-index: 2;
+        }
+
+        .step-info { flex-grow: 1; }
+        .step-info h3 { font-size: 1.3rem; color: var(--primary-blue); margin-bottom: 5px; }
+        .step-info p { font-size: 0.95rem; color: var(--text-muted); }
+
+        /* Status das Etapas */
+        .step-card.locked { opacity: 0.6; cursor: not-allowed; pointer-events: none; }
+        
+        .step-card.active { border-color: var(--accent-teal); }
+        .step-card.active .step-icon-box { background: var(--accent-teal); color: white; box-shadow: 0 0 0 2px var(--accent-teal); animation: pulseBorder 2s infinite; }
+        
+        .step-card.completed { border-color: var(--success-green); }
+        .step-card.completed .step-icon-box { background: var(--success-green); color: white; box-shadow: 0 0 0 2px var(--success-green); }
+
+        .btn-action { padding: 8px 15px; border-radius: 8px; background: var(--accent-teal); color: white; border: none; font-weight: 600; cursor: pointer; display: none; }
+        .step-card.active .btn-action { display: block; }
+        .step-card.completed .btn-action { display: block; background: var(--bg-color); color: var(--success-green); cursor: default; }
+
+        /* ==========================================
+           5. ACESSIBILIDADE E FLOATING BOTOES
+           ========================================== */
+        .floating-actions { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 99; }
+        .btn-floating { width: 60px; height: 60px; border-radius: 50%; background: var(--primary-blue); color: white; box-shadow: 0 8px 25px rgba(0,0,0,0.25); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .btn-floating:hover { transform: scale(1.1); }
+        
+        .menu-acessibilidade { position: absolute; bottom: 75px; right: 0; background: var(--card-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: none; flex-direction: column; gap: 10px; width: 220px; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <header class="navbar">
+        <div class="nav-profile">
+            <div class="avatar" id="user-avatar">...</div>
+            <div>
+                <strong id="user-name" style="font-size: 1.1rem; display: block;">Carregando...</strong>
+                <div class="streak-badge"><i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span></div>
+            </div>
+        </div>
+        <a href="trilha-etica.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Voltar</a>
+    </header>
+
+    <main class="container">
+        <div class="hero-section">
+            <h2><i class="fas fa-book-reader"></i> Unidade 1: Cidadania Digital</h2>
+            <p>Complete as etapas abaixo sequencialmente para dominar os conceitos básicos de como agir e se proteger na internet, garantindo seus pontos de experiência (XP).</p>
+        </div>
+
+        <div class="step-list">
+            
+            <div class="step-card active" id="step-1" onclick="completarMaterial()">
+                <div class="step-icon-box"><i class="fas fa-file-alt"></i></div>
+                <div class="step-info">
+                    <h3>1. Material de Estudo</h3>
+                    <p>Leia o artigo completo sobre Direitos e Deveres na web.</p>
+                </div>
+                <div>
+                    <button class="btn-action" id="btn-1">Ler Agora</button>
+                </div>
+            </div>
+
+            <div class="step-card locked" id="step-2" onclick="completarExercicios()">
+                <div class="step-icon-box"><i class="fas fa-dumbbell"></i></div>
+                <div class="step-info">
+                    <h3>2. Exercícios de Fixação <i class="fas fa-lock lock-icon" id="lock-2" style="font-size: 0.9rem; color: var(--text-muted);"></i></h3>
+                    <p>Teste rápido para ver se você absorveu o conteúdo.</p>
+                </div>
+                <div>
+                    <button class="btn-action" id="btn-2">Praticar</button>
+                </div>
+            </div>
+
+            <div class="step-card locked" id="step-3" onclick="iniciarAvaliacao()">
+                <div class="step-icon-box"><i class="fas fa-star"></i></div>
+                <div class="step-info">
+                    <h3>3. Avaliação da Unidade <i class="fas fa-lock lock-icon" id="lock-3" style="font-size: 0.9rem; color: var(--text-muted);"></i></h3>
+                    <p>Prova final da unidade. Vale XP e libera o próximo módulo!</p>
+                </div>
+                <div>
+                    <button class="btn-action" id="btn-3" style="background: var(--warning-yellow);">Fazer Prova</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="floating-actions">
+        <div class="menu-acessibilidade" id="menu-acess">
+            <button class="btn btn-primary" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto Contraste</button>
+            <button class="btn btn-outline" style="background:var(--card-bg)" onclick="mudarFonte(2)"><i class="fas fa-font"></i><i class="fas fa-plus"></i> Aumentar</button>
+            <button class="btn btn-outline" style="background:var(--card-bg)" onclick="mudarFonte(-2)"><i class="fas fa-font"></i><i class="fas fa-minus"></i> Diminuir</button>
+        </div>
+        <button class="btn-floating" onclick="toggleMenuAcessibilidade()"><i class="fas fa-universal-access"></i></button>
+    </div>
+
+   <script>
+        // CONFIGURAÇÕES DE API E DADOS
+        const API_URL = 'https://algoritmolab.onrender.com/api'; // Sua API no Render
+        let userData = null;
+
+        // Variaveis de controle temporárias da página
+        let statusEtapas = { material: false, exercicios: false, avaliacao: false };
+
+        // --- 1. CARREGAR PERFIL ---
+        function carregarPerfil() {
+            if (localStorage.getItem('userLogado') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('user-name').innerText = userData.nome;
+                document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
+                
+                const avatarDiv = document.getElementById('user-avatar');
+                if (userData.foto) {
+                    avatarDiv.innerHTML = `<img src="${userData.foto}">`;
+                } else {
+                    avatarDiv.innerText = userData.nome.charAt(0).toUpperCase();
+                }
+            }
+
+            // Verifica se já havia terminado essa unidade antes
+            if(userData.etica_unidade1_concluida === true || userData.etica_unidade1_concluida === 'true') {
+                marcarConcluido('step-1', 'btn-1');
+                marcarConcluido('step-2', 'btn-2');
+                marcarConcluido('step-3', 'btn-3');
+            }
+        }
+
+        // --- 2. LÓGICA DE PROGRESSÃO SEQUENCIAL ---
+        
+        function marcarConcluido(idElemento, idBotao) {
+            const card = document.getElementById(idElemento);
+            card.classList.remove('active', 'locked');
+            card.classList.add('completed');
+            const icon = card.querySelector('.step-icon-box');
+            icon.innerHTML = '<i class="fas fa-check"></i>';
+            document.getElementById(idBotao).innerText = "Concluído";
+        }
+
+        function ativarProximo(idElemento, idLock) {
+            const card = document.getElementById(idElemento);
+            card.classList.remove('locked');
+            card.classList.add('active');
+            const lock = document.getElementById(idLock);
+            if(lock) lock.style.display = 'none'; // Some com o cadeado
+        }
+
+        function completarMaterial() {
+            if(userData.etica_unidade1_concluida) return; // Ja fez tudo
+            
+            alert("Abre o Modal/Página do Material (Simulação: Você leu o material!)");
+            statusEtapas.material = true;
+            
+            marcarConcluido('step-1', 'btn-1');
+            ativarProximo('step-2', 'lock-2');
+        }
+
+        function completarExercicios() {
+            if(document.getElementById('step-2').classList.contains('locked') || userData.etica_unidade1_concluida) return;
+            
+            alert("Abre a tela de Exercícios (Simulação: Você acertou tudo!)");
+            statusEtapas.exercicios = true;
+            
+            marcarConcluido('step-2', 'btn-2');
+            ativarProximo('step-3', 'lock-3');
+        }
+
+        async function iniciarAvaliacao() {
+            if(document.getElementById('step-3').classList.contains('locked') || userData.etica_unidade1_concluida) return;
+            
+            const confirmacao = confirm("Deseja iniciar a avaliação final? Ela te dará 100 XP e liberará o Módulo de Cyberbullying!");
+            if (!confirmacao) return;
+
+            // Simulação de que o usuário fez e passou na avaliação
+            statusEtapas.avaliacao = true;
+            marcarConcluido('step-3', 'btn-3');
+
+            // --- SALVANDO NO BANCO DE DADOS E SERVIDOR ---
+            try {
+                // 1. Atualiza LocalStorage
+                userData.etica_unidade1_concluida = true;
+                userData.xp = (userData.xp || 0) + 100;
+                localStorage.setItem('userData', JSON.stringify(userData));
+
+                // 2. Avisa o Backend (Render/Railway)
+                // Usamos fetch para um endpoint genérico de update que vc deve ter no server.js
+                await fetch(`${API_URL}/update-progress`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: userData.email, 
+                        campo: 'etica_unidade1_concluida', 
+                        valor: true,
+                        xpGanho: 100
+                    })
+                });
+
+                alert("🎉 Parabéns! Avaliação concluída. +100 XP adicionados. Você já pode avançar para a unidade de Cyberbullying!");
+                window.location.href = "trilha-etica.html"; // Volta para trilha
+
+            } catch (error) {
+                console.error("Erro ao salvar progresso no servidor:", error);
+                alert("Progresso salvo localmente, mas houve um problema de conexão com o servidor.");
+                window.location.href = "trilha-etica.html";
+            }
+        }
+
+        // --- 3. ACESSIBILIDADE ---
+        function toggleMenuAcessibilidade() {
+            const m = document.getElementById('menu-acess');
+            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+        }
+        function toggleAltoContraste() {
+            document.body.classList.toggle('high-contrast');
+            localStorage.setItem('acess_alto', document.body.classList.contains('high-contrast'));
+        }
+        let scale = 100;
+        function mudarFonte(d) {
+            scale += d;
+            document.documentElement.style.setProperty('--font-scale', `${scale}%`);
+        }
+
+        // Inicialização
+        window.onload = () => {
+            carregarPerfil();
+            if(localStorage.getItem('acess_alto') === 'true') document.body.classList.add('high-contrast');
+        };
+    </script>
+</body>
+</html>
