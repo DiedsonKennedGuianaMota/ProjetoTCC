@@ -343,6 +343,33 @@
             
             abrirModal("Quiz Finalizado!", "Excelente! Você ganhou +50 XP. Agora, vamos para o Estúdio Criativo na próxima aba!");
         }
+                async function sincronizarServidor(xpGanho) {
+            // 1. Atualiza o XP
+            userData.xp = (parseInt(userData.xp) || 0) + xpGanho;
+
+            // 2. Lógica para contar a ofensiva (streak) - 1 vez por dia
+            const dataHoje = new Date().toDateString();
+            if (localStorage.getItem('ultimaOfensiva') !== dataHoje) {
+                userData.streak = (parseInt(userData.streak) || 0) + 1;
+                localStorage.setItem('ultimaOfensiva', dataHoje);
+            }
+
+            // 3. Salva localmente e atualiza a interface com o novo valor
+            localStorage.setItem('userData', JSON.stringify(userData));
+            document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
+            
+            // 4. Envia o XP e a Ofensiva atualizada para o banco de dados
+            try {
+                await fetch(`${API_URL}/update-progress`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: userData.email, xp: userData.xp, streak: userData.streak })
+                });
+            } catch (error) {
+                console.error("Erro no servidor:", error);
+            }
+        }
+
 
         // ==========================================
         // LÓGICA DO ESTÚDIO DE VÍDEO (MediaRecorder)
