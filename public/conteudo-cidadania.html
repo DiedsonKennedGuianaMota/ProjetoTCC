@@ -313,6 +313,53 @@
                 window.location.href = "trilha-etica.html";
             }
         }
+       async function iniciarAvaliacao() {
+    if(document.getElementById('step-3').classList.contains('locked') || userData.etica_unidade1_concluida) return;
+    
+    const confirmacao = confirm("Deseja iniciar a avaliação final? Ela te dará 100 XP e liberará o Módulo de Cyberbullying!");
+    if (!confirmacao) return;
+
+    statusEtapas.avaliacao = true;
+    marcarConcluido('step-3', 'btn-3');
+
+    // --- ATUALIZAÇÃO CORRIGIDA PARA BANCO DE DADOS ---
+    try {
+        // 1. Calcula os novos valores localmente
+        userData.etica_unidade1_concluida = true;
+        userData.xp = (parseInt(userData.xp) || 0) + 100;
+        
+        // Opcional: Avança 1 dia de ofensiva ao terminar a unidade, caso queira essa lógica
+        userData.streak = (parseInt(userData.streak) || 0) + 1; 
+
+        // 2. Salva imediatamente no LocalStorage para atualizar a interface do usuário
+        localStorage.setItem('userData', JSON.stringify(userData));
+
+        // 3. Envia os dados consolidados para o back-end (Render -> Railway)
+        // Certifique-se de que sua rota '/api/update-progress' ou similar receba essas propriedades
+        const resposta = await fetch(`${API_URL}/update-progress`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                email: userData.email, 
+                xp: userData.xp,
+                streak: userData.streak,
+                etica_unidade1_concluida: true
+            })
+        });
+
+        if (!resposta.ok) {
+            throw new Error("Erro na resposta do servidor");
+        }
+
+        alert("🎉 Perfeito! Avaliação concluída. +100 XP e +1 Dia de Ofensiva salvos com sucesso no servidor!");
+        window.location.href = "trilha-etica.html";
+
+    } catch (error) {
+        console.error("Erro ao sincronizar com o Railway:", error);
+        alert("Seu progresso foi guardado no navegador, mas não conseguimos salvar no servidor. Verifique sua conexão ou o status do seu servidor no Render.");
+        window.location.href = "trilha-etica.html";
+    }
+}
 
         // --- 3. ACESSIBILIDADE ---
         function toggleMenuAcessibilidade() {
