@@ -274,30 +274,32 @@
             if(aba === 'studio' && !stream) iniciarCamera();
         }
 
-                async function sincronizarServidor(xpGanho) {
-            // Garante de forma absoluta que XP e Streak são números (se for null, vira 0)
+                        async function sincronizarServidor(xpGanho) {
+            // Garante que XP e Streak são números válidos (se o banco mandar null, vira 0)
             let xpAtual = parseInt(userData.xp) || 0;
             let streakAtual = parseInt(userData.streak) || 0;
 
             // 1. Atualiza o XP
             userData.xp = xpAtual + xpGanho;
 
-            // 2. Lógica para contar a ofensiva (streak)
+            // 2. Lógica de 1 ofensiva por dia (agora exclusiva para CADA usuário)
             const dataHoje = new Date().toDateString();
-            if (localStorage.getItem('ultimaOfensiva') !== dataHoje) {
-                // Se é o primeiro exercício do dia, soma +1
+            const chaveOfensivaUsuario = `ultimaOfensiva_${userData.email}`; // Ex: ultimaOfensiva_teste@gmail.com
+
+            if (localStorage.getItem(chaveOfensivaUsuario) !== dataHoje) {
+                // Se ESTE usuário específico não ganhou ofensiva hoje, soma +1
                 userData.streak = streakAtual + 1;
-                localStorage.setItem('ultimaOfensiva', dataHoje);
+                localStorage.setItem(chaveOfensivaUsuario, dataHoje);
             } else {
-                // Se já fez exercício hoje, apenas mantém o número seguro
+                // Se já ganhou hoje, mantém o número
                 userData.streak = streakAtual;
             }
 
-            // 3. Salva localmente e atualiza a interface
+            // 3. Salva localmente e atualiza a interface na hora
             localStorage.setItem('userData', JSON.stringify(userData));
             document.getElementById('user-streak').innerText = `${userData.streak} Dias`;
             
-            // 4. Salva no banco de dados (Agora é IMPOSSÍVEL ir como null)
+            // 4. Envia para o Banco de Dados
             try {
                 await fetch(`${API_URL}/update-progress`, {
                     method: 'POST',
@@ -308,9 +310,9 @@
                         streak: userData.streak 
                     })
                 });
-                console.log("Ofensiva e XP salvos no banco com sucesso!");
+                console.log(`Sucesso! Progresso salvo. Ofensiva atual: ${userData.streak}`);
             } catch (error) {
-                console.error("Erro no servidor:", error);
+                console.error("Erro ao enviar para o servidor:", error);
             }
         }
 
