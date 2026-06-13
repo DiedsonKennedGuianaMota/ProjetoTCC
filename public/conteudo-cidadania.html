@@ -154,7 +154,7 @@
 
         <div class="step-list">
             
-            <div class="step-card active" id="step-1" onclick="completarMaterial()">
+            <div class="step-card active" id="step-1" onclick="acessarMaterial()">
                 <div class="step-icon-box"><i class="fas fa-file-alt"></i></div>
                 <div class="step-info">
                     <h3>1. Material de Estudo</h3>
@@ -165,7 +165,7 @@
                 </div>
             </div>
 
-            <div class="step-card locked" id="step-2" onclick="completarExercicios()">
+            <div class="step-card locked" id="step-2" onclick="acessarExercicios()">
                 <div class="step-icon-box"><i class="fas fa-dumbbell"></i></div>
                 <div class="step-info">
                     <h3>2. Exercícios de Fixação <i class="fas fa-lock lock-icon" id="lock-2" style="font-size: 0.9rem; color: var(--text-muted);"></i></h3>
@@ -176,7 +176,7 @@
                 </div>
             </div>
 
-            <div class="step-card locked" id="step-3" onclick="iniciarAvaliacao()">
+            <div class="step-card locked" id="step-3" onclick="acessarAvaliacao()">
                 <div class="step-icon-box"><i class="fas fa-star"></i></div>
                 <div class="step-info">
                     <h3>3. Avaliação da Unidade <i class="fas fa-lock lock-icon" id="lock-3" style="font-size: 0.9rem; color: var(--text-muted);"></i></h3>
@@ -200,14 +200,10 @@
     </div>
 
    <script>
-        // CONFIGURAÇÕES DE API E DADOS
-        const API_URL = 'https://algoritmolab.onrender.com/api'; // Sua API no Render
+        const API_URL = 'https://algoritmolab.onrender.com/api';
         let userData = null;
 
-        // Variaveis de controle temporárias da página
-        let statusEtapas = { material: false, exercicios: false, avaliacao: false };
-
-        // --- 1. CARREGAR PERFIL ---
+        // --- 1. CARREGAR PERFIL E VERIFICAR PROGRESSO ---
         function carregarPerfil() {
             if (localStorage.getItem('userLogado') !== 'true') {
                 window.location.href = 'index.html';
@@ -227,23 +223,36 @@
                 }
             }
 
-            // Verifica se já havia terminado essa unidade antes
+            // Verifica se a unidade já foi toda concluída
             if(userData.etica_unidade1_concluida === true || userData.etica_unidade1_concluida === 'true') {
                 marcarConcluido('step-1', 'btn-1');
                 marcarConcluido('step-2', 'btn-2');
                 marcarConcluido('step-3', 'btn-3');
+                return;
+            }
+
+            // Lógica para destravar os cadeados gradualmente com base no que foi feito
+            // Se o material foi concluído na outra página (salvo no localStorage)
+            if(localStorage.getItem('material1_concluido') === 'true') {
+                marcarConcluido('step-1', 'btn-1', 'Revisar');
+                ativarProximo('step-2', 'lock-2');
+            }
+
+            // Se os exercicios foram concluídos na outra página
+            if(localStorage.getItem('exercicio1_concluido') === 'true') {
+                marcarConcluido('step-2', 'btn-2', 'Revisar');
+                ativarProximo('step-3', 'lock-3');
             }
         }
 
-        // --- 2. LÓGICA DE PROGRESSÃO SEQUENCIAL ---
-        
-        function marcarConcluido(idElemento, idBotao) {
+        // --- 2. LÓGICA DE INTERFACE DOS CARDS ---
+        function marcarConcluido(idElemento, idBotao, textoBotao = "Concluído") {
             const card = document.getElementById(idElemento);
             card.classList.remove('active', 'locked');
             card.classList.add('completed');
             const icon = card.querySelector('.step-icon-box');
             icon.innerHTML = '<i class="fas fa-check"></i>';
-            document.getElementById(idBotao).innerText = "Concluído";
+            document.getElementById(idBotao).innerText = textoBotao;
         }
 
         function ativarProximo(idElemento, idLock) {
@@ -251,117 +260,34 @@
             card.classList.remove('locked');
             card.classList.add('active');
             const lock = document.getElementById(idLock);
-            if(lock) lock.style.display = 'none'; // Some com o cadeado
+            if(lock) lock.style.display = 'none';
         }
 
-        function completarMaterial() {
-            if(userData.etica_unidade1_concluida) return; // Ja fez tudo
-            
-            alert("Abre o Modal/Página do Material (Simulação: Você leu o material!)");
-            statusEtapas.material = true;
-            
-            marcarConcluido('step-1', 'btn-1');
-            ativarProximo('step-2', 'lock-2');
+        // --- 3. REDIRECIONAMENTOS REAIS ---
+        function acessarMaterial() {
+            // Ao clicar, redireciona para o HTML do Material que criamos
+            window.location.href = 'material-cidadania.html';
         }
 
-        function completarExercicios() {
-            if(document.getElementById('step-2').classList.contains('locked') || userData.etica_unidade1_concluida) return;
-            
-            alert("Abre a tela de Exercícios (Simulação: Você acertou tudo!)");
-            statusEtapas.exercicios = true;
-            
-            marcarConcluido('step-2', 'btn-2');
-            ativarProximo('step-3', 'lock-3');
-        }
-
-        async function iniciarAvaliacao() {
-            if(document.getElementById('step-3').classList.contains('locked') || userData.etica_unidade1_concluida) return;
-            
-            const confirmacao = confirm("Deseja iniciar a avaliação final? Ela te dará 100 XP e liberará o Módulo de Cyberbullying!");
-            if (!confirmacao) return;
-
-            // Simulação de que o usuário fez e passou na avaliação
-            statusEtapas.avaliacao = true;
-            marcarConcluido('step-3', 'btn-3');
-
-            // --- SALVANDO NO BANCO DE DADOS E SERVIDOR ---
-            try {
-                // 1. Atualiza LocalStorage
-                userData.etica_unidade1_concluida = true;
-                userData.xp = (userData.xp || 0) + 100;
-                localStorage.setItem('userData', JSON.stringify(userData));
-
-                // 2. Avisa o Backend (Render/Railway)
-                // Usamos fetch para um endpoint genérico de update que vc deve ter no server.js
-                await fetch(`${API_URL}/update-progress`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        email: userData.email, 
-                        campo: 'etica_unidade1_concluida', 
-                        valor: true,
-                        xpGanho: 100
-                    })
-                });
-
-                alert("🎉 Parabéns! Avaliação concluída. +100 XP adicionados. Você já pode avançar para a unidade de Cyberbullying!");
-                window.location.href = "trilha-etica.html"; // Volta para trilha
-
-            } catch (error) {
-                console.error("Erro ao salvar progresso no servidor:", error);
-                alert("Progresso salvo localmente, mas houve um problema de conexão com o servidor.");
-                window.location.href = "trilha-etica.html";
+        function acessarExercicios() {
+            if(document.getElementById('step-2').classList.contains('locked')) {
+                alert("Você precisa concluir o Material de Estudo primeiro!");
+                return;
             }
-        }
-       async function iniciarAvaliacao() {
-    if(document.getElementById('step-3').classList.contains('locked') || userData.etica_unidade1_concluida) return;
-    
-    const confirmacao = confirm("Deseja iniciar a avaliação final? Ela te dará 100 XP e liberará o Módulo de Cyberbullying!");
-    if (!confirmacao) return;
-
-    statusEtapas.avaliacao = true;
-    marcarConcluido('step-3', 'btn-3');
-
-    // --- ATUALIZAÇÃO CORRIGIDA PARA BANCO DE DADOS ---
-    try {
-        // 1. Calcula os novos valores localmente
-        userData.etica_unidade1_concluida = true;
-        userData.xp = (parseInt(userData.xp) || 0) + 100;
-        
-        // Opcional: Avança 1 dia de ofensiva ao terminar a unidade, caso queira essa lógica
-        userData.streak = (parseInt(userData.streak) || 0) + 1; 
-
-        // 2. Salva imediatamente no LocalStorage para atualizar a interface do usuário
-        localStorage.setItem('userData', JSON.stringify(userData));
-
-        // 3. Envia os dados consolidados para o back-end (Render -> Railway)
-        // Certifique-se de que sua rota '/api/update-progress' ou similar receba essas propriedades
-        const resposta = await fetch(`${API_URL}/update-progress`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                email: userData.email, 
-                xp: userData.xp,
-                streak: userData.streak,
-                etica_unidade1_concluida: true
-            })
-        });
-
-        if (!resposta.ok) {
-            throw new Error("Erro na resposta do servidor");
+            // Redireciona para a página de exercícios (você precisará criar esse arquivo)
+            window.location.href = 'exercicios-cidadania.html';
         }
 
-        alert("🎉 Perfeito! Avaliação concluída. +100 XP e +1 Dia de Ofensiva salvos com sucesso no servidor!");
-        window.location.href = "trilha-etica.html";
+        function acessarAvaliacao() {
+            if(document.getElementById('step-3').classList.contains('locked')) {
+                alert("Você precisa concluir os Exercícios primeiro!");
+                return;
+            }
+            // Redireciona para a página de avaliação (você precisará criar esse arquivo)
+            window.location.href = 'avaliacao-cidadania.html';
+        }
 
-    } catch (error) {
-        console.error("Erro ao sincronizar com o Railway:", error);
-        alert("Seu progresso foi guardado no navegador, mas não conseguimos salvar no servidor. Verifique sua conexão ou o status do seu servidor no Render.");
-        window.location.href = "trilha-etica.html";
-    }
-}
-
-        // --- 3. ACESSIBILIDADE ---
+        // --- 4. ACESSIBILIDADE ---
         function toggleMenuAcessibilidade() {
             const m = document.getElementById('menu-acess');
             m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
