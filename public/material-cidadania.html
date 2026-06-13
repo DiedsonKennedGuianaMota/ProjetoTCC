@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material de Estudo: Cidadania Digital - ALGORITMOLAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. VARIÁVEIS E TEMAS (IDÊNTICO ÀS ANTERIORES)
+           ========================================== */
+        :root {
+            --primary-blue: #1c3d5a;
+            --accent-teal: #2b6cb0;
+            --accent-purple: #805ad5;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            --fire-color: #ff9f43;
+            --success-green: #48bb78;
+            --heart-red: #e53e3e;
+            --font-scale: 100%;
+        }
+
+        .high-contrast {
+            --primary-blue: #00ebff; --accent-teal: #ffff00; --accent-purple: #ff00ff;
+            --bg-color: #121212; --card-bg: #1e1e1e; --text-main: #ffffff;
+            --text-muted: #a0aec0; --border-color: #4a5568;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.2s ease; }
+        html { font-size: var(--font-scale); }
+        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
+
+        /* ==========================================
+           2. NAVBAR E PERFIL
+           ========================================== */
+        .navbar { 
+            background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 50;
+        }
+        .nav-profile { display: flex; align-items: center; gap: 15px; }
+        .avatar { 
+            width: 55px; height: 55px; background: linear-gradient(135deg, var(--accent-teal), var(--primary-blue)); color: white; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 700; 
+            border: 3px solid var(--card-bg); box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden;
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .streak-badge { display: inline-flex; align-items: center; gap: 5px; color: var(--fire-color); font-weight: 800; font-size: 0.95rem; }
+
+        .btn { padding: 10px 20px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; text-decoration: none; }
+        .btn-primary { background: var(--accent-teal); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-outline { background: transparent; color: var(--primary-blue); border: 2px solid var(--border-color); }
+        .btn-outline:hover { border-color: var(--primary-blue); background: var(--bg-color); }
+
+        /* ==========================================
+           3. LAYOUT DUPLO (APOSTILA + TIKTOK)
+           ========================================== */
+        .workspace { display: flex; height: calc(100vh - 86px); width: 100%; }
+
+        /* Coluna da Apostila */
+        .apostila-container { width: 60%; padding: 40px; overflow-y: auto; background: var(--card-bg); border-right: 1px solid var(--border-color); }
+        .apostila-header { margin-bottom: 30px; border-bottom: 2px solid var(--bg-color); padding-bottom: 15px; }
+        .apostila-header h1 { color: var(--primary-blue); font-size: 2.2rem; }
+        .apostila-content p { font-size: 1.1rem; line-height: 1.8; color: var(--text-main); margin-bottom: 20px; text-align: justify; }
+        .concept-box { background: var(--bg-color); border-left: 5px solid var(--accent-purple); padding: 20px; border-radius: 0 15px 15px 0; margin: 25px 0; }
+
+        /* Coluna do TikTok / Reels */
+        .reels-container { width: 40%; background: #0f0f1f; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        .reels-feed { width: 340px; height: 600px; border-radius: 20px; position: relative; overflow-y: scroll; snap-type: y mandatory; scrollbar-width: none; box-shadow: 0 15px 40px rgba(0,0,0,0.5); border: 4px solid #222; }
+        .reels-feed::-webkit-scrollbar { display: none; }
+
+        .video-player { width: 100%; height: 100%; snap-align: start; position: relative; background: #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .video-player iframe { width: 100%; height: 100%; border: none; }
+
+        /* Botões de interação por cima do vídeo (Estilo TikTok) */
+        .video-actions { position: absolute; right: 15px; bottom: 80px; display: flex; flex-direction: column; gap: 20px; z-index: 10; align-items: center; }
+        .action-button { background: rgba(0, 0, 0, 0.5); width: 50px; height: 50px; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; font-size: 1.2rem; }
+        .action-button:hover { transform: scale(1.1); }
+        .action-button.liked { color: var(--heart-red); }
+        .action-label { font-size: 0.75rem; color: white; font-weight: 600; margin-top: 2px; text-shadow: 1px 1px 3px black; }
+
+        .video-info-overlay { position: absolute; left: 15px; bottom: 20px; color: white; z-index: 10; width: 75%; text-shadow: 1px 1px 4px rgba(0,0,0,0.8); pointer-events: none; }
+        .video-info-overlay h4 { font-size: 1rem; margin-bottom: 5px; }
+        .video-info-overlay p { font-size: 0.85rem; opacity: 0.9; }
+
+        /* ==========================================
+           4. MODAL ANIMADO DE COMENTÁRIOS
+           ========================================== */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 100; opacity: 0; transition: opacity 0.3s ease; }
+        .modal.open { display: flex; opacity: 1; }
+        .modal-content { background: var(--card-bg); width: 450px; max-width: 90%; border-radius: 25px; padding: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); transform: translateY(-50px); transition: transform 0.3s ease; display: flex; flex-direction: column; max-height: 80vh; }
+        .modal.open .modal-content { transform: translateY(0); }
+        
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { color: var(--primary-blue); }
+        .close-modal { font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
+
+        .comments-list { overflow-y: auto; flex-grow: 1; margin-bottom: 20px; display: flex; flex-direction: column; gap: 15px; padding-right: 5px; }
+        .comment-item { display: flex; gap: 10px; background: var(--bg-color); padding: 12px; border-radius: 12px; font-size: 0.9rem; }
+        .comment-user { font-weight: 700; color: var(--accent-teal); margin-bottom: 2px; }
+
+        .comment-box-input { display: flex; gap: 10px; }
+        .comment-box-input input { flex-grow: 1; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); outline: none; }
+
+        /* ==========================================
+           5. ACESSIBILIDADE FLOATING
+           ========================================== */
+        .floating-actions { position: fixed; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 99; }
+        .btn-floating { width: 60px; height: 60px; border-radius: 50%; background: var(--primary-blue); color: white; box-shadow: 0 8px 25px rgba(0,0,0,0.25); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .btn-floating:hover { transform: scale(1.1); }
+        .menu-acessibilidade { position: absolute; bottom: 75px; left: 0; background: var(--card-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: none; flex-direction: column; gap: 10px; width: 220px; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-profile">
+            <div class="avatar" id="user-avatar">...</div>
+            <div>
+                <strong id="user-name" style="font-size: 1.1rem; display: block;">Carregando...</strong>
+                <div class="streak-badge"><i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span></div>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-primary" onclick="finalizarLeitura()"><i class="fas fa-check-circle"></i> Concluir Leitura (+30 XP)</button>
+            <a href="conteudo-cidadania.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Voltar</a>
+        </div>
+    </header>
+
+    <main class="workspace">
+        
+        <section class="apostila-container">
+            <div class="apostila-header">
+                <h1>Direitos e Deveres na Internet</h1>
+            </div>
+            <div class="apostila-content">
+                <p>A <strong>Cidadania Digital</strong> pode ser definida como o uso consciente, responsável, ético e seguro das tecnologias de informação. Assim como no mundo físico, a internet possui regras claras de convivência e leis que regem nossas interações cotidianas.</p>
+                
+                <div class="concept-box">
+                    <strong>💡 Regra de Ouro da Web:</strong> O anonimato total na internet é um mito. Cada ação deixa uma pegada digital (endereço de IP, logs de acesso) que pode ser rastreada judicialmente caso ocorra um crime digital.
+                </div>
+
+                <h2>Seus Direitos Digitais</h2>
+                <p>No Brasil, o Marco Civil da Internet assegura direitos fundamentais aos usuários, como a privacidade dos seus dados pessoais, a inviolabilidade de suas comunicações e a garantia de que a velocidade da sua internet não será reduzida com base no conteúdo que você consome (neutralidade da rede).</p>
+                
+                <h2>Seus Deveres Fundamentais</h2>
+                <p>Exercer a cidadania digital significa respeitar a propriedade intelectual (não piratar conteúdos ou plagiar códigos), proteger suas próprias informações alterando senhas frequentemente e, principalmente, não disseminar Fake News ou discursos de ódio (Cyberbullying).</p>
+            </div>
+        </section>
+
+        <section class="reels-container">
+            <div class="reels-feed">
+                
+                <div class="video-player" id="v1">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&mute=1" allowfullscreen></iframe>
+                    <div class="video-info-overlay">
+                        <h4>@algoritmolab</h4>
+                        <p>O que é Cidadania Digital em 60 segundos! 🌐🔥</p>
+                    </div>
+                    <div class="video-actions">
+                        <div class="action-button" onclick="curtirVideo(this)"><i class="fas fa-heart"></i></div>
+                        <span class="action-label" id="likes-v1">142</span>
+                        <div class="action-button" onclick="abrirComentarios('v1')"><i class="fas fa-comment"></i></div>
+                        <span class="action-label">28</span>
+                    </div>
+                </div>
+
+                <div class="video-player" id="v2">
+                    <iframe src="https://www.youtube.com/embed/SF7906A9Z8E?autoplay=0&mute=1" allowfullscreen></iframe>
+                    <div class="video-info-overlay">
+                        <h4>@prof_seguranca</h4>
+                        <p>A verdade sobre a Pegada Digital que você deixa na web. 🐾🔍</p>
+                    </div>
+                    <div class="video-actions">
+                        <div class="action-button" onclick="curtirVideo(this)"><i class="fas fa-heart"></i></div>
+                        <span class="action-label" id="likes-v2">94</span>
+                        <div class="action-button" onclick="abrirComentarios('v2')"><i class="fas fa-comment"></i></div>
+                        <span class="action-label">12</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <div class="modal" id="modal-comentarios">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Comentários</h3>
+                <span class="close-modal" onclick="fecharComentarios()">&times;</span>
+            </div>
+            <div class="comments-list" id="lista-comentarios">
+                </div>
+            <div class="comment-box-input">
+                <input type="text" id="novo-comentario" placeholder="Escreva um comentário público educativo...">
+                <button class="btn btn-primary" onclick="postarComentario()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-actions">
+        <div class="menu-acessibilidade" id="menu-acess">
+            <button class="btn btn-primary" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto Contraste</button>
+            <button class="btn btn-outline" style="background:var(--card-bg)" onclick="mudarFonte(2)"><i class="fas fa-font"></i> + Aumentar</button>
+            <button class="btn btn-outline" style="background:var(--card-bg)" onclick="mudarFonte(-2)"><i class="fas fa-font"></i> - Diminuir</button>
+        </div>
+        <button class="btn-floating" onclick="toggleMenuAcessibilidade()"><i class="fas fa-universal-access"></i></button>
+    </div>
+
+    <script>
+        const API_URL = 'https://algoritmolab.onrender.com/api';
+        let userData = null;
+        let videoAtivoAtual = '';
+
+        // Banco de dados simulado local para comentários de cada vídeo
+        let bancoComentarios = {
+            v1: [
+                { user: 'Ana Paula', text: 'Excelente explicação! Não sabia sobre o Marco Civil.' },
+                { user: 'Marcos_Dev', text: 'Muito direto e prático esse formato!' }
+            ],
+            v2: [
+                { user: 'Carlos Eduardo', text: 'Vou apagar meu histórico agora mesmo kkkk' }
+            ]
+        };
+
+        // --- 1. SINCRO DE PERFIL E DADOS ---
+        function carregarPerfil() {
+            if (localStorage.getItem('userLogado') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+            userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('user-name').innerText = userData.nome;
+                document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
+                
+                const avatarDiv = document.getElementById('user-avatar');
+                if (userData.foto) {
+                    avatarDiv.innerHTML = `<img src="${userData.foto}">`;
+                } else {
+                    avatarDiv.innerText = userData.nome.charAt(0).toUpperCase();
+                }
+            }
+        }
+
+        // --- 2. ACESSOS DO FEED REELS/TIKTOK ---
+        function curtirVideo(btn) {
+            btn.classList.toggle('liked');
+            const label = btn.nextElementSibling;
+            let currentLikes = parseInt(label.innerText);
+            
+            if(btn.classList.contains('liked')) {
+                label.innerText = currentLikes + 1;
+            } else {
+                label.innerText = currentLikes - 1;
+            }
+        }
+
+        function abrirComentarios(idVideo) {
+            videoAtivoAtual = idVideo;
+            const modal = document.getElementById('modal-comentarios');
+            modal.classList.add('open');
+            renderizarComentarios();
+        }
+
+        function fecharComentarios() {
+            document.getElementById('modal-comentarios').classList.remove('open');
+        }
+
+        function renderizarComentarios() {
+            const container = document.getElementById('lista-comentarios');
+            container.innerHTML = '';
+            
+            const lista = bancoComentarios[videoAtivoAtual] || [];
+            lista.forEach(c => {
+                container.innerHTML += `
+                    <div class="comment-item">
+                        <div>
+                            <div class="comment-user">${c.user}</div>
+                            <div>${c.text}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function postarComentario() {
+            const input = document.getElementById('novo-comentario');
+            if(!input.value.trim()) return;
+
+            bancoComentarios[videoAtivoAtual].push({
+                user: userData ? userData.nome : 'Você',
+                text: input.value
+            });
+
+            input.value = '';
+            renderizarComentarios();
+        }
+
+        // --- 3. FINALIZAR LEITURA E SALVAR NO SERVIDOR ---
+        async function finalizarLeitura() {
+            try {
+                // Adiciona 30 XP pela leitura
+                userData.xp = (parseInt(userData.xp) || 0) + 30;
+                localStorage.setItem('userData', JSON.stringify(userData));
+                carregarPerfil(); // Atualiza contador no topo
+
+                // Dispara o fetch correto enviando a carteira sincronizada para o Railway
+                await fetch(`${API_URL}/update-progress`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: userData.email, 
+                        xp: userData.xp,
+                        streak: userData.streak
+                    })
+                });
+
+                alert("📚 Artigo e Vídeos validados! +30 XP adicionados e gravados com sucesso no banco de dados.");
+                window.location.href = "conteudo-cidadania.html";
+
+            } catch (error) {
+                console.error("Erro ao salvar progresso:", error);
+                alert("Progresso salvo apenas localmente. Erro ao conectar com o Railway.");
+                window.location.href = "conteudo-cidadania.html";
+            }
+        }
+
+        // --- 4. SISTEMA DE ACESSIBILIDADE ---
+        function toggleMenuAcessibilidade() {
+            const m = document.getElementById('menu-acess');
+            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+        }
+        function toggleAltoContraste() {
+            document.body.classList.toggle('high-contrast');
+        }
+        let scale = 100;
+        function mudarFonte(d) {
+            scale += d;
+            document.documentElement.style.setProperty('--font-scale', `${scale}%`);
+        }
+
+        window.onload = carregarPerfil;
+    </script>
+</body>
+</html>
