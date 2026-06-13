@@ -227,17 +227,43 @@
         // ==========================================
         // LÓGICA GERAL E PERFIL
         // ==========================================
-        function carregarPerfil() {
+                async function carregarPerfil() {
             if (localStorage.getItem('userLogado') !== 'true') {
                 window.location.href = 'index.html'; return;
             }
+            
+            // Pega os dados básicos (como o email) do login
             userData = JSON.parse(localStorage.getItem('userData'));
-            if (userData) {
+            
+            if (userData && userData.email) {
+                try {
+                    // BUSCA OS DADOS REAIS DIRETO DO BANCO DE DADOS (RAILWAY)
+                    // Aqui estou supondo que você tenha uma rota '/get-user' que busque pelo email
+                    const resposta = await fetch(`${API_URL}/get-user?email=${userData.email}`);
+                    
+                    if (resposta.ok) {
+                        const dadosDoBanco = await resposta.json();
+                        
+                        // Atualiza a memória local com os dados fresquinhos do banco
+                        userData.streak = dadosDoBanco.streak || 0;
+                        userData.xp = dadosDoBanco.xp || 0;
+                        
+                        localStorage.setItem('userData', JSON.stringify(userData));
+                    }
+                } catch (erro) {
+                    console.error("Erro ao buscar dados do banco:", erro);
+                }
+
+                // Renderiza na tela os valores (agora garantidos pelo banco)
                 document.getElementById('user-name').innerText = userData.nome;
-                document.getElementById('user-streak').innerText = `${userData.streak || 0} Dias`;
+                document.getElementById('user-streak').innerText = `${userData.streak} Dias`;
+                
                 const avatarDiv = document.getElementById('user-avatar');
-                if (userData.foto) avatarDiv.innerHTML = `<img src="${userData.foto}">`;
-                else avatarDiv.innerText = userData.nome.charAt(0).toUpperCase();
+                if (userData.foto) {
+                    avatarDiv.innerHTML = `<img src="${userData.foto}">`;
+                } else {
+                    avatarDiv.innerText = userData.nome.charAt(0).toUpperCase();
+                }
             }
         }
 
