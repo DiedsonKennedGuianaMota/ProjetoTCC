@@ -297,4 +297,49 @@ app.post('/api/buy-item', async (req, res) => {
     }
 });
 
+// ==========================================
+// ROTAS DE PROGRESSO E OFENSIVA (STREAK)
+// ==========================================
+
+// Rota para BUSCAR os dados atualizados do usuário (XP e Ofensiva)
+app.get('/api/get-user', async (req, res) => {
+    const { email } = req.query;
+
+    if (!email) {
+        return res.status(400).json({ error: 'E-mail é obrigatório.' });
+    }
+
+    try {
+        const query = 'SELECT nome, email, xp, streak, foto FROM usuarios WHERE email = ?';
+        const [rows] = await db.promise().query(query, [email]);
+
+        if (rows.length > 0) {
+            res.status(200).json(rows[0]);
+        } else {
+            res.status(404).json({ error: 'Usuário não encontrado.' });
+        }
+    } catch (error) {
+        console.error('Erro ao buscar dados do usuário:', error);
+        res.status(500).json({ error: 'Erro no servidor ao buscar dados.' });
+    }
+});
+
+// Rota para ATUALIZAR o XP e a Ofensiva (Streak) no banco
+app.post('/api/update-progress', async (req, res) => {
+    const { email, xp, streak } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ error: 'E-mail é obrigatório.' });
+    }
+
+    try {
+        const query = 'UPDATE usuarios SET xp = ?, streak = ? WHERE email = ?';
+        await db.promise().query(query, [xp, streak, email]);
+        
+        res.status(200).json({ message: 'Progresso atualizado com sucesso no banco!' });
+    } catch (error) {
+        console.error('Erro ao atualizar progresso:', error);
+        res.status(500).json({ error: 'Erro no servidor ao salvar progresso.' });
+    }
+});
 
