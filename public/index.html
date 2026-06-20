@@ -3,94 +3,710 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALGORITMOLAB - Início</title>
+    <title>PLATAFORMA TCC- Início</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary-blue: #1c3d5a;
-            --accent-teal: #2b6cb0;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-main: #333333;
+            --primary-blue: #16213e;
+            --secondary-blue: #1f3b73;
+            --accent-teal: #00b4d8;
+            --accent-green: #38b000;
+            --accent-purple: #7b2ff7;
+            --bg-color: #eef6ff;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --text-main: #263238;
+            --text-muted: #667085;
             --error: #e53e3e;
             --success: #38a169;
+            --white: #ffffff;
+            --line: rgba(255,255,255,0.35);
+            --shadow: 0 24px 70px rgba(15, 35, 80, 0.18);
+            --radius-lg: 32px;
+            --radius-md: 18px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Poppins', sans-serif; 
+        }
         
-        body { background: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
+        body { 
+            background: radial-gradient(circle at top left, #dff8ff 0%, #f3f8ff 32%, #edf1ff 70%, #eef6ff 100%);
+            color: var(--text-main); 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+            position: relative;
+        }
 
-        /* Animações */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(22, 33, 62, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(22, 33, 62, 0.045) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.2));
+            pointer-events: none;
+            z-index: -3;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 520px;
+            height: 520px;
+            right: -180px;
+            top: -130px;
+            background: radial-gradient(circle, rgba(0,180,216,0.28), transparent 68%);
+            z-index: -2;
+            animation: floatGlow 8s ease-in-out infinite alternate;
+        }
+
+        .bg-shape {
+            position: fixed;
+            border-radius: 999px;
+            filter: blur(4px);
+            opacity: 0.75;
+            z-index: -1;
+        }
+
+        .shape-one {
+            width: 260px;
+            height: 260px;
+            left: -90px;
+            bottom: 30px;
+            background: radial-gradient(circle, rgba(123,47,247,0.18), transparent 70%);
+            animation: floatShape 9s ease-in-out infinite;
+        }
+
+        .shape-two {
+            width: 190px;
+            height: 190px;
+            right: 14%;
+            bottom: 12%;
+            background: radial-gradient(circle, rgba(56,176,0,0.16), transparent 68%);
+            animation: floatShape 11s ease-in-out infinite reverse;
+        }
+
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(35px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(0,180,216,0.0); }
+            50% { transform: scale(1.04); box-shadow: 0 0 35px rgba(0,180,216,0.24); }
+            100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,180,216,0.0); }
         }
 
-        .container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        @keyframes floatShape {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-28px) translateX(18px); }
+        }
 
-        .hero-section { text-align: center; margin-bottom: 40px; animation: fadeInDown 1s ease-out; }
-        .hero-section h1 { font-size: 3rem; color: var(--primary-blue); font-weight: 800; margin: 10px 0; letter-spacing: -1px; }
-        .hero-section p { font-size: 1.1rem; max-width: 500px; color: #555; margin: 0 auto; line-height: 1.6; }
+        @keyframes floatGlow {
+            from { transform: translateY(0) scale(1); }
+            to { transform: translateY(30px) scale(1.05); }
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shine {
+            from { left: -90%; }
+            to { left: 120%; }
+        }
+
+        @keyframes tinyFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .container { 
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            align-items: center;
+            gap: 42px;
+            width: min(1180px, 100%);
+            margin: 0 auto;
+            padding: 42px 24px;
+        }
+
+        .hero-section { 
+            animation: fadeInDown 0.9s ease-out; 
+            position: relative;
+        }
+
+        .brand-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 16px 10px 10px;
+            border: 1px solid rgba(255,255,255,0.75);
+            border-radius: 999px;
+            background: rgba(255,255,255,0.62);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 14px 40px rgba(31,59,115,0.08);
+            margin-bottom: 26px;
+        }
+
+        .logo-mark {
+            width: 58px;
+            height: 58px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal));
+            color: white;
+            display: grid;
+            place-items: center;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2.8s ease-in-out infinite;
+        }
+
+        .logo-mark::before {
+            content: "";
+            position: absolute;
+            inset: 7px;
+            border: 1px dashed rgba(255,255,255,0.55);
+            border-radius: 16px;
+            animation: orbit 12s linear infinite;
+        }
+
+        .logo-mark::after {
+            content: "";
+            position: absolute;
+            width: 90px;
+            height: 28px;
+            background: rgba(255,255,255,0.18);
+            transform: rotate(-35deg);
+            animation: shine 4s ease-in-out infinite;
+        }
+
+        .logo-mark span {
+            position: relative;
+            z-index: 2;
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .brand-text strong {
+            display: block;
+            color: var(--primary-blue);
+            font-weight: 800;
+            font-size: 0.96rem;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-text small {
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            font-weight: 500;
+        }
+
+        .hero-section h1 { 
+            font-size: clamp(2.6rem, 6vw, 5.5rem);
+            color: var(--primary-blue); 
+            font-weight: 800; 
+            line-height: 0.98;
+            letter-spacing: -3px;
+            max-width: 720px;
+            margin-bottom: 22px;
+        }
+
+        .hero-section h1 span {
+            display: inline-block;
+            background: linear-gradient(120deg, var(--accent-teal), var(--accent-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-section p { 
+            font-size: 1.08rem; 
+            max-width: 650px; 
+            color: #526070; 
+            line-height: 1.8; 
+            margin-bottom: 28px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.75);
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 12px 28px rgba(31,59,115,0.07);
+            color: var(--primary-blue);
+            font-size: 0.88rem;
+            font-weight: 600;
+            backdrop-filter: blur(12px);
+        }
+
+        .hero-pill i {
+            color: var(--accent-teal);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            max-width: 760px;
+        }
+
+        .info-card {
+            padding: 18px;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.86);
+            box-shadow: 0 16px 36px rgba(31,59,115,0.08);
+            backdrop-filter: blur(16px);
+            transition: 0.3s ease;
+            animation: tinyFloat 5s ease-in-out infinite;
+        }
+
+        .info-card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .info-card:nth-child(3) {
+            animation-delay: 0.8s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 44px rgba(31,59,115,0.14);
+        }
+
+        .info-card i {
+            width: 42px;
+            height: 42px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            color: white;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal));
+            margin-bottom: 12px;
+        }
+
+        .info-card strong {
+            display: block;
+            color: var(--primary-blue);
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .info-card small {
+            display: block;
+            color: var(--text-muted);
+            line-height: 1.55;
+            font-size: 0.76rem;
+        }
 
         .form-container { 
             width: 100%; 
-            max-width: 400px; 
+            max-width: 450px; 
             perspective: 1000px; 
             animation: slideInUp 1s ease-out forwards;
-            animation-delay: 0.3s;
+            animation-delay: 0.2s;
             opacity: 0;
+            justify-self: end;
         }
 
-        .card { background: var(--card-bg); padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.3s ease; }
-        .card h2 { color: var(--primary-blue); text-align: center; margin-bottom: 25px; }
+        .card { 
+            background: var(--card-bg); 
+            padding: 34px; 
+            border-radius: var(--radius-lg); 
+            box-shadow: var(--shadow);
+            transition: all 0.35s ease; 
+            border: 1px solid rgba(255,255,255,0.92);
+            backdrop-filter: blur(22px);
+            position: relative;
+            overflow: hidden;
+        }
 
-        .form-group { margin-bottom: 20px; position: relative; }
-        .form-group i { position: absolute; left: 15px; top: 14px; color: #a0aec0; }
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,180,216,0.16), transparent 42%, rgba(123,47,247,0.10));
+            pointer-events: none;
+        }
+
+        .card::after {
+            content: "";
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 999px;
+            background: rgba(0,180,216,0.12);
+            right: -58px;
+            top: -58px;
+            pointer-events: none;
+        }
+
+        .card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 80px rgba(15,35,80,0.23);
+        }
+
+        .form-badge {
+            width: fit-content;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 13px;
+            border-radius: 999px;
+            background: rgba(0,180,216,0.10);
+            color: var(--secondary-blue);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .card h2 { 
+            color: var(--primary-blue); 
+            text-align: center; 
+            margin-bottom: 10px; 
+            font-size: 1.55rem;
+            letter-spacing: -0.8px;
+        }
+
+        .form-subtitle {
+            color: var(--text-muted);
+            text-align: center;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .form-group { 
+            margin-bottom: 16px; 
+            position: relative; 
+        }
+
+        .form-group i { 
+            position: absolute; 
+            left: 17px; 
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8ea0b8; 
+            transition: 0.25s ease;
+            z-index: 3;
+        }
+
         .form-control { 
-            width: 100%; padding: 12px 15px 12px 45px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; transition: border-color 0.3s;
+            width: 100%; 
+            padding: 15px 16px 15px 48px; 
+            border: 2px solid rgba(31,59,115,0.09); 
+            border-radius: 16px; 
+            font-size: 0.96rem; 
+            transition: 0.28s ease;
+            background: rgba(255,255,255,0.78);
+            color: var(--primary-blue);
+            outline: none;
         }
-        .form-control:focus { outline: none; border-color: var(--accent-teal); }
+
+        .form-control::placeholder {
+            color: #98a7ba;
+        }
+
+        .form-control:focus { 
+            border-color: rgba(0,180,216,0.75);
+            box-shadow: 0 0 0 5px rgba(0,180,216,0.12);
+            background: white;
+        }
+
+        .form-group:focus-within i {
+            color: var(--accent-teal);
+        }
 
         .btn { 
-            width: 100%; padding: 14px; background: var(--accent-teal); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background 0.3s, transform 0.1s; display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+            width: 100%; 
+            padding: 15px; 
+            background: linear-gradient(135deg, var(--accent-teal), var(--secondary-blue)); 
+            color: white; 
+            border: none; 
+            border-radius: 17px; 
+            font-size: 1rem; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: 0.3s ease; 
+            display: inline-flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px;
+            box-shadow: 0 16px 30px rgba(0,180,216,0.28);
+            position: relative;
+            overflow: hidden;
         }
-        .btn:hover { background: var(--primary-blue); }
-        .btn:active { transform: scale(0.98); }
 
-        .toggle-link { display: block; text-align: center; margin-top: 20px; color: var(--accent-teal); font-weight: 600; cursor: pointer; text-decoration: underline; }
-        .toggle-link:hover { color: var(--primary-blue); }
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 70%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+            transition: 0.4s;
+        }
 
-        .alert { padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-size: 0.9rem; display: none; }
-        .alert-error { background: #fed7d7; color: var(--error); border: 1px solid #feb2b2; }
-        .alert-success { background: #c6f6d5; color: var(--success); border: 1px solid #9ae6b4; }
+        .btn:hover::before {
+            left: 130%;
+        }
 
-        .hidden { display: none; }
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 20px 38px rgba(31,59,115,0.25);
+        }
+
+        .btn:active { 
+            transform: scale(0.98); 
+        }
+
+        #card-register .btn {
+            background: linear-gradient(135deg, var(--success), #0496ff) !important;
+            box-shadow: 0 16px 30px rgba(56,161,105,0.25);
+        }
+
+        .toggle-link { 
+            display: block; 
+            text-align: center; 
+            margin-top: 20px; 
+            color: var(--secondary-blue); 
+            font-weight: 700; 
+            cursor: pointer; 
+            text-decoration: none;
+            font-size: 0.92rem;
+            transition: 0.25s ease;
+        }
+
+        .toggle-link:hover { 
+            color: var(--accent-teal); 
+            transform: translateY(-1px);
+        }
+
+        .toggle-link::after {
+            content: "";
+            display: block;
+            width: 42px;
+            height: 3px;
+            margin: 7px auto 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--accent-teal), var(--accent-purple));
+            opacity: 0.65;
+        }
+
+        .alert { 
+            padding: 12px 14px; 
+            border-radius: 14px; 
+            margin-bottom: 16px; 
+            text-align: center; 
+            font-size: 0.88rem; 
+            display: none; 
+            font-weight: 600;
+        }
+
+        .alert-error { 
+            background: #fff1f1; 
+            color: var(--error); 
+            border: 1px solid #ffc9c9; 
+        }
+
+        .alert-success { 
+            background: #effff4; 
+            color: var(--success); 
+            border: 1px solid #b8f2c8; 
+        }
+
+        .mini-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .mini-detail {
+            border-radius: 16px;
+            padding: 12px;
+            background: rgba(255,255,255,0.65);
+            border: 1px solid rgba(31,59,115,0.08);
+            color: var(--text-muted);
+            font-size: 0.73rem;
+            line-height: 1.45;
+        }
+
+        .mini-detail i {
+            color: var(--accent-teal);
+            margin-right: 4px;
+        }
+
+        .hidden { 
+            display: none; 
+        }
+
+        @media (max-width: 980px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 28px;
+                padding-top: 30px;
+            }
+
+            .hero-section {
+                text-align: center;
+            }
+
+            .brand-row {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                max-width: 520px;
+                margin: 0 auto;
+            }
+
+            .form-container {
+                justify-self: center;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .container {
+                padding: 24px 15px;
+            }
+
+            .hero-section h1 {
+                letter-spacing: -1.5px;
+            }
+
+            .card {
+                padding: 26px 20px;
+                border-radius: 26px;
+            }
+
+            .brand-text strong {
+                font-size: 0.82rem;
+            }
+
+            .brand-text small {
+                font-size: 0.68rem;
+            }
+
+            .logo-mark {
+                width: 50px;
+                height: 50px;
+            }
+
+            .hero-pill {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .mini-details {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 
+    <div class="bg-shape shape-one"></div>
+    <div class="bg-shape shape-two"></div>
+
     <main class="container">
         <section class="hero-section">
-            <i class="fas fa-laptop-code" style="font-size: 4rem; color: var(--accent-teal); animation: pulse 2s infinite;"></i>
-            <h1>ALGORITMOLAB</h1>
-            <p>O ambiente perfeito para dominar a Lógica de Programação. Gamificado, prático e feito para você.</p>
+            <div class="brand-row">
+                <div class="logo-mark">
+                    <span>ND</span>
+                </div>
+                <div class="brand-text">
+                    <strong>NEXO DIGITAL</strong>
+                    <small>Aprender, analisar e agir com consciência online</small>
+                </div>
+            </div>
+
+            <h1>Desenvolva seu <span>letramento digital</span> de forma inteligente.</h1>
+
+            <p>
+                Uma plataforma educacional interativa criada para fortalecer o pensamento crítico,
+                a segurança na internet, a validação de fontes e o uso responsável das tecnologias digitais.
+            </p>
+
+            <div class="hero-actions">
+                <div class="hero-pill"><i class="fas fa-shield-alt"></i> Segurança digital</div>
+                <div class="hero-pill"><i class="fas fa-search"></i> Checagem de fontes</div>
+                <div class="hero-pill"><i class="fas fa-gamepad"></i> Aprendizagem gamificada</div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fas fa-brain"></i>
+                    <strong>Pensamento crítico</strong>
+                    <small>Atividades para analisar informações, identificar riscos e evitar conteúdos manipulados.</small>
+                </div>
+
+                <div class="info-card">
+                    <i class="fas fa-network-wired"></i>
+                    <strong>Cultura digital</strong>
+                    <small>Conteúdos sobre comportamento ético, produção digital e navegação consciente.</small>
+                </div>
+
+                <div class="info-card">
+                    <i class="fas fa-award"></i>
+                    <strong>Progresso motivador</strong>
+                    <small>Missões, conquistas e trilhas para tornar a aprendizagem mais envolvente.</small>
+                </div>
+            </div>
         </section>
 
         <section class="form-container">
             
             <div class="card" id="card-login">
+                <div class="form-badge">
+                    <i class="fas fa-sparkles"></i>
+                    Acesso à plataforma
+                </div>
+
                 <h2><i class="fas fa-sign-in-alt"></i> Bem-vindo de volta!</h2>
+                <p class="form-subtitle">
+                    Entre para continuar sua jornada de aprendizagem digital.
+                </p>
+
                 <div id="login-alert" class="alert alert-error">E-mail ou senha incorretos.</div>
                 
                 <form onsubmit="fazerLogin(event)">
@@ -102,13 +718,34 @@
                         <i class="fas fa-lock"></i>
                         <input type="password" id="login-senha" class="form-control" placeholder="Senha" required>
                     </div>
-                    <button type="submit" class="btn">Entrar <i class="fas fa-arrow-right"></i></button>
+                    <button type="submit" class="btn">Entrar na plataforma <i class="fas fa-arrow-right"></i></button>
                 </form>
+
+                <div class="mini-details">
+                    <div class="mini-detail">
+                        <i class="fas fa-check-circle"></i>
+                        Trilhas sobre internet segura e cidadania digital.
+                    </div>
+                    <div class="mini-detail">
+                        <i class="fas fa-check-circle"></i>
+                        Ambiente visual, moderno e fácil de navegar.
+                    </div>
+                </div>
+
                 <span class="toggle-link" onclick="alternarTelas()">Não tem conta? Cadastre-se aqui</span>
             </div>
 
             <div class="card hidden" id="card-register">
+                <div class="form-badge">
+                    <i class="fas fa-user-graduate"></i>
+                    Novo estudante
+                </div>
+
                 <h2><i class="fas fa-user-plus"></i> Criar Conta</h2>
+                <p class="form-subtitle">
+                    Cadastre-se para acessar missões, desafios e conteúdos de letramento digital.
+                </p>
+
                 <div id="register-alert" class="alert"></div>
                 
                 <form onsubmit="cadastrarUsuario(event)">
@@ -124,14 +761,27 @@
                         <i class="fas fa-lock"></i>
                         <input type="password" id="reg-senha" class="form-control" placeholder="Crie uma senha" required minlength="6">
                     </div>
-                    <button type="submit" class="btn" style="background: var(--success);">Finalizar Cadastro</button>
+                    <button type="submit" class="btn" style="background: var(--success);">Finalizar Cadastro <i class="fas fa-check"></i></button>
                 </form>
+
+                <div class="mini-details">
+                    <div class="mini-detail">
+                        <i class="fas fa-lightbulb"></i>
+                        Aprenda a reconhecer informações confiáveis.
+                    </div>
+                    <div class="mini-detail">
+                        <i class="fas fa-lock"></i>
+                        Desenvolva autonomia e responsabilidade online.
+                    </div>
+                </div>
+
                 <span class="toggle-link" onclick="alternarTelas()">Já tem uma conta? Faça Login</span>
             </div>
 
         </section>
     </main>
-       <script>
+
+    <script>
     /* ==========================================
        LÓGICA DE BANCO DE DADOS (VIA BACK-END API) E AUTENTICAÇÃO
        ========================================== */
