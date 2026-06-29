@@ -3,43 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLATAFORMA TCC- Início</title>
+    <title>Eduminex - Letramento Digital EJA</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary-blue: #16213e;
-            --secondary-blue: #1f3b73;
-            --accent-teal: #00b4d8;
-            --accent-green: #38b000;
-            --accent-purple: #7b2ff7;
-            --bg-color: #eef6ff;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --text-main: #263238;
-            --text-muted: #667085;
-            --error: #e53e3e;
-            --success: #38a169;
+            --uea-blue: #003f7d;
+            --uea-blue-2: #075ca8;
+            --uea-dark: #062044;
+            --uea-gold: #f5b700;
+            --uea-gold-2: #ffd66b;
+            --bg-soft: #f6f9ff;
+            --card-bg: rgba(255, 255, 255, 0.86);
             --white: #ffffff;
-            --line: rgba(255,255,255,0.35);
-            --shadow: 0 24px 70px rgba(15, 35, 80, 0.18);
-            --radius-lg: 32px;
-            --radius-md: 18px;
+            --text-main: #14213d;
+            --text-muted: #5c6b80;
+            --line: rgba(0, 63, 125, 0.12);
+            --error: #c62828;
+            --success: #16844a;
+            --shadow: 0 24px 70px rgba(6, 32, 68, 0.16);
+            --shadow-soft: 0 16px 36px rgba(6, 32, 68, 0.10);
+            --radius-lg: 30px;
+            --radius-md: 20px;
+            --radius-sm: 14px;
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: 'Poppins', sans-serif; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        body { 
-            background: radial-gradient(circle at top left, #dff8ff 0%, #f3f8ff 32%, #edf1ff 70%, #eef6ff 100%);
-            color: var(--text-main); 
-            min-height: 100vh; 
-            overflow-x: hidden; 
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at 12% 16%, rgba(245, 183, 0, 0.22), transparent 24%),
+                radial-gradient(circle at 88% 10%, rgba(7, 92, 168, 0.22), transparent 30%),
+                linear-gradient(135deg, #f8fbff 0%, #eef5ff 44%, #fff8df 100%);
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -47,770 +56,980 @@
             content: "";
             position: fixed;
             inset: 0;
-            background-image: 
-                linear-gradient(rgba(22, 33, 62, 0.045) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(22, 33, 62, 0.045) 1px, transparent 1px);
-            background-size: 42px 42px;
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.2));
+            background-image:
+                linear-gradient(rgba(0, 63, 125, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 63, 125, 0.045) 1px, transparent 1px);
+            background-size: 48px 48px;
             pointer-events: none;
-            z-index: -3;
+            z-index: -4;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 88%);
         }
 
-        body::after {
-            content: "";
-            position: fixed;
-            width: 520px;
-            height: 520px;
-            right: -180px;
-            top: -130px;
-            background: radial-gradient(circle, rgba(0,180,216,0.28), transparent 68%);
-            z-index: -2;
-            animation: floatGlow 8s ease-in-out infinite alternate;
-        }
-
-        .bg-shape {
+        .orb {
             position: fixed;
             border-radius: 999px;
-            filter: blur(4px);
-            opacity: 0.75;
-            z-index: -1;
+            filter: blur(2px);
+            pointer-events: none;
+            z-index: -3;
+            opacity: 0.82;
         }
 
-        .shape-one {
+        .orb-one {
             width: 260px;
             height: 260px;
             left: -90px;
-            bottom: 30px;
-            background: radial-gradient(circle, rgba(123,47,247,0.18), transparent 70%);
-            animation: floatShape 9s ease-in-out infinite;
+            bottom: 70px;
+            background: radial-gradient(circle, rgba(0, 63, 125, 0.20), transparent 70%);
+            animation: floatOrb 8s ease-in-out infinite;
         }
 
-        .shape-two {
-            width: 190px;
-            height: 190px;
-            right: 14%;
-            bottom: 12%;
-            background: radial-gradient(circle, rgba(56,176,0,0.16), transparent 68%);
-            animation: floatShape 11s ease-in-out infinite reverse;
+        .orb-two {
+            width: 220px;
+            height: 220px;
+            right: -72px;
+            top: 160px;
+            background: radial-gradient(circle, rgba(245, 183, 0, 0.28), transparent 70%);
+            animation: floatOrb 9s ease-in-out infinite reverse;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
+        .digital-dots {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .digital-dots span {
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            border-radius: 999px;
+            background: var(--uea-gold);
+            box-shadow: 0 0 16px rgba(245, 183, 0, 0.48);
+            opacity: 0.45;
+            animation: riseDot 10s linear infinite;
+        }
+
+        .digital-dots span:nth-child(1) { left: 8%; bottom: -20px; animation-delay: 0s; }
+        .digital-dots span:nth-child(2) { left: 22%; bottom: -20px; animation-delay: 2s; transform: scale(0.72); }
+        .digital-dots span:nth-child(3) { left: 51%; bottom: -20px; animation-delay: 4s; background: var(--uea-blue-2); }
+        .digital-dots span:nth-child(4) { left: 74%; bottom: -20px; animation-delay: 1s; transform: scale(0.86); }
+        .digital-dots span:nth-child(5) { left: 91%; bottom: -20px; animation-delay: 5.5s; background: var(--uea-blue); }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+            50% { transform: translateY(-28px) translateX(18px) scale(1.04); }
+        }
+
+        @keyframes riseDot {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            18% { opacity: 0.46; }
+            100% { transform: translateY(-105vh) scale(0.65); opacity: 0; }
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-22px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(35px); }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 rgba(0,180,216,0.0); }
-            50% { transform: scale(1.04); box-shadow: 0 0 35px rgba(0,180,216,0.24); }
-            100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,180,216,0.0); }
-        }
-
-        @keyframes floatShape {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            50% { transform: translateY(-28px) translateX(18px); }
-        }
-
-        @keyframes floatGlow {
-            from { transform: translateY(0) scale(1); }
-            to { transform: translateY(30px) scale(1.05); }
-        }
-
-        @keyframes orbit {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
 
         @keyframes shine {
             from { left: -90%; }
-            to { left: 120%; }
+            to { left: 130%; }
         }
 
-        @keyframes tinyFloat {
+        @keyframes pulseLogo {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(245, 183, 0, 0); }
+            50% { transform: scale(1.045); box-shadow: 0 0 34px rgba(245, 183, 0, 0.34); }
+        }
+
+        @keyframes softFloat {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
 
-        .container { 
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            align-items: center;
-            gap: 42px;
+        .page {
             width: min(1180px, 100%);
+            min-height: 100vh;
             margin: 0 auto;
-            padding: 42px 24px;
+            padding: 28px 22px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
         }
 
-        .hero-section { 
-            animation: fadeInDown 0.9s ease-out; 
-            position: relative;
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            animation: fadeDown 0.75s ease both;
         }
 
-        .brand-row {
-            display: inline-flex;
+        .brand {
+            display: flex;
             align-items: center;
             gap: 14px;
-            padding: 10px 16px 10px 10px;
-            border: 1px solid rgba(255,255,255,0.75);
-            border-radius: 999px;
-            background: rgba(255,255,255,0.62);
-            backdrop-filter: blur(16px);
-            box-shadow: 0 14px 40px rgba(31,59,115,0.08);
-            margin-bottom: 26px;
+            min-width: 0;
         }
 
-        .logo-mark {
-            width: 58px;
-            height: 58px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal));
-            color: white;
+        .brand-mark {
+            width: 62px;
+            height: 62px;
+            border-radius: 22px;
+            background:
+                linear-gradient(145deg, var(--uea-blue), var(--uea-blue-2));
+            color: var(--white);
             display: grid;
             place-items: center;
             position: relative;
             overflow: hidden;
-            animation: pulse 2.8s ease-in-out infinite;
+            animation: pulseLogo 3s ease-in-out infinite;
+            box-shadow: 0 16px 35px rgba(0, 63, 125, 0.26);
+            flex: 0 0 auto;
         }
 
-        .logo-mark::before {
+        .brand-mark::before {
             content: "";
             position: absolute;
-            inset: 7px;
-            border: 1px dashed rgba(255,255,255,0.55);
-            border-radius: 16px;
-            animation: orbit 12s linear infinite;
+            inset: 8px;
+            border: 2px solid rgba(245, 183, 0, 0.76);
+            border-radius: 18px;
         }
 
-        .logo-mark::after {
+        .brand-mark::after {
             content: "";
             position: absolute;
-            width: 90px;
+            width: 86px;
             height: 28px;
             background: rgba(255,255,255,0.18);
-            transform: rotate(-35deg);
+            transform: rotate(-32deg);
             animation: shine 4s ease-in-out infinite;
         }
 
-        .logo-mark span {
+        .brand-mark strong {
             position: relative;
             z-index: 2;
-            font-size: 1.15rem;
-            font-weight: 800;
+            font-size: 1.35rem;
             letter-spacing: -1px;
         }
 
-        .brand-text strong {
-            display: block;
-            color: var(--primary-blue);
+        .brand-title {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            min-width: 0;
+        }
+
+        .brand-title strong {
+            color: var(--uea-dark);
+            font-size: 1.18rem;
             font-weight: 800;
-            font-size: 0.96rem;
-            letter-spacing: 0.5px;
+            letter-spacing: -0.5px;
         }
 
-        .brand-text small {
+        .brand-title span {
             color: var(--text-muted);
-            font-size: 0.76rem;
-            font-weight: 500;
+            font-size: 0.82rem;
+            font-weight: 600;
         }
 
-        .hero-section h1 { 
-            font-size: clamp(2.6rem, 6vw, 5.5rem);
-            color: var(--primary-blue); 
-            font-weight: 800; 
+        .sponsor-strip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 10px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.66);
+            border-radius: 999px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 10px 28px rgba(6, 32, 68, 0.06);
+        }
+
+        .sponsor-label {
+            color: var(--text-muted);
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 0 4px;
+        }
+
+        .sponsor-mini {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: var(--white);
+            color: var(--uea-blue);
+            font-size: 0.76rem;
+            font-weight: 800;
+            border: 1px solid rgba(0,63,125,0.10);
+        }
+
+        .sponsor-mini i {
+            color: var(--uea-gold);
+        }
+
+        .hero {
+            flex: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.78fr);
+            align-items: center;
+            gap: 36px;
+        }
+
+        .hero-copy {
+            animation: fadeUp 0.85s ease both;
+        }
+
+        .eyebrow {
+            width: fit-content;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 10px 14px;
+            margin-bottom: 20px;
+            border-radius: 999px;
+            background: rgba(245, 183, 0, 0.16);
+            color: var(--uea-dark);
+            border: 1px solid rgba(245, 183, 0, 0.34);
+            font-size: 0.84rem;
+            font-weight: 800;
+        }
+
+        .eyebrow i {
+            color: var(--uea-blue);
+        }
+
+        h1 {
+            max-width: 740px;
+            font-size: clamp(2.45rem, 5.4vw, 5.25rem);
             line-height: 0.98;
-            letter-spacing: -3px;
-            max-width: 720px;
+            letter-spacing: -3.6px;
+            color: var(--uea-dark);
+            font-weight: 800;
             margin-bottom: 22px;
         }
 
-        .hero-section h1 span {
-            display: inline-block;
-            background: linear-gradient(120deg, var(--accent-teal), var(--accent-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        h1 span {
+            color: var(--uea-blue-2);
+            position: relative;
+            white-space: nowrap;
         }
 
-        .hero-section p { 
-            font-size: 1.08rem; 
-            max-width: 650px; 
-            color: #526070; 
-            line-height: 1.8; 
-            margin-bottom: 28px;
+        h1 span::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 7px;
+            height: 12px;
+            border-radius: 999px;
+            background: rgba(245, 183, 0, 0.42);
+            z-index: -1;
         }
 
-        .hero-actions {
+        .hero-copy p {
+            max-width: 680px;
+            color: var(--text-muted);
+            font-size: 1.02rem;
+            line-height: 1.82;
+            margin-bottom: 22px;
+        }
+
+        .focus-pills {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 32px;
+            gap: 10px;
+            margin-bottom: 24px;
         }
 
-        .hero-pill {
+        .focus-pill {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 16px;
+            gap: 8px;
+            padding: 11px 14px;
             border-radius: 999px;
-            background: rgba(255,255,255,0.75);
-            border: 1px solid rgba(255,255,255,0.8);
-            box-shadow: 0 12px 28px rgba(31,59,115,0.07);
-            color: var(--primary-blue);
-            font-size: 0.88rem;
-            font-weight: 600;
+            background: rgba(255,255,255,0.78);
+            border: 1px solid rgba(0,63,125,0.10);
+            box-shadow: 0 12px 28px rgba(6,32,68,0.06);
+            color: var(--uea-dark);
+            font-size: 0.86rem;
+            font-weight: 700;
             backdrop-filter: blur(12px);
         }
 
-        .hero-pill i {
-            color: var(--accent-teal);
+        .focus-pill i {
+            color: var(--uea-gold);
         }
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 14px;
-            max-width: 760px;
-        }
-
-        .info-card {
+        .modules-panel {
+            max-width: 780px;
             padding: 18px;
-            border-radius: 24px;
-            background: rgba(255,255,255,0.7);
+            border-radius: 28px;
+            background: rgba(255,255,255,0.66);
             border: 1px solid rgba(255,255,255,0.86);
-            box-shadow: 0 16px 36px rgba(31,59,115,0.08);
-            backdrop-filter: blur(16px);
-            transition: 0.3s ease;
-            animation: tinyFloat 5s ease-in-out infinite;
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(18px);
         }
 
-        .info-card:nth-child(2) {
-            animation-delay: 0.4s;
+        .modules-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
         }
 
-        .info-card:nth-child(3) {
-            animation-delay: 0.8s;
+        .modules-head strong {
+            color: var(--uea-dark);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .info-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 44px rgba(31,59,115,0.14);
+        .modules-head strong i {
+            color: var(--uea-blue-2);
         }
 
-        .info-card i {
-            width: 42px;
-            height: 42px;
-            border-radius: 15px;
-            display: grid;
-            place-items: center;
-            color: white;
-            background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal));
-            margin-bottom: 12px;
-        }
-
-        .info-card strong {
-            display: block;
-            color: var(--primary-blue);
-            font-size: 0.95rem;
-            margin-bottom: 4px;
-        }
-
-        .info-card small {
-            display: block;
+        .modules-head small {
             color: var(--text-muted);
-            line-height: 1.55;
-            font-size: 0.76rem;
+            font-weight: 700;
         }
 
-        .form-container { 
-            width: 100%; 
-            max-width: 450px; 
-            perspective: 1000px; 
-            animation: slideInUp 1s ease-out forwards;
-            animation-delay: 0.2s;
-            opacity: 0;
-            justify-self: end;
+        .modules-list {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(118px, 1fr));
+            gap: 10px;
         }
 
-        .card { 
-            background: var(--card-bg); 
-            padding: 34px; 
-            border-radius: var(--radius-lg); 
-            box-shadow: var(--shadow);
-            transition: all 0.35s ease; 
-            border: 1px solid rgba(255,255,255,0.92);
-            backdrop-filter: blur(22px);
+        .module-card {
+            min-height: 112px;
+            border: 1px solid rgba(0,63,125,0.10);
+            border-radius: 20px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.72));
+            padding: 13px;
             position: relative;
             overflow: hidden;
+            transition: 0.3s ease;
+            animation: softFloat 5s ease-in-out infinite;
         }
 
-        .card::before {
+        .module-card:nth-child(2) { animation-delay: 0.18s; }
+        .module-card:nth-child(3) { animation-delay: 0.36s; }
+        .module-card:nth-child(4) { animation-delay: 0.54s; }
+        .module-card:nth-child(5) { animation-delay: 0.72s; }
+
+        .module-card::before {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 999px;
+            right: -32px;
+            top: -32px;
+            background: rgba(245, 183, 0, 0.20);
+            transition: 0.3s ease;
+        }
+
+        .module-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 18px 36px rgba(6, 32, 68, 0.12);
+            border-color: rgba(245, 183, 0, 0.44);
+        }
+
+        .module-card:hover::before {
+            transform: scale(1.25);
+            background: rgba(7, 92, 168, 0.14);
+        }
+
+        .module-number {
+            width: 34px;
+            height: 34px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            background: var(--uea-blue);
+            color: var(--white);
+            font-size: 0.78rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 20px rgba(0,63,125,0.18);
+        }
+
+        .module-card strong {
+            display: block;
+            color: var(--uea-dark);
+            font-size: 0.78rem;
+            line-height: 1.32;
+        }
+
+        .login-area {
+            width: 100%;
+            max-width: 430px;
+            justify-self: end;
+            animation: fadeUp 0.85s ease both;
+            animation-delay: 0.12s;
+        }
+
+        .access-card {
+            position: relative;
+            overflow: hidden;
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.9);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(22px);
+            transition: 0.3s ease;
+        }
+
+        .access-card::before {
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(0,180,216,0.16), transparent 42%, rgba(123,47,247,0.10));
+            background:
+                radial-gradient(circle at 92% 4%, rgba(245, 183, 0, 0.24), transparent 28%),
+                linear-gradient(135deg, rgba(0, 63, 125, 0.10), transparent 44%);
             pointer-events: none;
         }
 
-        .card::after {
-            content: "";
+        .access-card::after {
+            content: "01";
             position: absolute;
-            width: 140px;
-            height: 140px;
-            border-radius: 999px;
-            background: rgba(0,180,216,0.12);
-            right: -58px;
-            top: -58px;
+            right: 22px;
+            bottom: 12px;
+            color: rgba(0,63,125,0.055);
+            font-size: 6rem;
+            font-weight: 800;
+            line-height: 1;
             pointer-events: none;
         }
 
-        .card > * {
-            position: relative;
-            z-index: 2;
+        .access-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 88px rgba(6, 32, 68, 0.20);
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 30px 80px rgba(15,35,80,0.23);
+        .access-card > * {
+            position: relative;
+            z-index: 1;
         }
 
         .form-badge {
             width: fit-content;
-            margin: 0 auto 18px;
-            display: flex;
+            margin: 0 auto 16px;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
             padding: 9px 13px;
             border-radius: 999px;
-            background: rgba(0,180,216,0.10);
-            color: var(--secondary-blue);
-            font-size: 0.78rem;
-            font-weight: 700;
+            background: rgba(0,63,125,0.08);
+            color: var(--uea-blue);
+            font-size: 0.76rem;
+            font-weight: 800;
         }
 
-        .card h2 { 
-            color: var(--primary-blue); 
-            text-align: center; 
-            margin-bottom: 10px; 
+        .access-card h2 {
+            text-align: center;
+            color: var(--uea-dark);
             font-size: 1.55rem;
             letter-spacing: -0.8px;
+            margin-bottom: 8px;
         }
 
         .form-subtitle {
             color: var(--text-muted);
             text-align: center;
-            font-size: 0.88rem;
-            line-height: 1.6;
-            margin-bottom: 24px;
+            font-size: 0.9rem;
+            line-height: 1.62;
+            margin-bottom: 22px;
         }
 
-        .form-group { 
-            margin-bottom: 16px; 
-            position: relative; 
+        .alert {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 14px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 0.86rem;
+            font-weight: 700;
         }
 
-        .form-group i { 
-            position: absolute; 
-            left: 17px; 
+        .alert-error {
+            color: var(--error);
+            background: #fff0f0;
+            border: 1px solid #ffc7c7;
+        }
+
+        .alert-success {
+            color: var(--success);
+            background: #effaf4;
+            border: 1px solid #bce8cd;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: #8ea0b8; 
+            color: #8392a8;
             transition: 0.25s ease;
-            z-index: 3;
+            z-index: 2;
         }
 
-        .form-control { 
-            width: 100%; 
-            padding: 15px 16px 15px 48px; 
-            border: 2px solid rgba(31,59,115,0.09); 
-            border-radius: 16px; 
-            font-size: 0.96rem; 
-            transition: 0.28s ease;
-            background: rgba(255,255,255,0.78);
-            color: var(--primary-blue);
+        .form-control {
+            width: 100%;
+            padding: 15px 15px 15px 48px;
+            border: 2px solid rgba(0,63,125,0.10);
+            border-radius: 16px;
+            background: rgba(255,255,255,0.86);
+            color: var(--uea-dark);
+            font-size: 0.96rem;
             outline: none;
+            transition: 0.25s ease;
+            font-family: 'Atkinson Hyperlegible', 'Poppins', sans-serif;
         }
 
         .form-control::placeholder {
-            color: #98a7ba;
+            color: #8c9aad;
         }
 
-        .form-control:focus { 
-            border-color: rgba(0,180,216,0.75);
-            box-shadow: 0 0 0 5px rgba(0,180,216,0.12);
-            background: white;
+        .form-control:focus {
+            border-color: var(--uea-gold);
+            background: var(--white);
+            box-shadow: 0 0 0 5px rgba(245, 183, 0, 0.18);
         }
 
         .form-group:focus-within i {
-            color: var(--accent-teal);
+            color: var(--uea-blue);
         }
 
-        .btn { 
-            width: 100%; 
-            padding: 15px; 
-            background: linear-gradient(135deg, var(--accent-teal), var(--secondary-blue)); 
-            color: white; 
-            border: none; 
-            border-radius: 17px; 
-            font-size: 1rem; 
-            font-weight: 700; 
-            cursor: pointer; 
-            transition: 0.3s ease; 
-            display: inline-flex; 
-            justify-content: center; 
-            align-items: center; 
+        .btn {
+            width: 100%;
+            min-height: 52px;
+            border: none;
+            border-radius: 17px;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            color: var(--white);
+            font-size: 0.98rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             gap: 10px;
-            box-shadow: 0 16px 30px rgba(0,180,216,0.28);
+            transition: 0.28s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 18px 32px rgba(0,63,125,0.24);
         }
 
         .btn::before {
             content: "";
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 70%;
+            left: -80%;
+            width: 65%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.34), transparent);
             transition: 0.4s;
         }
 
         .btn:hover::before {
-            left: 130%;
+            left: 120%;
         }
 
-        .btn:hover { 
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 20px 38px rgba(31,59,115,0.25);
+            box-shadow: 0 22px 42px rgba(0,63,125,0.28);
         }
 
-        .btn:active { 
-            transform: scale(0.98); 
+        .btn:active {
+            transform: scale(0.98);
         }
 
         #card-register .btn {
-            background: linear-gradient(135deg, var(--success), #0496ff) !important;
-            box-shadow: 0 16px 30px rgba(56,161,105,0.25);
+            background: linear-gradient(135deg, var(--uea-gold), #e89e00);
+            color: var(--uea-dark);
+            box-shadow: 0 18px 32px rgba(245,183,0,0.28);
         }
 
-        .toggle-link { 
-            display: block; 
-            text-align: center; 
-            margin-top: 20px; 
-            color: var(--secondary-blue); 
-            font-weight: 700; 
-            cursor: pointer; 
+        .toggle-link {
+            display: block;
+            width: fit-content;
+            margin: 18px auto 0;
+            color: var(--uea-blue);
+            font-size: 0.9rem;
+            font-weight: 800;
+            cursor: pointer;
             text-decoration: none;
-            font-size: 0.92rem;
             transition: 0.25s ease;
         }
 
-        .toggle-link:hover { 
-            color: var(--accent-teal); 
+        .toggle-link:hover {
+            color: var(--uea-dark);
             transform: translateY(-1px);
         }
 
-        .toggle-link::after {
-            content: "";
-            display: block;
-            width: 42px;
-            height: 3px;
-            margin: 7px auto 0;
-            border-radius: 999px;
-            background: linear-gradient(90deg, var(--accent-teal), var(--accent-purple));
-            opacity: 0.65;
-        }
-
-        .alert { 
-            padding: 12px 14px; 
-            border-radius: 14px; 
-            margin-bottom: 16px; 
-            text-align: center; 
-            font-size: 0.88rem; 
-            display: none; 
-            font-weight: 600;
-        }
-
-        .alert-error { 
-            background: #fff1f1; 
-            color: var(--error); 
-            border: 1px solid #ffc9c9; 
-        }
-
-        .alert-success { 
-            background: #effff4; 
-            color: var(--success); 
-            border: 1px solid #b8f2c8; 
-        }
-
-        .mini-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 22px;
-        }
-
-        .mini-detail {
-            border-radius: 16px;
-            padding: 12px;
-            background: rgba(255,255,255,0.65);
-            border: 1px solid rgba(31,59,115,0.08);
+        .helper-note {
+            margin-top: 18px;
+            padding: 14px;
+            border-radius: 18px;
+            background: rgba(245, 183, 0, 0.12);
+            border: 1px solid rgba(245, 183, 0, 0.28);
             color: var(--text-muted);
-            font-size: 0.73rem;
-            line-height: 1.45;
+            font-size: 0.78rem;
+            line-height: 1.55;
         }
 
-        .mini-detail i {
-            color: var(--accent-teal);
-            margin-right: 4px;
+        .helper-note i {
+            color: var(--uea-blue);
+            margin-right: 5px;
         }
 
-        .hidden { 
-            display: none; 
+        .hidden {
+            display: none;
         }
 
-        @media (max-width: 980px) {
-            .container {
+        .sponsors-mobile {
+            display: none;
+            margin-top: 18px;
+        }
+
+        @media (max-width: 1050px) {
+            .hero {
                 grid-template-columns: 1fr;
                 gap: 28px;
-                padding-top: 30px;
             }
 
-            .hero-section {
+            .hero-copy {
                 text-align: center;
             }
 
-            .brand-row {
+            .eyebrow,
+            .modules-panel {
                 margin-left: auto;
                 margin-right: auto;
             }
 
-            .hero-actions {
+            .focus-pills {
                 justify-content: center;
             }
 
-            .info-grid {
-                grid-template-columns: 1fr;
-                max-width: 520px;
-                margin: 0 auto;
-            }
-
-            .form-container {
+            .login-area {
                 justify-self: center;
             }
         }
 
-        @media (max-width: 520px) {
-            .container {
-                padding: 24px 15px;
+        @media (max-width: 820px) {
+            .topbar {
+                align-items: flex-start;
             }
 
-            .hero-section h1 {
-                letter-spacing: -1.5px;
+            .sponsor-strip {
+                display: none;
             }
 
-            .card {
-                padding: 26px 20px;
-                border-radius: 26px;
+            .sponsors-mobile {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 9px;
             }
 
-            .brand-text strong {
-                font-size: 0.82rem;
+            .modules-list {
+                grid-template-columns: 1fr;
             }
 
-            .brand-text small {
-                font-size: 0.68rem;
+            .module-card {
+                min-height: auto;
+                display: grid;
+                grid-template-columns: 42px 1fr;
+                align-items: center;
+                gap: 10px;
             }
 
-            .logo-mark {
-                width: 50px;
-                height: 50px;
+            .module-number {
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 540px) {
+            .page {
+                padding: 20px 14px 26px;
             }
 
-            .hero-pill {
+            .brand-mark {
+                width: 54px;
+                height: 54px;
+                border-radius: 18px;
+            }
+
+            .brand-title strong {
+                font-size: 1.02rem;
+            }
+
+            .brand-title span {
+                font-size: 0.74rem;
+            }
+
+            h1 {
+                letter-spacing: -2px;
+                font-size: clamp(2.25rem, 12vw, 3.2rem);
+            }
+
+            h1 span {
+                white-space: normal;
+            }
+
+            .hero-copy p {
+                font-size: 0.96rem;
+            }
+
+            .focus-pill {
                 width: 100%;
                 justify-content: center;
             }
 
-            .mini-details {
-                grid-template-columns: 1fr;
+            .modules-head {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .access-card {
+                padding: 26px 20px;
+                border-radius: 24px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
             }
         }
     </style>
 </head>
 <body>
+    <div class="orb orb-one"></div>
+    <div class="orb orb-two"></div>
 
-    <div class="bg-shape shape-one"></div>
-    <div class="bg-shape shape-two"></div>
+    <div class="digital-dots" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
 
-    <main class="container">
-        <section class="hero-section">
-            <div class="brand-row">
-                <div class="logo-mark">
-                    <span>ND</span>
+    <main class="page">
+        <header class="topbar">
+            <div class="brand" aria-label="Identidade da plataforma Eduminex">
+                <div class="brand-mark" aria-hidden="true">
+                    <strong>EM</strong>
                 </div>
-                <div class="brand-text">
-                    <strong>NEXO DIGITAL</strong>
-                    <small>Aprender, analisar e agir com consciência online</small>
-                </div>
-            </div>
-
-            <h1>Desenvolva seu <span>letramento digital</span> de forma inteligente.</h1>
-
-            <p>
-                Uma plataforma educacional interativa criada para fortalecer o pensamento crítico,
-                a segurança na internet, a validação de fontes e o uso responsável das tecnologias digitais.
-            </p>
-
-            <div class="hero-actions">
-                <div class="hero-pill"><i class="fas fa-shield-alt"></i> Segurança digital</div>
-                <div class="hero-pill"><i class="fas fa-search"></i> Checagem de fontes</div>
-                <div class="hero-pill"><i class="fas fa-gamepad"></i> Aprendizagem gamificada</div>
-            </div>
-
-            <div class="info-grid">
-                <div class="info-card">
-                    <i class="fas fa-brain"></i>
-                    <strong>Pensamento crítico</strong>
-                    <small>Atividades para analisar informações, identificar riscos e evitar conteúdos manipulados.</small>
-                </div>
-
-                <div class="info-card">
-                    <i class="fas fa-network-wired"></i>
-                    <strong>Cultura digital</strong>
-                    <small>Conteúdos sobre comportamento ético, produção digital e navegação consciente.</small>
-                </div>
-
-                <div class="info-card">
-                    <i class="fas fa-award"></i>
-                    <strong>Progresso motivador</strong>
-                    <small>Missões, conquistas e trilhas para tornar a aprendizagem mais envolvente.</small>
+                <div class="brand-title">
+                    <strong>Eduminex</strong>
+                    <span>Letramento digital para a EJA</span>
                 </div>
             </div>
-        </section>
 
-        <section class="form-container">
-            
-            <div class="card" id="card-login">
-                <div class="form-badge">
-                    <i class="fas fa-sparkles"></i>
-                    Acesso à plataforma
+            <div class="sponsor-strip" aria-label="Patrocinadores da plataforma">
+                <span class="sponsor-label">Patrocínio</span>
+                <span class="sponsor-mini"><i class="fas fa-university"></i> UEA</span>
+                <span class="sponsor-mini"><i class="fas fa-microchip"></i> EST</span>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div class="hero-copy">
+                <div class="eyebrow">
+                    <i class="fas fa-graduation-cap"></i>
+                    Plataforma educacional simples, prática e inclusiva
                 </div>
 
-                <h2><i class="fas fa-sign-in-alt"></i> Bem-vindo de volta!</h2>
-                <p class="form-subtitle">
-                    Entre para continuar sua jornada de aprendizagem digital.
+                <h1>Aprenda o mundo digital com mais <span>autonomia</span>.</h1>
+
+                <p>
+                    A Eduminex apoia estudantes da modalidade EJA no desenvolvimento do letramento digital,
+                    com conteúdos objetivos, linguagem acessível e atividades voltadas para situações reais
+                    da internet, do trabalho, dos estudos e da vida cotidiana.
                 </p>
 
-                <div id="login-alert" class="alert alert-error">E-mail ou senha incorretos.</div>
-                
-                <form onsubmit="fazerLogin(event)">
-                    <div class="form-group">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="login-email" class="form-control" placeholder="E-mail" required>
-                    </div>
-                    <div class="form-group">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="login-senha" class="form-control" placeholder="Senha" required>
-                    </div>
-                    <button type="submit" class="btn">Entrar na plataforma <i class="fas fa-arrow-right"></i></button>
-                </form>
+                <div class="focus-pills" aria-label="Objetivos principais da plataforma">
+                    <span class="focus-pill"><i class="fas fa-hand-pointer"></i> Navegação fácil</span>
+                    <span class="focus-pill"><i class="fas fa-shield-alt"></i> Segurança digital</span>
+                    <span class="focus-pill"><i class="fas fa-briefcase"></i> Autonomia para estudo e trabalho</span>
+                </div>
 
-                <div class="mini-details">
-                    <div class="mini-detail">
-                        <i class="fas fa-check-circle"></i>
-                        Trilhas sobre internet segura e cidadania digital.
+                <div class="modules-panel">
+                    <div class="modules-head">
+                        <strong><i class="fas fa-layer-group"></i> Conteúdos propostos</strong>
+                        <small>5 módulos de aprendizagem</small>
                     </div>
-                    <div class="mini-detail">
-                        <i class="fas fa-check-circle"></i>
-                        Ambiente visual, moderno e fácil de navegar.
+
+                    <div class="modules-list">
+                        <article class="module-card">
+                            <span class="module-number">01</span>
+                            <strong>Primeiros passos no mundo digital</strong>
+                        </article>
+
+                        <article class="module-card">
+                            <span class="module-number">02</span>
+                            <strong>Internet e comunicação</strong>
+                        </article>
+
+                        <article class="module-card">
+                            <span class="module-number">03</span>
+                            <strong>Segurança e cidadania digital</strong>
+                        </article>
+
+                        <article class="module-card">
+                            <span class="module-number">04</span>
+                            <strong>Serviços digitais e vida cotidiana</strong>
+                        </article>
+
+                        <article class="module-card">
+                            <span class="module-number">05</span>
+                            <strong>Educação, trabalho e autonomia digital</strong>
+                        </article>
                     </div>
                 </div>
 
-                <span class="toggle-link" onclick="alternarTelas()">Não tem conta? Cadastre-se aqui</span>
+                <div class="sponsors-mobile" aria-label="Patrocinadores da plataforma">
+                    <span class="sponsor-mini"><i class="fas fa-university"></i> UEA</span>
+                    <span class="sponsor-mini"><i class="fas fa-microchip"></i> EST</span>
+                </div>
             </div>
 
-            <div class="card hidden" id="card-register">
-                <div class="form-badge">
-                    <i class="fas fa-user-graduate"></i>
-                    Novo estudante
+            <section class="login-area" aria-label="Área de acesso do usuário">
+                <div class="access-card" id="card-login">
+                    <div class="form-badge">
+                        <i class="fas fa-door-open"></i>
+                        Acesso do estudante
+                    </div>
+
+                    <h2>Bem-vindo de volta!</h2>
+                    <p class="form-subtitle">
+                        Entre para continuar sua trilha de aprendizagem digital.
+                    </p>
+
+                    <div id="login-alert" class="alert alert-error" role="alert" aria-live="polite">
+                        E-mail ou senha incorretos.
+                    </div>
+
+                    <form onsubmit="fazerLogin(event)">
+                        <div class="form-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="login-email" class="form-control" placeholder="E-mail" autocomplete="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="login-senha" class="form-control" placeholder="Senha" autocomplete="current-password" required>
+                        </div>
+
+                        <button type="submit" class="btn">
+                            Entrar na plataforma <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+
+                    <div class="helper-note">
+                        <i class="fas fa-circle-info"></i>
+                        Conteúdos pensados para aprender no seu ritmo, com explicações diretas e atividades práticas.
+                    </div>
+
+                    <span class="toggle-link" onclick="alternarTelas()" role="button" tabindex="0">
+                        Não tem conta? Cadastre-se aqui
+                    </span>
                 </div>
 
-                <h2><i class="fas fa-user-plus"></i> Criar Conta</h2>
-                <p class="form-subtitle">
-                    Cadastre-se para acessar missões, desafios e conteúdos de letramento digital.
-                </p>
+                <div class="access-card hidden" id="card-register">
+                    <div class="form-badge">
+                        <i class="fas fa-user-graduate"></i>
+                        Novo estudante
+                    </div>
 
-                <div id="register-alert" class="alert"></div>
-                
-                <form onsubmit="cadastrarUsuario(event)">
-                    <div class="form-group">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="reg-nome" class="form-control" placeholder="Seu nome completo" required>
-                    </div>
-                    <div class="form-group">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="reg-email" class="form-control" placeholder="E-mail" required>
-                    </div>
-                    <div class="form-group">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="reg-senha" class="form-control" placeholder="Crie uma senha" required minlength="6">
-                    </div>
-                    <button type="submit" class="btn" style="background: var(--success);">Finalizar Cadastro <i class="fas fa-check"></i></button>
-                </form>
+                    <h2>Criar conta</h2>
+                    <p class="form-subtitle">
+                        Cadastre-se para acessar módulos, desafios e conteúdos de letramento digital.
+                    </p>
 
-                <div class="mini-details">
-                    <div class="mini-detail">
+                    <div id="register-alert" class="alert" role="alert" aria-live="polite"></div>
+
+                    <form onsubmit="cadastrarUsuario(event)">
+                        <div class="form-group">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="reg-nome" class="form-control" placeholder="Seu nome completo" autocomplete="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="reg-email" class="form-control" placeholder="E-mail" autocomplete="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="reg-senha" class="form-control" placeholder="Crie uma senha" autocomplete="new-password" required minlength="6">
+                        </div>
+
+                        <button type="submit" class="btn">
+                            Finalizar cadastro <i class="fas fa-check"></i>
+                        </button>
+                    </form>
+
+                    <div class="helper-note">
                         <i class="fas fa-lightbulb"></i>
-                        Aprenda a reconhecer informações confiáveis.
+                        A proposta é fortalecer o uso consciente, seguro e autônomo das tecnologias digitais.
                     </div>
-                    <div class="mini-detail">
-                        <i class="fas fa-lock"></i>
-                        Desenvolva autonomia e responsabilidade online.
-                    </div>
+
+                    <span class="toggle-link" onclick="alternarTelas()" role="button" tabindex="0">
+                        Já tem uma conta? Faça login
+                    </span>
                 </div>
-
-                <span class="toggle-link" onclick="alternarTelas()">Já tem uma conta? Faça Login</span>
-            </div>
-
+            </section>
         </section>
     </main>
 
     <script>
-    /* ==========================================
-       LÓGICA DE BANCO DE DADOS (VIA BACK-END API) E AUTENTICAÇÃO
-       ========================================== */
-    
-    // 1. SISTEMA DE LOGOUT INTELIGENTE
-    // Verifica se o usuário chegou nesta página querendo sair da conta
     const urlParams = new URLSearchParams(window.location.search);
+
     if (urlParams.get('logout') === 'true') {
-        // Apaga os dados do cache
         localStorage.removeItem('userLogado');
         localStorage.removeItem('userData');
         localStorage.removeItem('userName');
-        
-        // Limpa a URL para remover o "?logout=true" e deixar bonito
-        window.history.replaceState({}, document.title, "index.html");
+
+        const cleanPath = window.location.pathname.split('/').pop() || 'index.html';
+        window.history.replaceState({}, document.title, cleanPath);
     }
 
-    // 2. Verifica se já está logado
     if (localStorage.getItem('userLogado') === 'true') {
-        window.location.href = 'home.html'; 
+        window.location.href = 'home.html';
     }
 
-    // Função para alternar entre Login e Cadastro
     function alternarTelas() {
         const telaLogin = document.getElementById('card-login');
         const telaRegistro = document.getElementById('card-register');
-        
-        document.getElementById('login-alert').style.display = 'none';
-        document.getElementById('register-alert').style.display = 'none';
+        const loginAlert = document.getElementById('login-alert');
+        const registerAlert = document.getElementById('register-alert');
+
+        loginAlert.style.display = 'none';
+        registerAlert.style.display = 'none';
 
         if (telaLogin.classList.contains('hidden')) {
             telaLogin.classList.remove('hidden');
@@ -821,17 +1040,26 @@
         }
     }
 
-    // URL do seu servidor local (mude para a URL do Railway quando for subir o backend)
+    document.querySelectorAll('.toggle-link').forEach(link => {
+        link.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                alternarTelas();
+            }
+        });
+    });
+
     const API_URL = 'https://algoritmolab.onrender.com/api';
 
-    // Função de CADASTRO conectada ao Backend
     async function cadastrarUsuario(event) {
-        event.preventDefault(); 
-        
+        event.preventDefault();
+
         const nome = document.getElementById('reg-nome').value.trim();
         const email = document.getElementById('reg-email').value.trim().toLowerCase();
         const senha = document.getElementById('reg-senha').value;
         const alerta = document.getElementById('register-alert');
+
+        alerta.style.display = 'none';
 
         try {
             const response = await fetch(`${API_URL}/register`, {
@@ -849,12 +1077,10 @@
                 return;
             }
 
-            // Feedback visual sucesso
             alerta.className = 'alert alert-success';
-            alerta.innerText = data.message;
+            alerta.innerText = data.message || 'Cadastro realizado com sucesso.';
             alerta.style.display = 'block';
-            
-            // Limpa o formulário
+
             document.getElementById('reg-nome').value = '';
             document.getElementById('reg-email').value = '';
             document.getElementById('reg-senha').value = '';
@@ -868,13 +1094,14 @@
         }
     }
 
-    // Função de LOGIN conectada ao Backend
     async function fazerLogin(event) {
-        event.preventDefault(); 
-        
+        event.preventDefault();
+
         const email = document.getElementById('login-email').value.trim().toLowerCase();
         const senha = document.getElementById('login-senha').value;
         const alerta = document.getElementById('login-alert');
+
+        alerta.style.display = 'none';
 
         try {
             const response = await fetch(`${API_URL}/login`, {
@@ -891,25 +1118,27 @@
                 return;
             }
 
-            // Sucesso! O servidor validou a senha e devolveu os dados do usuário
             localStorage.setItem('userLogado', 'true');
             localStorage.setItem('userName', data.user.nome);
             localStorage.setItem('userData', JSON.stringify(data.user));
-            
-            let usuarios = JSON.parse(localStorage.getItem('algoritmolab_usuarios')) || [];
-            // Remove o cache antigo se existir e adiciona o atualizado vindo do banco
-            usuarios = usuarios.filter(u => u.nome !== data.user.nome); 
-            usuarios.push(data.user);
-            localStorage.setItem('algoritmolab_usuarios', JSON.stringify(usuarios));
-            
-            window.location.href = 'home.html'; 
+
+            let usuariosAntigos = JSON.parse(localStorage.getItem('algoritmolab_usuarios')) || [];
+            usuariosAntigos = usuariosAntigos.filter(u => u.nome !== data.user.nome);
+            usuariosAntigos.push(data.user);
+            localStorage.setItem('algoritmolab_usuarios', JSON.stringify(usuariosAntigos));
+
+            let usuariosEduminex = JSON.parse(localStorage.getItem('eduminex_usuarios')) || [];
+            usuariosEduminex = usuariosEduminex.filter(u => u.nome !== data.user.nome);
+            usuariosEduminex.push(data.user);
+            localStorage.setItem('eduminex_usuarios', JSON.stringify(usuariosEduminex));
+
+            window.location.href = 'home.html';
 
         } catch (error) {
             alerta.innerText = 'Erro de conexão com o servidor.';
             alerta.style.display = 'block';
         }
     }
-</script>
-
+    </script>
 </body>
 </html>
