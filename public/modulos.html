@@ -3,364 +3,1756 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulos de Estudo - ALGORITMOLAB</title>
+    <title>Módulos de Estudo - Eduminex</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        /* ==========================================
-           1. DIRETIVAS DE DESIGN E ANIMAÇÕES
-           ========================================== */
         :root {
-            --primary-blue: #1c3d5a;
-            --accent-teal: #2b6cb0;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-main: #333333;
-            --text-muted: #718096;
-            --border-color: #e2e8f0;
-            --fire-color: #ff9f43;
-            --success-green: #48bb78;
+            --uea-blue: #003A70;
+            --uea-blue-2: #0057A8;
+            --uea-gold: #F4B000;
+            --uea-gold-2: #FFD36A;
+            --ink: #172033;
+            --muted: #64748B;
+            --bg: #F4F8FF;
+            --surface: rgba(255,255,255,0.90);
+            --surface-solid: #FFFFFF;
+            --line: rgba(0,58,112,0.12);
+            --success: #16A34A;
+            --danger: #DC2626;
+            --warning: #F59E0B;
+            --locked: #94A3B8;
+            --shadow: 0 22px 60px rgba(0,58,112,0.13);
+            --soft-shadow: 0 12px 32px rgba(0,58,112,0.09);
+            --radius-xl: 30px;
+            --radius-lg: 22px;
+            --radius-md: 16px;
             --font-scale: 100%;
         }
 
-        /* Classe de Alto Contraste / Modo Escuro */
-        .high-contrast {
-            --primary-blue: #00ebff;
-            --accent-teal: #ffff00;
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-main: #ffffff;
-            --text-muted: #a0aec0;
-            --border-color: #4a5568;
-            --fire-color: #ff3f34;
-            --success-green: #00ff00;
+        body.high-contrast {
+            --uea-blue: #00E5FF;
+            --uea-blue-2: #BFF7FF;
+            --uea-gold: #FFFF00;
+            --uea-gold-2: #FFF6A0;
+            --ink: #FFFFFF;
+            --muted: #D1D5DB;
+            --bg: #050505;
+            --surface: rgba(20,20,20,0.96);
+            --surface-solid: #111111;
+            --line: rgba(255,255,255,0.22);
+            --success: #00FF66;
+            --danger: #FF6B6B;
+            --warning: #FFFF00;
+            --locked: #BDBDBD;
+            --shadow: 0 22px 60px rgba(0,0,0,0.55);
+            --soft-shadow: 0 12px 32px rgba(0,0,0,0.35);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background 0.3s, color 0.3s, font-size 0.3s; }
-        
-        html { font-size: var(--font-scale); }
-        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 60px; }
-
-        @keyframes slideInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes burn {
-            0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255,159,67,0.5)); }
-            50% { transform: scale(1.1); filter: drop-shadow(0 0 10px rgba(255,159,67,0.9)); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255,159,67,0.5)); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
-        /* ==========================================
-           2. HEADER E NAV
-           ========================================== */
-        .navbar { 
-            background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color);
+        html {
+            font-size: var(--font-scale);
+            scroll-behavior: smooth;
         }
 
-        .nav-profile { display: flex; align-items: center; gap: 15px; }
-        
-        .avatar { 
-            width: 55px; height: 55px; background: var(--accent-teal); color: white; border-radius: 50%; 
-            display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 700; 
-            cursor: pointer; border: 3px solid var(--border-color); box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            overflow: hidden; object-fit: cover;
-        }
-        .avatar:hover { transform: scale(1.05); border-color: var(--primary-blue); }
-
-        .streak-badge { 
-            display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 159, 67, 0.15); 
-            color: var(--fire-color); padding: 3px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; margin-top: 2px;
-        }
-        .streak-badge i { animation: burn 1.5s infinite ease-in-out; }
-
-        .container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
-
-        /* Botões */
-        .btn { 
-            padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; text-decoration: none;
-            border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; width: 100%;
-        }
-        .btn-auto { width: auto; }
-        .btn-primary { background: var(--accent-teal); color: white; }
-        .btn-primary:hover { filter: brightness(1.1); }
-        .btn-outline { background: transparent; color: var(--primary-blue); border: 2px solid var(--primary-blue); }
-        .btn-outline:hover { background: var(--primary-blue); color: white; }
-        .btn-logout { background: transparent; color: var(--text-main); border: 2px solid var(--border-color); }
-        .btn-logout:hover { background: #e2e8f0; }
-
-        /* ==========================================
-           3. LISTA DE CURSOS (MÓDULOS)
-           ========================================== */
-        .page-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; margin-top: 20px;}
-        .page-header h2 { color: var(--primary-blue); font-size: 1.8rem; margin: 0;}
-
-        .module-list { display: flex; flex-direction: column; gap: 25px; }
-
-        .course-card {
-            background: var(--card-bg); display: flex; align-items: center; gap: 20px; padding: 25px; 
-            border-radius: 15px; border-left: 8px solid var(--accent-teal); text-decoration: none; color: inherit;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.04); animation: slideInUp 0.5s ease-out backwards;
-            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 8% 8%, rgba(244,176,0,0.18), transparent 28%),
+                radial-gradient(circle at 90% 4%, rgba(0,87,168,0.20), transparent 32%),
+                linear-gradient(135deg, #F7FBFF 0%, var(--bg) 48%, #EDF5FF 100%);
+            color: var(--ink);
+            overflow-x: hidden;
+            padding-bottom: 110px;
         }
 
-        .course-card:hover { transform: translateX(8px); background: #f8fafc; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        .high-contrast .course-card:hover { background: #2d3748; }
-
-        .course-icon { font-size: 2.8rem; color: var(--accent-teal); min-width: 70px; text-align: center; }
-        .course-info { flex: 1; }
-        .course-info h3 { font-size: 1.3rem; color: var(--primary-blue); margin-bottom: 5px; }
-        .course-info p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5; }
-        
-        .progress-container { margin-top: 10px; }
-        .progress-track { background: var(--border-color); height: 8px; border-radius: 10px; overflow: hidden; margin-bottom: 8px; }
-        .progress-fill { background: var(--success-green); height: 100%; border-radius: 10px; transition: width 0.5s ease; }
-        .progress-text { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: flex; justify-content: space-between;}
-
-        .course-action { font-size: 1.5rem; color: var(--border-color); transition: color 0.3s; }
-        .course-card:hover .course-action { color: var(--accent-teal); }
-
-        /* ==========================================
-           4. ACESSIBILIDADE E ELEMENTOS FLUTUANTES
-           ========================================== */
-        .floating-actions { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 10px; z-index: 99; }
-        .btn-floating { width: 55px; height: 55px; border-radius: 50%; background: var(--primary-blue); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); justify-content: center; font-size: 1.3rem; display: flex; align-items: center; border: none; cursor: pointer;}
-        .btn-floating:hover { background: var(--accent-teal); }
-        
-        .menu-acessibilidade {
-            position: absolute; bottom: 65px; right: 0; background: var(--card-bg); border: 1px solid var(--border-color);
-            padding: 15px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.15); display: none; flex-direction: column; gap: 10px; width: 230px;
-            max-height: 400px; overflow-y: auto;
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,58,112,0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,58,112,0.045) 1px, transparent 1px);
+            background-size: 44px 44px;
+            pointer-events: none;
+            z-index: -3;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.15));
         }
 
-        .menu-title { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-align: center; margin-bottom: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;}
-
-        /* Classes Funcionais de Acessibilidade */
-        .dyslexic-font * { font-family: 'Comic Sans MS', 'Arial', sans-serif !important; }
-        .spacing-increased * { letter-spacing: 0.05em !important; line-height: 1.8 !important; }
-        .highlight-links a { text-decoration: underline !important; font-weight: bold !important; color: var(--accent-teal) !important; padding: 2px 4px; border-radius: 4px; background: rgba(43, 108, 176, 0.1); }
-        .high-contrast.highlight-links a { color: #ffff00 !important; background: rgba(255, 255, 0, 0.1); }
-
-        /* ==========================================
-           5. MODAL FOTO DE PERFIL
-           ========================================== */
-        .modal-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-            display: none; justify-content: center; align-items: center; z-index: 100; 
+        body.reduce-motion *,
+        body.reduce-motion *::before,
+        body.reduce-motion *::after {
+            animation: none !important;
+            transition: none !important;
+            scroll-behavior: auto !important;
         }
-        .modal-card { 
-            background: var(--card-bg); padding: 30px; border-radius: 20px; width: 90%; max-width: 450px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2); animation: scaleUp 0.3s ease-out;
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-18px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-card h3 { margin-bottom: 20px; color: var(--primary-blue); }
-        .avatar-presets { display: flex; justify-content: space-around; margin: 20px 0; }
-        .preset-img { width: 60px; height: 60px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
-        .preset-img:hover, .preset-img.selected { border-color: var(--accent-teal); transform: scale(1.1); }
-        .input-text { width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 8px; margin-bottom: 15px; background: var(--bg-color); color: var(--text-main); }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(26px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 0 rgba(244,176,0,0); transform: scale(1); }
+            50% { box-shadow: 0 0 28px rgba(244,176,0,0.32); transform: scale(1.03); }
+        }
+
+        @keyframes floaty {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+
+        @keyframes fire {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(245,158,11,0.45)); }
+            50% { transform: scale(1.13); filter: drop-shadow(0 0 12px rgba(245,158,11,0.8)); }
+        }
+
+        a { color: inherit; }
+
+        button, a, input {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible {
+            outline: 4px solid rgba(244,176,0,0.45);
+            outline-offset: 4px;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 80;
+            background: rgba(255,255,255,0.78);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--line);
+            animation: fadeDown .55s ease both;
+        }
+
+        .topbar-inner {
+            width: min(1160px, calc(100% - 32px));
+            margin: 0 auto;
+            min-height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            text-decoration: none;
+        }
+
+        .logo-mark {
+            width: 54px;
+            height: 54px;
+            border-radius: 19px;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2) 58%, var(--uea-gold));
+            color: white;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 14px 30px rgba(0,58,112,0.20);
+            animation: glowPulse 3.4s ease-in-out infinite;
+            flex: 0 0 auto;
+        }
+
+        .logo-mark::before {
+            content: "";
+            position: absolute;
+            inset: 7px;
+            border: 1px dashed rgba(255,255,255,0.58);
+            border-radius: 15px;
+        }
+
+        .logo-mark span {
+            position: relative;
+            z-index: 2;
+            font-size: 1rem;
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-text strong {
+            display: block;
+            font-size: 1.05rem;
+            color: var(--uea-blue);
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+
+        .brand-text small {
+            display: block;
+            font-size: .76rem;
+            color: var(--muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 290px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(255,255,255,0.66);
+            box-shadow: 0 8px 22px rgba(0,58,112,0.07);
+            cursor: pointer;
+            min-width: 0;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            color: white;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-gold));
+            border: 3px solid rgba(244,176,0,0.35);
+            font-weight: 800;
+            flex: 0 0 auto;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-mini strong {
+            display: block;
+            font-size: .9rem;
+            max-width: 155px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .streak {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--warning);
+            font-size: .74rem;
+            font-weight: 800;
+        }
+
+        .streak i { animation: fire 1.8s ease-in-out infinite; }
+
+        .btn {
+            border: 0;
+            border-radius: 15px;
+            padding: 12px 16px;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: transform .22s ease, box-shadow .22s ease, background .22s ease, color .22s ease, opacity .22s ease;
+            font-size: .92rem;
+            min-height: 46px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            color: #fff;
+            box-shadow: 0 14px 26px rgba(0,58,112,.20);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--uea-gold), var(--uea-gold-2));
+            color: #172033;
+            box-shadow: 0 14px 26px rgba(244,176,0,.22);
+        }
+
+        .btn-soft {
+            background: rgba(255,255,255,0.76);
+            color: var(--uea-blue);
+            border: 1px solid var(--line);
+        }
+
+        .btn-danger {
+            background: rgba(220,38,38,0.09);
+            color: var(--danger);
+            border: 1px solid rgba(220,38,38,0.16);
+        }
+
+        .btn-disabled,
+        .btn:disabled {
+            opacity: .54;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .container {
+            width: min(1160px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 28px 0 0;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 18px;
+            align-items: stretch;
+            margin-bottom: 22px;
+        }
+
+        .hero-card,
+        .summary-card {
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+            position: relative;
+            overflow: hidden;
+            animation: rise .65s ease both;
+        }
+
+        .hero-card {
+            padding: 28px;
+        }
+
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            right: -110px;
+            top: -90px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(244,176,0,0.20), transparent 67%);
+            pointer-events: none;
+        }
+
+        .crumb {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--uea-blue);
+            background: rgba(0,58,112,0.07);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 9px 12px;
+            font-size: .78rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            color: var(--uea-blue);
+            font-size: clamp(1.95rem, 4vw, 3.7rem);
+            line-height: 1.03;
+            letter-spacing: -1.8px;
+            margin-bottom: 12px;
+            max-width: 720px;
+        }
+
+        .hero h1 span {
+            color: var(--uea-gold);
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.75;
+            max-width: 720px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .summary-card {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 255px;
+            animation-delay: .08s;
+        }
+
+        .summary-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .summary-top h2 {
+            color: var(--uea-blue);
+            font-size: 1.12rem;
+            line-height: 1.35;
+        }
+
+        .summary-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 17px;
+            background: linear-gradient(135deg, var(--uea-gold), var(--uea-gold-2));
+            color: #172033;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            animation: floaty 4s ease-in-out infinite;
+        }
+
+        .big-percent {
+            font-size: 2.4rem;
+            color: var(--uea-blue);
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .summary-card small {
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 12px;
+            border-radius: 999px;
+            background: rgba(0,58,112,0.12);
+            overflow: hidden;
+            margin: 16px 0 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--success), var(--uea-gold));
+            transition: width .65s ease;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .stat-box {
+            border-radius: 18px;
+            padding: 13px 10px;
+            background: rgba(255,255,255,0.70);
+            border: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .stat-box strong {
+            color: var(--uea-blue);
+            font-size: 1.1rem;
+            display: block;
+        }
+
+        .stat-box span {
+            color: var(--muted);
+            font-size: .72rem;
+            font-weight: 700;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin: 24px 0 14px;
+        }
+
+        .section-title h2 {
+            color: var(--uea-blue);
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .section-title p {
+            color: var(--muted);
+            font-size: .88rem;
+            max-width: 540px;
+            text-align: right;
+        }
+
+        .modules-timeline {
+            position: relative;
+            display: grid;
+            gap: 18px;
+        }
+
+        .module-card {
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.82);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--soft-shadow);
+            overflow: hidden;
+            animation: rise .6s ease both;
+            position: relative;
+        }
+
+        .module-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 7px;
+            background: linear-gradient(180deg, var(--uea-blue), var(--uea-gold));
+        }
+
+        .module-card.locked {
+            opacity: .72;
+        }
+
+        .module-card.locked::before {
+            background: linear-gradient(180deg, var(--locked), #CBD5E1);
+        }
+
+        .module-head {
+            padding: 22px 24px 18px 30px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .module-number {
+            width: 58px;
+            height: 58px;
+            border-radius: 22px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            box-shadow: 0 12px 24px rgba(0,58,112,.18);
+            flex: 0 0 auto;
+        }
+
+        .module-card.completed .module-number {
+            background: linear-gradient(135deg, var(--success), #22C55E);
+        }
+
+        .module-card.locked .module-number {
+            background: linear-gradient(135deg, var(--locked), #CBD5E1);
+        }
+
+        .module-info h3 {
+            color: var(--uea-blue);
+            font-size: 1.25rem;
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+
+        .module-info p {
+            color: var(--muted);
+            font-size: .9rem;
+            line-height: 1.55;
+        }
+
+        .module-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            padding: 9px 12px;
+            font-size: .76rem;
+            font-weight: 800;
+            background: rgba(0,58,112,0.07);
+            color: var(--uea-blue);
+            white-space: nowrap;
+        }
+
+        .module-status.completed {
+            background: rgba(22,163,74,0.10);
+            color: var(--success);
+        }
+
+        .module-status.locked {
+            background: rgba(148,163,184,0.16);
+            color: var(--locked);
+        }
+
+        .module-progress {
+            padding: 0 24px 18px 30px;
+        }
+
+        .module-progress .progress-track {
+            height: 9px;
+            margin: 0;
+        }
+
+        .units {
+            padding: 0 24px 24px 30px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .unit-card {
+            background: rgba(255,255,255,0.74);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 16px;
+            min-height: 184px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: transform .24s ease, box-shadow .24s ease, border .24s ease;
+        }
+
+        .unit-card.unlocked:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 30px rgba(0,58,112,.10);
+            border-color: rgba(244,176,0,0.45);
+        }
+
+        .unit-card.locked {
+            background: rgba(241,245,249,0.70);
+            opacity: .74;
+        }
+
+        .unit-card.completed {
+            border-color: rgba(22,163,74,0.28);
+            background: rgba(240,253,244,0.78);
+        }
+
+        .unit-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .unit-kicker {
+            color: var(--uea-blue);
+            font-size: .72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        .unit-card.locked .unit-kicker {
+            color: var(--locked);
+        }
+
+        .unit-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: rgba(0,58,112,0.08);
+            color: var(--uea-blue);
+            flex: 0 0 auto;
+        }
+
+        .unit-card.completed .unit-icon {
+            background: rgba(22,163,74,0.12);
+            color: var(--success);
+        }
+
+        .unit-card.locked .unit-icon {
+            background: rgba(148,163,184,0.16);
+            color: var(--locked);
+        }
+
+        .unit-card h4 {
+            color: var(--ink);
+            font-size: .96rem;
+            line-height: 1.35;
+            margin: 8px 0 7px;
+        }
+
+        .unit-card p {
+            color: var(--muted);
+            font-size: .79rem;
+            line-height: 1.55;
+        }
+
+        .unit-actions {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .unit-btn {
+            min-height: 40px;
+            border-radius: 13px;
+            font-size: .78rem;
+            padding: 9px 10px;
+        }
+
+        .unit-check-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 13px;
+            padding: 0;
+            background: rgba(22,163,74,0.11);
+            color: var(--success);
+            border: 1px solid rgba(22,163,74,0.18);
+        }
+
+        .unit-check-btn:disabled {
+            background: rgba(148,163,184,0.12);
+            color: var(--locked);
+            border-color: rgba(148,163,184,0.18);
+        }
+
+        .certificate-card {
+            margin-top: 22px;
+            background: linear-gradient(135deg, rgba(0,58,112,0.96), rgba(0,87,168,0.92));
+            color: white;
+            border-radius: var(--radius-xl);
+            padding: 26px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 18px;
+            align-items: center;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            animation: rise .65s ease both;
+        }
+
+        .certificate-card::after {
+            content: "";
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            right: -80px;
+            top: -90px;
+            background: radial-gradient(circle, rgba(244,176,0,.32), transparent 66%);
+        }
+
+        .certificate-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .certificate-card.locked {
+            background: linear-gradient(135deg, rgba(100,116,139,0.96), rgba(148,163,184,0.90));
+        }
+
+        .certificate-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 6px;
+        }
+
+        .certificate-card p {
+            color: rgba(255,255,255,0.84);
+            line-height: 1.55;
+            font-size: .92rem;
+        }
+
+        .floating-actions {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            z-index: 120;
+        }
+
+        .accessibility-menu {
+            display: none;
+            width: min(300px, calc(100vw - 44px));
+            background: var(--surface-solid);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 14px;
+        }
+
+        .accessibility-menu.open {
+            display: grid;
+            gap: 9px;
+            animation: rise .25s ease both;
+        }
+
+        .accessibility-menu h3 {
+            color: var(--uea-blue);
+            font-size: .98rem;
+            margin: 4px 4px 8px;
+        }
+
+        .accessibility-menu .btn {
+            justify-content: flex-start;
+            width: 100%;
+            min-height: 42px;
+            font-size: .82rem;
+        }
+
+        .floating-btn {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            padding: 0;
+            font-size: 1.25rem;
+        }
+
+        body.dyslexic-font * {
+            font-family: Arial, Verdana, sans-serif !important;
+        }
+
+        body.spacing-increased * {
+            letter-spacing: .045em !important;
+            line-height: 1.8 !important;
+        }
+
+        body.highlight-links a {
+            text-decoration: underline !important;
+            text-decoration-thickness: 3px !important;
+            text-underline-offset: 4px !important;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.58);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-card {
+            width: min(520px, 100%);
+            max-height: min(88vh, 760px);
+            overflow: auto;
+            background: var(--surface-solid);
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            animation: rise .28s ease both;
+        }
+
+        .modal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .modal-head h3 {
+            color: var(--uea-blue);
+            font-size: 1.18rem;
+        }
+
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.75);
+            color: var(--uea-blue);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+        }
+
+        .profile-big {
+            text-align: center;
+            padding: 12px 0 18px;
+        }
+
+        .avatar-big {
+            width: 108px;
+            height: 108px;
+            border-radius: 36px;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-gold));
+            color: white;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            font-size: 2.1rem;
+            font-weight: 800;
+            margin: 0 auto 12px;
+            border: 4px solid rgba(244,176,0,0.30);
+        }
+
+        .avatar-big img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-big h4 {
+            color: var(--uea-blue);
+            font-size: 1.15rem;
+            margin-bottom: 3px;
+        }
+
+        .profile-big p {
+            color: var(--muted);
+            font-size: .88rem;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .profile-grid .stat-box {
+            background: rgba(0,58,112,0.04);
+        }
+
+        .input-text {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: var(--bg);
+            color: var(--ink);
+            border-radius: 15px;
+            padding: 12px 14px;
+            margin: 8px 0 12px;
+            font-size: .92rem;
+        }
+
+        .avatar-presets {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 10px 0 14px;
+        }
+
+        .preset-img {
+            width: 66px;
+            height: 66px;
+            border-radius: 22px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            background: #fff;
+            justify-self: center;
+            transition: .2s ease;
+        }
+
+        .preset-img:hover,
+        .preset-img.selected {
+            border-color: var(--uea-gold);
+            transform: translateY(-3px);
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%) translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 300;
+            background: var(--surface-solid);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            box-shadow: var(--shadow);
+            padding: 12px 16px;
+            font-size: .88rem;
+            font-weight: 800;
+            transition: .25s ease;
+            max-width: calc(100vw - 32px);
+            text-align: center;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 980px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-card {
+                min-height: unset;
+            }
+
+            .units {
+                grid-template-columns: 1fr;
+            }
+
+            .unit-card {
+                min-height: 0;
+            }
+
+            .section-title {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .section-title p {
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 720px) {
+            body {
+                padding-bottom: 96px;
+            }
+
+            .topbar-inner {
+                width: min(100% - 22px, 1160px);
+                min-height: 74px;
+                gap: 8px;
+            }
+
+            .brand-text small {
+                display: none;
+            }
+
+            .brand-text strong {
+                font-size: .95rem;
+            }
+
+            .logo-mark {
+                width: 48px;
+                height: 48px;
+                border-radius: 17px;
+            }
+
+            .user-mini {
+                padding: 6px;
+            }
+
+            .user-mini .user-text {
+                display: none;
+            }
+
+            .container {
+                width: min(100% - 22px, 1160px);
+                padding-top: 18px;
+            }
+
+            .hero-card,
+            .summary-card {
+                border-radius: 24px;
+                padding: 20px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1.1px;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+            }
+
+            .stats-row,
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .module-head {
+                grid-template-columns: auto 1fr;
+                padding: 18px 18px 14px 24px;
+            }
+
+            .module-status {
+                grid-column: 1 / -1;
+                justify-self: start;
+            }
+
+            .module-progress {
+                padding: 0 18px 14px 24px;
+            }
+
+            .units {
+                padding: 0 18px 20px 24px;
+            }
+
+            .certificate-card {
+                grid-template-columns: 1fr;
+                padding: 22px;
+            }
+
+            .certificate-card .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .topbar-inner {
+                width: min(100% - 16px, 1160px);
+            }
+
+            .container {
+                width: min(100% - 16px, 1160px);
+            }
+
+            .brand-text strong {
+                max-width: 125px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .nav-actions .btn-soft {
+                padding: 10px 12px;
+                min-height: 42px;
+            }
+
+            .nav-actions .btn-soft span {
+                display: none;
+            }
+
+            .module-number {
+                width: 50px;
+                height: 50px;
+                border-radius: 18px;
+            }
+
+            .module-info h3 {
+                font-size: 1.06rem;
+            }
+
+            .unit-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .unit-check-btn {
+                width: 100%;
+            }
+
+            .floating-actions {
+                right: 14px;
+                bottom: 14px;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <header class="navbar">
-        <div class="nav-profile">
-            <div class="avatar" id="user-avatar" onclick="abrirModalAvatar()" title="Alterar Avatar"></div>
-            <div>
-                <strong id="user-name" style="font-size: 1.1rem;">Carregando...</strong>
-                <div>
-                    <div class="streak-badge">
-                        <i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span>
-                    </div>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a href="home.html" class="brand" aria-label="Voltar para a tela inicial da Eduminex">
+                <div class="logo-mark"><span>EM</span></div>
+                <div class="brand-text">
+                    <strong>Eduminex</strong>
+                    <small>Letramento digital para estudantes da EJA</small>
                 </div>
+            </a>
+
+            <div class="nav-actions">
+                <button class="user-mini" type="button" onclick="abrirPerfil()" aria-label="Abrir perfil do usuário">
+                    <div class="avatar" id="user-avatar">E</div>
+                    <div class="user-text">
+                        <strong id="user-name">Carregando...</strong>
+                        <span class="streak"><i class="fas fa-fire"></i><span id="user-streak">0 dias</span></span>
+                    </div>
+                </button>
+                <a href="home.html" class="btn btn-soft"><i class="fas fa-arrow-left"></i><span>Voltar</span></a>
             </div>
         </div>
     </header>
 
     <main class="container">
-        
-        <a href="home.html" class="btn btn-outline btn-auto"><i class="fas fa-arrow-left"></i> Voltar ao Painel</a>
-
-        <div class="page-header">
-            <h2><i class="fas fa-layer-group"></i> Cursos Livres</h2>
-        </div>
-
-        <div class="module-list">
-            
-            <a href="trilha-etica.html" class="course-card" style="animation-delay: 0.1s;">
-                <div class="course-icon"><i class="fas fa-balance-scale"></i></div>
-                <div class="course-info">
-                    <h3>Ética na Internet</h3>
-                    <p>Compreenda os princípios de respeito, privacidade e direitos digitais para manter uma convivência online saudável, segura e cidadã.</p>
-                    
-                    <div class="progress-container">
-                        <div class="progress-track">
-                            <div class="progress-fill" style="width: 0%;" id="prog-etica"></div>
-                        </div>
-                        <div class="progress-text">
-                            <span>Progresso</span>
-                            <span id="txt-etica">0/3 Unidades</span>
-                        </div>
-                    </div>
+        <section class="hero">
+            <div class="hero-card">
+                <div class="crumb"><i class="fas fa-layer-group"></i> Trilha sequencial de aprendizagem</div>
+                <h1>Módulos de <span>letramento digital</span></h1>
+                <p>
+                    Estude no seu ritmo. Cada módulo tem 3 unidades. Ao concluir as três unidades de um módulo,
+                    o próximo é liberado automaticamente. Ao finalizar o módulo 5, o certificado final fica disponível.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="irParaProximaUnidade()"><i class="fas fa-play"></i> Continuar de onde parei</button>
+                    <button class="btn btn-soft" onclick="rolarParaTrilha()"><i class="fas fa-route"></i> Ver trilha completa</button>
                 </div>
-                <div class="course-action"><i class="fas fa-chevron-right"></i></div>
-            </a>
+            </div>
 
-            <a href="#" class="course-card" style="animation-delay: 0.2s;">
-                <div class="course-icon"><i class="fas fa-shield-alt"></i></div>
-                <div class="course-info">
-                    <h3>Cibersegurança</h3>
-                    <p>Aprenda a proteger seus dados, identificar golpes virtuais (phishing) e criar senhas fortes para blindar sua vida digital contra invasores.</p>
-                    
-                    <div class="progress-container">
-                        <div class="progress-track">
-                            <div class="progress-fill" style="width: 0%;" id="prog-ciber"></div>
-                        </div>
-                        <div class="progress-text">
-                            <span>Progresso</span>
-                            <span id="txt-ciber">0/3 Unidades</span>
-                        </div>
+            <aside class="summary-card" aria-label="Resumo do progresso">
+                <div>
+                    <div class="summary-top">
+                        <h2>Seu avanço na trilha</h2>
+                        <div class="summary-icon"><i class="fas fa-chart-line"></i></div>
                     </div>
+                    <div class="big-percent" id="overall-percent">0%</div>
+                    <small id="overall-text">0 de 15 unidades concluídas</small>
+                    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="overall-fill"></div></div>
                 </div>
-                <div class="course-action"><i class="fas fa-chevron-right"></i></div>
-            </a>
-
-            <a href="#" class="course-card" style="animation-delay: 0.3s;">
-                <div class="course-icon"><i class="fas fa-brain"></i></div>
-                <div class="course-info">
-                    <h3>Uso Consciente de Tecnologias</h3>
-                    <p>Entenda o impacto das redes sociais na saúde mental, combata as fake news e desenvolva hábitos digitais mais produtivos e equilibrados.</p>
-                    
-                    <div class="progress-container">
-                        <div class="progress-track">
-                            <div class="progress-fill" style="width: 0%;" id="prog-uso"></div>
-                        </div>
-                        <div class="progress-text">
-                            <span>Progresso</span>
-                            <span id="txt-uso">0/3 Unidades</span>
-                        </div>
-                    </div>
+                <div class="stats-row">
+                    <div class="stat-box"><strong id="stat-modules">0/5</strong><span>Módulos</span></div>
+                    <div class="stat-box"><strong id="stat-units">0/15</strong><span>Unidades</span></div>
+                    <div class="stat-box"><strong id="stat-xp">0</strong><span>XP</span></div>
                 </div>
-                <div class="course-action"><i class="fas fa-chevron-right"></i></div>
-            </a>
+            </aside>
+        </section>
 
-        </div>
+        <section class="section-title" id="trilha">
+            <h2><i class="fas fa-map-signs"></i> Caminho de estudos</h2>
+            <p>Os módulos bloqueados ficam disponíveis quando você conclui todas as unidades do módulo anterior.</p>
+        </section>
+
+        <section class="modules-timeline" id="modules-list" aria-label="Lista de módulos sequenciais"></section>
+
+        <section class="certificate-card locked" id="certificate-card">
+            <div>
+                <h3><i class="fas fa-certificate"></i> Certificado final Eduminex</h3>
+                <p id="certificate-text">Conclua as 15 unidades da trilha para liberar seu certificado de conclusão em letramento digital.</p>
+            </div>
+            <a href="#" class="btn btn-gold btn-disabled" id="certificate-btn" onclick="abrirCertificado(event)">
+                <i class="fas fa-lock"></i> Certificado bloqueado
+            </a>
+        </section>
     </main>
 
     <div class="floating-actions">
-        <div class="menu-acessibilidade" id="menu-acess">
-            <div class="menu-title">Opções de Visualização</div>
-            <button class="btn btn-primary" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto Contraste</button>
-            <button class="btn btn-logout" onclick="mudarFonte(2)"><i class="fas fa-font"></i><i class="fas fa-plus"></i> Aumentar Texto</button>
-            <button class="btn btn-logout" onclick="mudarFonte(-2)"><i class="fas fa-font"></i><i class="fas fa-minus"></i> Diminuir Texto</button>
-            <button class="btn btn-logout" onclick="toggleDislexia()"><i class="fas fa-book-reader"></i> Fonte Dislexia</button>
-            <button class="btn btn-logout" onclick="toggleEspacamento()"><i class="fas fa-text-height"></i> Mais Espaçamento</button>
-            <button class="btn btn-logout" onclick="toggleDestaqueLinks()"><i class="fas fa-link"></i> Destacar Links</button>
+        <div class="accessibility-menu" id="accessibility-menu" aria-label="Menu de acessibilidade">
+            <h3><i class="fas fa-universal-access"></i> Acessibilidade</h3>
+            <button class="btn btn-soft" onclick="toggleAltoContraste()"><i class="fas fa-circle-half-stroke"></i> Alto contraste</button>
+            <button class="btn btn-soft" onclick="mudarFonte(5)"><i class="fas fa-font"></i> Aumentar texto</button>
+            <button class="btn btn-soft" onclick="mudarFonte(-5)"><i class="fas fa-font"></i> Diminuir texto</button>
+            <button class="btn btn-soft" onclick="toggleDislexia()"><i class="fas fa-book-open-reader"></i> Fonte simples</button>
+            <button class="btn btn-soft" onclick="toggleEspacamento()"><i class="fas fa-text-height"></i> Mais espaçamento</button>
+            <button class="btn btn-soft" onclick="toggleDestaqueLinks()"><i class="fas fa-link"></i> Destacar links</button>
+            <button class="btn btn-soft" onclick="toggleReducaoMovimento()"><i class="fas fa-person-walking-arrow-loop-left"></i> Reduzir animações</button>
+            <button class="btn btn-danger" onclick="restaurarAcessibilidade()"><i class="fas fa-rotate-left"></i> Restaurar visual</button>
         </div>
-        <button class="btn btn-floating" onclick="toggleMenuAcessibilidade()" title="Acessibilidade">
+        <button class="btn btn-primary floating-btn" onclick="toggleMenuAcessibilidade()" aria-label="Abrir menu de acessibilidade">
             <i class="fas fa-universal-access"></i>
         </button>
     </div>
 
-    <div class="modal-overlay" id="avatar-modal">
-        <div class="modal-card">
-            <h3><i class="fas fa-camera"></i> Alterar Foto de Perfil</h3>
-            
-            <p style="font-size: 0.9rem; margin-bottom: 10px; color: var(--text-muted);">Escolha um avatar pronto:</p>
-            <div class="avatar-presets">
-                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Felix" class="preset-img" onclick="selecionarPreset(this.src)">
-                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Ane" class="preset-img" onclick="selecionarPreset(this.src)">
-                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Jack" class="preset-img" onclick="selecionarPreset(this.src)">
+    <div class="modal-overlay" id="profile-modal" onclick="fecharModalFora(event, 'profile-modal')">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+            <div class="modal-head">
+                <h3 id="profile-title"><i class="fas fa-user-circle"></i> Perfil do estudante</h3>
+                <button class="icon-btn" onclick="fecharPerfil()" aria-label="Fechar perfil"><i class="fas fa-times"></i></button>
             </div>
-
-            <p style="font-size: 0.9rem; margin-bottom: 5px; color: var(--text-muted);">Ou cole a URL de uma imagem da internet:</p>
-            <input type="text" id="avatar-url" class="input-text" placeholder="https://linkdafoto.com/foto.jpg">
-
-            <p style="font-size: 0.9rem; margin-bottom: 5px; color: var(--text-muted);">Ou envie um arquivo do seu computador:</p>
-            <input type="file" id="avatar-file" accept="image/*" onchange="carregarArquivoLocal(event)" style="margin-bottom: 20px;">
-
-            <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                <button class="btn btn-logout btn-auto" onclick="fecharModalAvatar()">Cancelar</button>
-                <button class="btn btn-primary btn-auto" onclick="salvarNovaFoto()" id="btn-salvar-foto">Salvar Foto</button>
+            <div class="profile-big">
+                <div class="avatar-big" id="profile-avatar">E</div>
+                <h4 id="profile-name">Estudante</h4>
+                <p id="profile-email">email@exemplo.com</p>
+            </div>
+            <div class="profile-grid">
+                <div class="stat-box"><strong id="profile-xp">0</strong><span>XP</span></div>
+                <div class="stat-box"><strong id="profile-streak">0</strong><span>Ofensiva</span></div>
+                <div class="stat-box"><strong id="profile-progress">0%</strong><span>Progresso</span></div>
+            </div>
+            <div class="progress-track"><div class="progress-fill" id="profile-progress-fill"></div></div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;">
+                <button class="btn btn-primary" onclick="abrirEditorFoto()"><i class="fas fa-camera"></i> Trocar foto</button>
+                <button class="btn btn-soft" onclick="fazerLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
             </div>
         </div>
     </div>
 
+    <div class="modal-overlay" id="photo-modal" onclick="fecharModalFora(event, 'photo-modal')">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="photo-title">
+            <div class="modal-head">
+                <h3 id="photo-title"><i class="fas fa-camera"></i> Alterar foto</h3>
+                <button class="icon-btn" onclick="fecharEditorFoto()" aria-label="Fechar editor de foto"><i class="fas fa-times"></i></button>
+            </div>
+
+            <p style="color:var(--muted); font-size:.88rem; line-height:1.6;">Escolha um avatar pronto, cole a URL de uma imagem ou envie um arquivo do seu computador.</p>
+            <div class="avatar-presets">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Eduminex1" class="preset-img" alt="Avatar 1" onclick="selecionarPreset(this, this.src)">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Eduminex2" class="preset-img" alt="Avatar 2" onclick="selecionarPreset(this, this.src)">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Eduminex3" class="preset-img" alt="Avatar 3" onclick="selecionarPreset(this, this.src)">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Eduminex4" class="preset-img" alt="Avatar 4" onclick="selecionarPreset(this, this.src)">
+            </div>
+
+            <label for="avatar-url" style="color:var(--uea-blue); font-weight:800; font-size:.84rem;">URL da imagem</label>
+            <input type="text" id="avatar-url" class="input-text" placeholder="https://linkdafoto.com/foto.jpg">
+
+            <label for="avatar-file" style="color:var(--uea-blue); font-weight:800; font-size:.84rem;">Arquivo do computador</label>
+            <input type="file" id="avatar-file" accept="image/*" onchange="carregarArquivoLocal(event)" class="input-text">
+
+            <div style="display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap; margin-top:8px;">
+                <button class="btn btn-soft" onclick="fecharEditorFoto()">Cancelar</button>
+                <button class="btn btn-primary" onclick="salvarNovaFoto()" id="btn-salvar-foto"><i class="fas fa-check"></i> Salvar foto</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
     <script>
         const API_URL = 'https://algoritmolab.onrender.com/api';
-        let usuarioLogadoData = null; 
-        let fotoSelecionadaTemp = "";
 
-        // TRAVA DE SEGURANÇA: Garante autenticação
+        const MODULES = [
+            {
+                id: 1,
+                icon: 'fa-computer',
+                title: 'Primeiros passos no mundo digital',
+                description: 'Conheça o computador, o celular, os aplicativos e os comandos básicos para iniciar sua autonomia digital.',
+                units: [
+                    { title: 'Conhecendo dispositivos digitais', desc: 'Partes do computador, celular, tablet e cuidados iniciais.' },
+                    { title: 'Comandos básicos e navegação', desc: 'Clique, toque, digitação, menus, janelas, arquivos e pastas.' },
+                    { title: 'Organização de arquivos', desc: 'Criar, salvar, localizar e organizar documentos com segurança.' }
+                ]
+            },
+            {
+                id: 2,
+                icon: 'fa-wifi',
+                title: 'Internet e comunicação',
+                description: 'Aprenda a navegar, pesquisar, usar e-mail, mensagens e participar de ambientes digitais de comunicação.',
+                units: [
+                    { title: 'O que é internet e navegador', desc: 'Como acessar sites, abrir abas e compreender endereços digitais.' },
+                    { title: 'Pesquisa e informações confiáveis', desc: 'Buscar informações, comparar fontes e evitar conteúdos enganosos.' },
+                    { title: 'E-mail e comunicação online', desc: 'Enviar mensagens, anexar arquivos e usar comunicação digital com respeito.' }
+                ]
+            },
+            {
+                id: 3,
+                icon: 'fa-shield-halved',
+                title: 'Segurança e cidadania digital',
+                description: 'Desenvolva hábitos seguros, proteja dados pessoais e compreenda direitos e deveres no ambiente digital.',
+                units: [
+                    { title: 'Senhas e proteção de dados', desc: 'Criar senhas fortes, cuidar de contas e reconhecer riscos.' },
+                    { title: 'Golpes, fake news e privacidade', desc: 'Identificar links suspeitos, boatos e tentativas de fraude.' },
+                    { title: 'Respeito e cidadania digital', desc: 'Convivência online, ética, direitos, deveres e uso responsável.' }
+                ]
+            },
+            {
+                id: 4,
+                icon: 'fa-id-card',
+                title: 'Serviços digitais e vida cotidiana',
+                description: 'Use recursos digitais presentes no dia a dia, como serviços públicos, pagamentos, cadastros e agendamentos.',
+                units: [
+                    { title: 'Serviços públicos digitais', desc: 'Acessar portais, consultar informações e realizar solicitações online.' },
+                    { title: 'Cadastros, formulários e documentos', desc: 'Preencher dados, enviar arquivos e acompanhar solicitações.' },
+                    { title: 'Consumo, bancos e cuidados online', desc: 'Comprar, pagar, comparar informações e evitar golpes financeiros.' }
+                ]
+            },
+            {
+                id: 5,
+                icon: 'fa-graduation-cap',
+                title: 'Educação, trabalho e autonomia digital',
+                description: 'Aplique o letramento digital para estudar, trabalhar, produzir conteúdos e ampliar sua autonomia.',
+                units: [
+                    { title: 'Ferramentas para estudar', desc: 'Usar plataformas, vídeos, documentos e atividades online.' },
+                    { title: 'Tecnologia no trabalho', desc: 'Currículo digital, comunicação profissional e produtividade.' },
+                    { title: 'Projeto final de autonomia digital', desc: 'Organizar uma atividade prática usando recursos digitais aprendidos.' }
+                ]
+            }
+        ];
+
+        let usuarioLogadoData = null;
+        let fotoSelecionadaTemp = '';
+        let currentScale = 100;
+        let progressData = { completed: {} };
+
+        function getUserKey() {
+            const email = usuarioLogadoData && usuarioLogadoData.email ? usuarioLogadoData.email : 'visitante';
+            return `eduminex_progress_${email}`;
+        }
+
         function checkAuth() {
             const userString = localStorage.getItem('userData');
             if (!userString) {
-                window.location.href = 'index.html'; 
+                window.location.href = 'index.html';
                 return;
             }
-            usuarioLogadoData = JSON.parse(userString);
+
+            try {
+                usuarioLogadoData = JSON.parse(userString);
+            } catch (error) {
+                localStorage.removeItem('userData');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            carregarProgresso();
             renderizarDadosUsuario();
-            carregarProgressoCursos();
+            renderizarModulos();
+            atualizarResumo();
         }
 
-        // Atualiza a tela com as informações
+        function carregarProgresso() {
+            const saved = localStorage.getItem(getUserKey());
+            if (saved) {
+                try {
+                    progressData = JSON.parse(saved);
+                } catch (error) {
+                    progressData = { completed: {} };
+                }
+            }
+            if (!progressData || typeof progressData !== 'object') progressData = { completed: {} };
+            if (!progressData.completed) progressData.completed = {};
+        }
+
+        function salvarProgresso() {
+            localStorage.setItem(getUserKey(), JSON.stringify(progressData));
+            const total = getTotalCompletedUnits();
+            const percent = Math.round((total / 15) * 100);
+            usuarioLogadoData.progresso = percent;
+            usuarioLogadoData.unidadesConcluidas = total;
+            usuarioLogadoData.modulosConcluidos = getCompletedModulesCount();
+            usuarioLogadoData.xp = usuarioLogadoData.xp || 0;
+            localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+        }
+
+        function unitKey(moduleId, unitId) {
+            return `${moduleId}-${unitId}`;
+        }
+
+        function isUnitCompleted(moduleId, unitId) {
+            return !!progressData.completed[unitKey(moduleId, unitId)];
+        }
+
+        function isModuleCompleted(moduleId) {
+            return [1, 2, 3].every(unit => isUnitCompleted(moduleId, unit));
+        }
+
+        function isModuleUnlocked(moduleId) {
+            if (moduleId === 1) return true;
+            return isModuleCompleted(moduleId - 1);
+        }
+
+        function isUnitUnlocked(moduleId, unitId) {
+            if (!isModuleUnlocked(moduleId)) return false;
+            if (unitId === 1) return true;
+            return isUnitCompleted(moduleId, unitId - 1);
+        }
+
+        function getTotalCompletedUnits() {
+            return Object.values(progressData.completed).filter(Boolean).length;
+        }
+
+        function getCompletedModulesCount() {
+            return MODULES.filter(module => isModuleCompleted(module.id)).length;
+        }
+
+        function getNextUnit() {
+            for (const module of MODULES) {
+                if (!isModuleUnlocked(module.id)) continue;
+                for (let i = 1; i <= 3; i++) {
+                    if (isUnitUnlocked(module.id, i) && !isUnitCompleted(module.id, i)) {
+                        return { moduleId: module.id, unitId: i };
+                    }
+                }
+            }
+            return null;
+        }
+
         function renderizarDadosUsuario() {
-            document.getElementById('user-name').innerText = usuarioLogadoData.nome;
-            document.getElementById('user-streak').innerText = `${usuarioLogadoData.streak || 0} Dias`;
-            
-            const avatarDiv = document.getElementById('user-avatar');
-            if (usuarioLogadoData.foto && usuarioLogadoData.foto !== "") {
-                avatarDiv.innerHTML = `<img src="${usuarioLogadoData.foto}" style="width:100%; height:100%; object-fit:cover;">`;
+            const nome = usuarioLogadoData.nome || usuarioLogadoData.name || 'Estudante';
+            const email = usuarioLogadoData.email || 'E-mail não informado';
+            const streak = usuarioLogadoData.streak || usuarioLogadoData.ofensiva || 0;
+            const xp = usuarioLogadoData.xp || 0;
+            const percent = Math.round((getTotalCompletedUnits() / 15) * 100);
+
+            document.getElementById('user-name').innerText = nome;
+            document.getElementById('user-streak').innerText = `${streak} dia${streak === 1 ? '' : 's'}`;
+
+            renderAvatar(document.getElementById('user-avatar'), nome, usuarioLogadoData.foto);
+            renderAvatar(document.getElementById('profile-avatar'), nome, usuarioLogadoData.foto);
+
+            document.getElementById('profile-name').innerText = nome;
+            document.getElementById('profile-email').innerText = email;
+            document.getElementById('profile-xp').innerText = xp;
+            document.getElementById('profile-streak').innerText = `${streak} dia${streak === 1 ? '' : 's'}`;
+            document.getElementById('profile-progress').innerText = `${percent}%`;
+            document.getElementById('profile-progress-fill').style.width = `${percent}%`;
+        }
+
+        function renderAvatar(target, nome, foto) {
+            if (!target) return;
+            if (foto) {
+                target.innerHTML = `<img src="${foto}" alt="Foto de perfil">`;
             } else {
-                avatarDiv.innerText = usuarioLogadoData.nome.charAt(0).toUpperCase();
+                target.textContent = (nome || 'E').charAt(0).toUpperCase();
             }
         }
 
-        // Função de Progresso (Atualmente visual e pronta para ser conectada ao banco futuramente)
-        function carregarProgressoCursos() {
-            // Se no futuro você adicionar essas colunas no banco, basta usar os dados do "usuarioLogadoData" aqui.
-            // Exemplo: const etica_concluido = usuarioLogadoData.etica_unidades || 0;
-            
-            // Atualmente iniciado zerado:
-            let etica_concluido = 0; 
-            let ciber_concluido = 0; 
-            let uso_concluido = 0; 
+        function renderizarModulos() {
+            const list = document.getElementById('modules-list');
+            list.innerHTML = '';
 
-            // Atualiza a barra do DOM (Máximo de 3 unidades cada)
-            document.getElementById('prog-etica').style.width = `${(etica_concluido / 3) * 100}%`;
-            document.getElementById('txt-etica').innerText = `${etica_concluido}/3 Unidades`;
+            MODULES.forEach((module, index) => {
+                const unlocked = isModuleUnlocked(module.id);
+                const completed = isModuleCompleted(module.id);
+                const completedUnits = [1, 2, 3].filter(unit => isUnitCompleted(module.id, unit)).length;
+                const percent = Math.round((completedUnits / 3) * 100);
 
-            document.getElementById('prog-ciber').style.width = `${(ciber_concluido / 3) * 100}%`;
-            document.getElementById('txt-ciber').innerText = `${ciber_concluido}/3 Unidades`;
+                const article = document.createElement('article');
+                article.className = `module-card ${unlocked ? 'unlocked' : 'locked'} ${completed ? 'completed' : ''}`;
+                article.style.animationDelay = `${index * 0.08}s`;
 
-            document.getElementById('prog-uso').style.width = `${(uso_concluido / 3) * 100}%`;
-            document.getElementById('txt-uso').innerText = `${uso_concluido}/3 Unidades`;
+                const statusClass = completed ? 'completed' : unlocked ? 'unlocked' : 'locked';
+                const statusIcon = completed ? 'fa-check-circle' : unlocked ? 'fa-unlock' : 'fa-lock';
+                const statusText = completed ? 'Concluído' : unlocked ? 'Liberado' : 'Bloqueado';
+
+                article.innerHTML = `
+                    <div class="module-head">
+                        <div class="module-number">${completed ? '<i class="fas fa-check"></i>' : String(module.id).padStart(2, '0')}</div>
+                        <div class="module-info">
+                            <h3><i class="fas ${module.icon}"></i> ${module.title}</h3>
+                            <p>${module.description}</p>
+                        </div>
+                        <div class="module-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusText} · ${completedUnits}/3</div>
+                    </div>
+                    <div class="module-progress">
+                        <div class="progress-track" aria-label="Progresso do módulo ${module.id}"><div class="progress-fill" style="width:${percent}%"></div></div>
+                    </div>
+                    <div class="units">
+                        ${module.units.map((unit, i) => renderUnit(module.id, i + 1, unit)).join('')}
+                    </div>
+                `;
+
+                list.appendChild(article);
+            });
         }
 
-        /* MODAL DE FOTO DE PERFIL */
-        function abrirModalAvatar() { document.getElementById('avatar-modal').style.display = 'flex'; }
-        function fecharModalAvatar() { document.getElementById('avatar-modal').style.display = 'none'; }
-        
-        function selecionarPreset(src) {
+        function renderUnit(moduleId, unitId, unit) {
+            const completed = isUnitCompleted(moduleId, unitId);
+            const unlocked = isUnitUnlocked(moduleId, unitId);
+            const locked = !unlocked;
+            const statusIcon = completed ? 'fa-check' : locked ? 'fa-lock' : 'fa-play';
+            const buttonText = completed ? 'Revisar unidade' : locked ? 'Bloqueada' : 'Estudar unidade';
+            const checkTitle = completed ? 'Unidade já concluída' : unlocked ? 'Marcar unidade como concluída' : 'Conclua a unidade anterior primeiro';
+
+            return `
+                <div class="unit-card ${completed ? 'completed' : ''} ${unlocked ? 'unlocked' : 'locked'}">
+                    <div>
+                        <div class="unit-top">
+                            <div>
+                                <div class="unit-kicker">Módulo ${moduleId} · Unidade ${unitId}</div>
+                                <h4>${unit.title}</h4>
+                            </div>
+                            <div class="unit-icon"><i class="fas ${statusIcon}"></i></div>
+                        </div>
+                        <p>${unit.desc}</p>
+                    </div>
+                    <div class="unit-actions">
+                        <button class="btn ${unlocked ? 'btn-primary' : 'btn-soft btn-disabled'} unit-btn" ${locked ? 'disabled' : ''} onclick="abrirUnidade(${moduleId}, ${unitId})">
+                            <i class="fas ${completed ? 'fa-eye' : 'fa-book-open'}"></i> ${buttonText}
+                        </button>
+                        <button class="btn unit-check-btn" title="${checkTitle}" aria-label="${checkTitle}" ${locked || completed ? 'disabled' : ''} onclick="concluirUnidade(${moduleId}, ${unitId})">
+                            <i class="fas ${completed ? 'fa-check' : 'fa-flag-checkered'}"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function atualizarResumo() {
+            const total = getTotalCompletedUnits();
+            const percent = Math.round((total / 15) * 100);
+            const modulesDone = getCompletedModulesCount();
+            const xp = usuarioLogadoData.xp || 0;
+
+            document.getElementById('overall-percent').innerText = `${percent}%`;
+            document.getElementById('overall-text').innerText = `${total} de 15 unidades concluídas`;
+            document.getElementById('overall-fill').style.width = `${percent}%`;
+            document.getElementById('stat-modules').innerText = `${modulesDone}/5`;
+            document.getElementById('stat-units').innerText = `${total}/15`;
+            document.getElementById('stat-xp').innerText = xp;
+
+            atualizarCertificado(total === 15);
+            renderizarDadosUsuario();
+        }
+
+        function atualizarCertificado(unlocked) {
+            const card = document.getElementById('certificate-card');
+            const text = document.getElementById('certificate-text');
+            const btn = document.getElementById('certificate-btn');
+
+            if (unlocked) {
+                card.classList.remove('locked');
+                text.innerText = 'Parabéns! Você concluiu todos os módulos. Seu certificado final já está disponível.';
+                btn.className = 'btn btn-gold';
+                btn.innerHTML = '<i class="fas fa-certificate"></i> Emitir certificado';
+                btn.href = 'certificado.html';
+            } else {
+                card.classList.add('locked');
+                text.innerText = 'Conclua as 15 unidades da trilha para liberar seu certificado de conclusão em letramento digital.';
+                btn.className = 'btn btn-gold btn-disabled';
+                btn.innerHTML = '<i class="fas fa-lock"></i> Certificado bloqueado';
+                btn.href = '#';
+            }
+        }
+
+        function abrirUnidade(moduleId, unitId) {
+            if (!isUnitUnlocked(moduleId, unitId)) {
+                showToast('Essa unidade ainda está bloqueada. Conclua a anterior primeiro.');
+                return;
+            }
+
+            localStorage.setItem('eduminex_unidade_atual', JSON.stringify({ modulo: moduleId, unidade: unitId }));
+
+            const target = `modulo${moduleId}-unidade${unitId}.html`;
+            showToast(`Abrindo Módulo ${moduleId}, Unidade ${unitId}...`);
+            setTimeout(() => { window.location.href = target; }, 450);
+        }
+
+        function concluirUnidade(moduleId, unitId) {
+            if (!isUnitUnlocked(moduleId, unitId)) {
+                showToast('Conclua a unidade anterior para liberar esta etapa.');
+                return;
+            }
+
+            const key = unitKey(moduleId, unitId);
+            if (progressData.completed[key]) {
+                showToast('Esta unidade já foi concluída.');
+                return;
+            }
+
+            progressData.completed[key] = true;
+            usuarioLogadoData.xp = (usuarioLogadoData.xp || 0) + 100;
+
+            salvarProgresso();
+            renderizarModulos();
+            atualizarResumo();
+
+            if (unitId === 3 && moduleId < 5) {
+                showToast(`Módulo ${moduleId} concluído! O módulo ${moduleId + 1} foi liberado.`);
+            } else if (moduleId === 5 && unitId === 3) {
+                showToast('Parabéns! Certificado final liberado.');
+            } else {
+                showToast('Unidade concluída! Próxima unidade liberada. +100 XP');
+            }
+        }
+
+        function irParaProximaUnidade() {
+            const next = getNextUnit();
+            if (!next) {
+                abrirCertificado(new Event('click'));
+                return;
+            }
+            abrirUnidade(next.moduleId, next.unitId);
+        }
+
+        function abrirCertificado(event) {
+            const total = getTotalCompletedUnits();
+            if (total < 15) {
+                event.preventDefault();
+                showToast(`Certificado bloqueado. Faltam ${15 - total} unidade${15 - total === 1 ? '' : 's'}.`);
+            }
+        }
+
+        function rolarParaTrilha() {
+            document.getElementById('trilha').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function abrirPerfil() {
+            document.getElementById('profile-modal').classList.add('open');
+        }
+
+        function fecharPerfil() {
+            document.getElementById('profile-modal').classList.remove('open');
+        }
+
+        function abrirEditorFoto() {
+            fecharPerfil();
+            document.getElementById('photo-modal').classList.add('open');
+        }
+
+        function fecharEditorFoto() {
+            document.getElementById('photo-modal').classList.remove('open');
+            fotoSelecionadaTemp = '';
+            document.getElementById('avatar-url').value = '';
+            const fileInput = document.getElementById('avatar-file');
+            if (fileInput) fileInput.value = '';
+            document.querySelectorAll('.preset-img').forEach(img => img.classList.remove('selected'));
+        }
+
+        function fecharModalFora(event, modalId) {
+            if (event.target.id === modalId) {
+                event.target.classList.remove('open');
+            }
+        }
+
+        function selecionarPreset(element, src) {
             fotoSelecionadaTemp = src;
             document.querySelectorAll('.preset-img').forEach(img => img.classList.remove('selected'));
-            event.target.classList.add('selected');
+            element.classList.add('selected');
         }
 
         function carregarArquivoLocal(event) {
-            const file = event.target.files[0];
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                showToast('Escolha um arquivo de imagem válido.');
+                event.target.value = '';
+                return;
+            }
+
             const reader = new FileReader();
-            reader.onloadend = function() { fotoSelecionadaTemp = reader.result; }
-            if (file) reader.readAsDataURL(file);
+            reader.onloadend = function() {
+                fotoSelecionadaTemp = reader.result;
+                showToast('Imagem carregada. Clique em salvar foto.');
+            };
+            reader.readAsDataURL(file);
         }
 
         async function salvarNovaFoto() {
             const urlInput = document.getElementById('avatar-url').value.trim();
             const novaFoto = urlInput || fotoSelecionadaTemp;
-            
-            if (!novaFoto) { alert("Por favor, selecione ou informe uma imagem."); return; }
+
+            if (!novaFoto) {
+                showToast('Selecione um avatar, cole uma URL ou envie uma imagem.');
+                return;
+            }
 
             const btnSalvar = document.getElementById('btn-salvar-foto');
-            btnSalvar.innerText = "Salvando..."; btnSalvar.disabled = true;
+            btnSalvar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+            btnSalvar.disabled = true;
 
             try {
                 const response = await fetch(`${API_URL}/update-photo`, {
@@ -369,28 +1761,30 @@
                     body: JSON.stringify({ email: usuarioLogadoData.email, foto: novaFoto })
                 });
 
-                if (response.ok) {
-                    usuarioLogadoData.foto = novaFoto;
-                    localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
-                    renderizarDadosUsuario();
-                    fecharModalAvatar();
-                } else {
-                    const data = await response.json();
-                    alert("Erro ao salvar: " + data.error);
+                if (!response.ok) {
+                    const data = await response.json().catch(() => ({}));
+                    throw new Error(data.error || 'Não foi possível salvar no servidor.');
                 }
+
+                usuarioLogadoData.foto = novaFoto;
+                localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+                renderizarDadosUsuario();
+                fecharEditorFoto();
+                showToast('Foto atualizada com sucesso.');
             } catch (error) {
-                console.error("Erro:", error);
-                alert("Erro de conexão com o servidor. Tente novamente.");
+                usuarioLogadoData.foto = novaFoto;
+                localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+                renderizarDadosUsuario();
+                fecharEditorFoto();
+                showToast('Foto salva localmente. Servidor indisponível no momento.');
             } finally {
-                btnSalvar.innerText = "Salvar Foto"; btnSalvar.disabled = false;
-                document.getElementById('avatar-url').value = ""; fotoSelecionadaTemp = "";
+                btnSalvar.innerHTML = '<i class="fas fa-check"></i> Salvar foto';
+                btnSalvar.disabled = false;
             }
         }
 
-        /* SISTEMA DE ACESSIBILIDADE APRIMORADO */
         function toggleMenuAcessibilidade() {
-            const menu = document.getElementById('menu-acess');
-            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+            document.getElementById('accessibility-menu').classList.toggle('open');
         }
 
         function toggleAltoContraste() {
@@ -398,11 +1792,10 @@
             localStorage.setItem('acess_alto_contraste', document.body.classList.contains('high-contrast'));
         }
 
-        let currentScale = 100;
         function mudarFonte(delta) {
             currentScale += delta;
-            if (currentScale < 80) currentScale = 80;
-            if (currentScale > 140) currentScale = 140;
+            if (currentScale < 85) currentScale = 85;
+            if (currentScale > 145) currentScale = 145;
             document.documentElement.style.setProperty('--font-scale', `${currentScale}%`);
             localStorage.setItem('acess_escala_fonte', currentScale);
         }
@@ -422,21 +1815,65 @@
             localStorage.setItem('acess_links', document.body.classList.contains('highlight-links'));
         }
 
-        // Inicialização
-        window.onload = function() {
-            checkAuth();
-            
-            // Restaura configurações de acessibilidade
+        function toggleReducaoMovimento() {
+            document.body.classList.toggle('reduce-motion');
+            localStorage.setItem('acess_reduce_motion', document.body.classList.contains('reduce-motion'));
+        }
+
+        function restaurarAcessibilidade() {
+            ['high-contrast', 'dyslexic-font', 'spacing-increased', 'highlight-links', 'reduce-motion'].forEach(cls => document.body.classList.remove(cls));
+            currentScale = 100;
+            document.documentElement.style.setProperty('--font-scale', '100%');
+            ['acess_alto_contraste', 'acess_dislexia', 'acess_espacamento', 'acess_links', 'acess_reduce_motion', 'acess_escala_fonte'].forEach(key => localStorage.removeItem(key));
+            showToast('Visual restaurado.');
+        }
+
+        function restaurarAcessibilidadeSalva() {
             if (localStorage.getItem('acess_alto_contraste') === 'true') document.body.classList.add('high-contrast');
             if (localStorage.getItem('acess_dislexia') === 'true') document.body.classList.add('dyslexic-font');
             if (localStorage.getItem('acess_espacamento') === 'true') document.body.classList.add('spacing-increased');
             if (localStorage.getItem('acess_links') === 'true') document.body.classList.add('highlight-links');
-            
-            const savedScale = localStorage.getItem('acess_escala_fonte');
-            if (savedScale) {
-                currentScale = parseInt(savedScale);
+            if (localStorage.getItem('acess_reduce_motion') === 'true') document.body.classList.add('reduce-motion');
+
+            const savedScale = parseInt(localStorage.getItem('acess_escala_fonte'), 10);
+            if (!Number.isNaN(savedScale)) {
+                currentScale = Math.min(145, Math.max(85, savedScale));
                 document.documentElement.style.setProperty('--font-scale', `${currentScale}%`);
             }
+        }
+
+        function fazerLogout() {
+            localStorage.removeItem('userData');
+            localStorage.removeItem('userLogado');
+            localStorage.removeItem('userName');
+            window.location.href = 'index.html?logout=true';
+        }
+
+        let toastTimer;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerHTML = message;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.open').forEach(modal => modal.classList.remove('open'));
+                document.getElementById('accessibility-menu').classList.remove('open');
+            }
+        });
+
+        window.addEventListener('click', function(event) {
+            const menu = document.getElementById('accessibility-menu');
+            const isFloating = event.target.closest('.floating-actions');
+            if (!isFloating && menu.classList.contains('open')) menu.classList.remove('open');
+        });
+
+        window.onload = function() {
+            restaurarAcessibilidadeSalva();
+            checkAuth();
         };
     </script>
 </body>
