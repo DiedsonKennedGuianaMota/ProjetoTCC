@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliação · Módulo 1 Unidade 1 - Eduminex</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --uea-blue:#003A70;
+  --uea-blue-2:#0057A8;
+  --uea-gold:#F4B000;
+  --uea-gold-2:#FFD36A;
+  --ink:#172033;
+  --muted:#64748B;
+  --bg:#F4F8FF;
+  --surface:rgba(255,255,255,.92);
+  --surface-solid:#FFFFFF;
+  --line:rgba(0,58,112,.13);
+  --success:#16A34A;
+  --danger:#DC2626;
+  --warning:#F59E0B;
+  --shadow:0 22px 60px rgba(0,58,112,.13);
+  --soft-shadow:0 12px 32px rgba(0,58,112,.09);
+  --radius-xl:30px;
+  --radius-lg:22px;
+  --radius-md:16px;
+  --font-scale:100%;
+}
+body.high-contrast {
+  --uea-blue:#00E5FF;
+  --uea-blue-2:#BFF7FF;
+  --uea-gold:#FFFF00;
+  --uea-gold-2:#FFF6A0;
+  --ink:#FFFFFF;
+  --muted:#D1D5DB;
+  --bg:#050505;
+  --surface:rgba(20,20,20,.96);
+  --surface-solid:#111111;
+  --line:rgba(255,255,255,.22);
+  --success:#00FF66;
+  --danger:#FF6B6B;
+  --warning:#FFFF00;
+  --shadow:0 22px 60px rgba(0,0,0,.55);
+  --soft-shadow:0 12px 32px rgba(0,0,0,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+html{font-size:var(--font-scale);scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(244,176,0,.18), transparent 28%),
+    radial-gradient(circle at 90% 4%, rgba(0,87,168,.20), transparent 32%),
+    linear-gradient(135deg,#F7FBFF 0%,var(--bg) 48%,#EDF5FF 100%);
+  color:var(--ink);
+  overflow-x:hidden;
+  padding-bottom:105px;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background-image:linear-gradient(rgba(0,58,112,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(0,58,112,.045) 1px,transparent 1px);
+  background-size:42px 42px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.84),rgba(0,0,0,.08));
+}
+body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shine{from{left:-90%}to{left:120%}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes burn{0%,100%{transform:scale(1);filter:drop-shadow(0 0 2px rgba(244,176,0,.45))}50%{transform:scale(1.10);filter:drop-shadow(0 0 12px rgba(244,176,0,.85))}}
+.navbar{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px clamp(14px,4vw,56px);
+  background:rgba(255,255,255,.78);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);box-shadow:0 12px 32px rgba(0,58,112,.08);
+}
+body.high-contrast .navbar{background:rgba(10,10,10,.88)}
+.brand{display:flex;align-items:center;gap:12px;min-width:0;text-decoration:none;color:inherit}
+.logo-mark{
+  width:52px;height:52px;border-radius:18px;display:grid;place-items:center;color:white;font-weight:800;letter-spacing:-1px;position:relative;overflow:hidden;flex:0 0 auto;
+  background:linear-gradient(135deg,var(--uea-blue),var(--uea-blue-2) 62%,var(--uea-gold));box-shadow:0 12px 26px rgba(0,58,112,.24);animation:pulse 3.5s ease-in-out infinite;
+}
+.logo-mark::after{content:"";position:absolute;width:92px;height:30px;background:rgba(255,255,255,.18);transform:rotate(-35deg);animation:shine 5s ease-in-out infinite}
+.logo-mark span{position:relative;z-index:1}.brand-text{min-width:0}.brand-text strong{display:block;color:var(--uea-blue);font-size:1rem;line-height:1.1}.brand-text small{display:block;color:var(--muted);font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:270px}
+.nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.profile-chip{display:flex;align-items:center;gap:10px;padding:7px 11px;border:1px solid var(--line);background:var(--surface);border-radius:999px;box-shadow:var(--soft-shadow);cursor:pointer;color:inherit}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:linear-gradient(135deg,var(--uea-blue),var(--uea-gold));color:white;font-weight:800;border:2px solid rgba(244,176,0,.45)}.avatar img{width:100%;height:100%;object-fit:cover}.profile-mini{display:grid;line-height:1.1;text-align:left}.profile-mini strong{font-size:.85rem;max-width:145px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-mini small{font-size:.72rem;color:var(--muted)}
+.container{width:min(1120px,100%);margin:0 auto;padding:30px clamp(14px,4vw,28px)}
+.hero-card{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);background:var(--surface);box-shadow:var(--shadow);padding:clamp(22px,4vw,40px);animation:fadeUp .65s ease both}.hero-card::before{content:"";position:absolute;inset:0;background:linear-gradient(130deg,rgba(244,176,0,.15),transparent 38%,rgba(0,87,168,.12));pointer-events:none}.hero-card>*{position:relative}.kicker{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(244,176,0,.16);border:1px solid rgba(244,176,0,.32);color:var(--uea-blue);font-weight:800;font-size:.78rem;margin-bottom:14px}.hero-card h1{font-size:clamp(1.8rem,5vw,3.5rem);line-height:1.05;color:var(--uea-blue);letter-spacing:-1.2px;margin-bottom:12px}.hero-card p{color:var(--muted);line-height:1.75;max-width:820px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.btn{border:none;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 16px;border-radius:15px;font-weight:800;font-size:.93rem;transition:.25s ease}.btn-primary{background:linear-gradient(135deg,var(--uea-blue),var(--uea-blue-2));color:white;box-shadow:0 14px 24px rgba(0,58,112,.20)}.btn-primary:hover{transform:translateY(-2px);filter:brightness(1.05)}.btn-gold{background:linear-gradient(135deg,var(--uea-gold),var(--uea-gold-2));color:#23314D;box-shadow:0 14px 24px rgba(244,176,0,.24)}.btn-soft{background:rgba(0,87,168,.08);color:var(--uea-blue);border:1px solid var(--line)}.btn-soft:hover{background:rgba(0,87,168,.13);transform:translateY(-2px)}.btn-danger{background:rgba(220,38,38,.10);color:var(--danger);border:1px solid rgba(220,38,38,.20)}.btn-disabled{opacity:.58;cursor:not-allowed;pointer-events:none}.btn-icon{width:46px;height:46px;border-radius:16px;padding:0}.section{margin-top:22px;animation:fadeUp .7s ease both}.section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.section-title h2{color:var(--uea-blue);font-size:clamp(1.25rem,3vw,1.8rem);letter-spacing:-.5px}.muted{color:var(--muted);line-height:1.7}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--surface);box-shadow:var(--soft-shadow);padding:20px;position:relative;overflow:hidden;animation:fadeUp .65s ease both}.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}.card-icon{width:52px;height:52px;border-radius:18px;display:grid;place-items:center;margin-bottom:13px;background:linear-gradient(135deg,rgba(0,58,112,.10),rgba(244,176,0,.22));color:var(--uea-blue);font-size:1.35rem}.card h3{color:var(--uea-blue);font-size:1.08rem;margin-bottom:8px}.card p{color:var(--muted);line-height:1.65;font-size:.92rem}.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.tag{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.65);border:1px solid var(--line);font-size:.74rem;font-weight:800;color:var(--uea-blue)}
+.progress-panel{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;margin-top:18px}.track{height:11px;border-radius:999px;background:rgba(0,58,112,.12);overflow:hidden}.fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--uea-gold),var(--success));transition:.5s ease}.status-pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:9px 12px;background:rgba(22,163,74,.10);border:1px solid rgba(22,163,74,.20);color:var(--success);font-weight:800;font-size:.82rem}.locked-pill{background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.22);color:var(--warning)}
+.floating-actions{position:fixed;right:20px;bottom:20px;z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:10px}.floating-menu{display:none;flex-direction:column;gap:8px;width:min(280px,calc(100vw - 40px));max-height:70vh;overflow:auto;border:1px solid var(--line);border-radius:20px;background:var(--surface-solid);box-shadow:var(--shadow);padding:12px}.floating-menu.active{display:flex}.floating-title{font-weight:800;color:var(--uea-blue);font-size:.88rem;padding:6px 4px;border-bottom:1px solid var(--line);margin-bottom:4px}.floating-button{width:58px;height:58px;border-radius:50%;border:none;display:grid;place-items:center;background:linear-gradient(135deg,var(--uea-blue),var(--uea-blue-2));color:white;font-size:1.35rem;box-shadow:0 16px 28px rgba(0,58,112,.25);cursor:pointer}.dyslexic-font *{font-family:'Comic Sans MS','Arial',sans-serif!important}.spacing-increased *{letter-spacing:.045em!important;line-height:1.85!important}.highlight-links a{text-decoration:underline!important;outline:2px dashed rgba(244,176,0,.55);outline-offset:3px}.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(24px);opacity:0;pointer-events:none;background:var(--surface-solid);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:999px;padding:12px 16px;color:var(--ink);font-weight:800;z-index:120;transition:.25s ease}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal-overlay{position:fixed;inset:0;background:rgba(9,18,33,.55);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px;z-index:110}.modal-overlay.active{display:flex}.modal-card{width:min(520px,100%);max-height:92vh;overflow:auto;border-radius:26px;background:var(--surface-solid);border:1px solid var(--line);box-shadow:var(--shadow);padding:24px;animation:fadeUp .25s ease}.profile-big{display:grid;place-items:center;text-align:center}.profile-big .avatar{width:112px;height:112px;font-size:2.4rem;margin-bottom:14px}.stats-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin:16px 0}.stat{padding:14px;border-radius:18px;border:1px solid var(--line);background:rgba(0,87,168,.06)}.stat strong{display:block;color:var(--uea-blue);font-size:1.25rem}.stat span{display:block;color:var(--muted);font-size:.74rem;font-weight:700}.avatar-tools{display:grid;gap:10px;text-align:left}.avatar-tools[style*=\"display:none\"]{display:none!important}.avatar-tools.active{display:grid!important}.input-text{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 13px;background:var(--bg);color:var(--ink);outline:none}.input-text:focus{box-shadow:0 0 0 4px rgba(0,87,168,.13);border-color:var(--uea-blue-2)}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.progress-panel{grid-template-columns:1fr}.navbar{align-items:flex-start}.profile-mini{display:none}.container{padding-top:20px}.hero-actions .btn{width:100%}.stats-mini{grid-template-columns:1fr}}
+@media(max-width:520px){.brand-text small{max-width:150px}.logo-mark{width:46px;height:46px;border-radius:16px}.navbar{gap:8px}.nav-actions{gap:6px}.profile-chip{padding:6px}.hero-card{border-radius:22px}.card{padding:17px;border-radius:20px}.btn{width:100%}.btn-icon{width:44px}.floating-actions{right:14px;bottom:14px}.toast{width:calc(100vw - 28px);border-radius:18px;text-align:center}}
+
+
+.exam-shell{margin-top:22px}.exam-top{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.exam-stat{padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--soft-shadow);text-align:center}.exam-stat strong{display:block;color:var(--uea-blue);font-size:1.35rem}.exam-stat span{color:var(--muted);font-weight:800;font-size:.74rem}.exam-card{border:1px solid var(--line);border-radius:var(--radius-xl);background:var(--surface);box-shadow:var(--shadow);padding:clamp(18px,3vw,28px);animation:fadeUp .55s ease both}.question{display:none}.question.active{display:block}.question h2{color:var(--uea-blue);font-size:1.35rem;margin-bottom:12px}.answers{display:grid;gap:10px;margin-top:16px}.answer{border:1px solid var(--line);border-radius:16px;background:var(--surface-solid);padding:13px 14px;text-align:left;cursor:pointer;color:var(--ink);font-weight:700}.answer:hover{border-color:var(--uea-blue-2);transform:translateY(-1px)}.answer.selected{background:rgba(244,176,0,.18);border-color:rgba(244,176,0,.58)}.exam-nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px}.warning-box{border-radius:20px;border:1px solid rgba(245,158,11,.32);background:rgba(245,158,11,.12);padding:14px;color:var(--warning);font-weight:800;margin-top:14px;display:none}.warning-box.show{display:block}.result-card{display:none;text-align:center}.result-card.show{display:block}.result-score{font-size:clamp(2.5rem,7vw,5rem);font-weight:800;color:var(--uea-blue);letter-spacing:-2px}.result-card.good .result-score{color:var(--success)}.result-card.bad .result-score{color:var(--danger)}.rules{display:grid;gap:10px;margin-top:18px}.rule{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.55)}.rule i{color:var(--uea-gold);margin-top:3px}.exam-blocker{display:none;position:fixed;inset:0;background:rgba(9,18,33,.72);backdrop-filter:blur(8px);z-index:130;align-items:center;justify-content:center;padding:18px}.exam-blocker.show{display:flex}.exam-blocker .modal-card{text-align:center}@media(max-width:780px){.exam-top{grid-template-columns:1fr 1fr}.exam-nav .btn{width:100%}}@media(max-width:460px){.exam-top{grid-template-columns:1fr}.answer{font-size:.9rem}}
+</style>
+</head>
+<body onload="initPage()">
+  <header class="navbar">
+    <a class="brand" href="home.html" aria-label="Voltar para a página inicial da Eduminex">
+      <div class="logo-mark"><span>EM</span></div>
+      <div class="brand-text">
+        <strong>Eduminex</strong>
+        <small>Letramento digital para EJA</small>
+      </div>
+    </a>
+    <div class="nav-actions">
+      <a class="btn btn-soft" href="modulos.html"><i class="fas fa-layer-group"></i> Módulos</a>
+      <button class="profile-chip" type="button" onclick="openProfile()" aria-label="Abrir perfil">
+        <div class="avatar js-avatar"></div>
+        <div class="profile-mini"><strong data-user-name>Estudante</strong><small><i class="fas fa-fire"></i> <span data-user-streak>0 dias</span></small></div>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero-card" id="intro-card">
+      <span class="kicker"><i class="fas fa-clipboard-check"></i> Avaliação final</span>
+      <h1>Prova da Unidade 1</h1>
+      <p>Você precisa acertar pelo menos 80% para concluir a Unidade 1 e liberar a Unidade 2. A prova terá 10 perguntas sorteadas e tempo de 15 minutos.</p>
+      <div class="rules">
+        <div class="rule"><i class="fas fa-clock"></i><div><strong>Tempo limitado</strong><p class="muted">Ao iniciar, o cronômetro começa e a prova será finalizada quando o tempo acabar.</p></div></div>
+        <div class="rule"><i class="fas fa-random"></i><div><strong>Perguntas sorteadas</strong><p class="muted">Cada nova tentativa usa perguntas ainda não usadas, enquanto houver questões inéditas no banco.</p></div></div>
+        <div class="rule"><i class="fas fa-triangle-exclamation"></i><div><strong>Advertências</strong><p class="muted">Minimizar, trocar de guia ou sair da tela gera advertência. Com 3 advertências, a prova é finalizada automaticamente.</p></div></div>
+      </div>
+      <div class="hero-actions"><a class="btn btn-soft" href="modulo1-unidade1.html"><i class="fas fa-arrow-left"></i> Voltar à unidade</a><button class="btn btn-gold" onclick="startExam()"><i class="fas fa-play"></i> Começar prova</button></div>
+    </section>
+
+    <section class="exam-shell" id="exam-shell" style="display:none">
+      <div class="exam-top">
+        <div class="exam-stat"><strong id="timer">15:00</strong><span>Tempo</span></div>
+        <div class="exam-stat"><strong id="question-count">1/10</strong><span>Questão</span></div>
+        <div class="exam-stat"><strong id="answered-count">0</strong><span>Respondidas</span></div>
+        <div class="exam-stat"><strong id="warning-count">0/3</strong><span>Advertências</span></div>
+      </div>
+      <div class="exam-card">
+        <div id="questions-area"></div>
+        <div class="warning-box" id="warning-box"><i class="fas fa-triangle-exclamation"></i> Advertência registrada.</div>
+        <div class="exam-nav">
+          <button class="btn btn-soft" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Anterior</button>
+          <button class="btn btn-soft" onclick="nextQuestion()">Próxima <i class="fas fa-arrow-right"></i></button>
+          <button class="btn btn-primary" onclick="finishExam('manual')"><i class="fas fa-paper-plane"></i> Finalizar prova</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="exam-card result-card section" id="result-card">
+      <div class="result-score" id="result-score">0%</div>
+      <h2 id="result-title">Resultado</h2>
+      <p class="muted" id="result-text"></p>
+      <div class="hero-actions" style="justify-content:center"><a class="btn btn-soft" href="modulo1-unidade1.html"><i class="fas fa-arrow-left"></i> Voltar à unidade</a><button class="btn btn-gold" onclick="restartExam()"><i class="fas fa-rotate-right"></i> Fazer novamente</button><a class="btn btn-primary" id="next-unit-btn" href="modulo1-unidade2.html" style="display:none"><i class="fas fa-unlock"></i> Ir para Unidade 2</a></div>
+    </section>
+  </main>
+
+  <div class="exam-blocker" id="warning-modal">
+    <div class="modal-card">
+      <h2 style="color:var(--warning)"><i class="fas fa-triangle-exclamation"></i> Advertência</h2>
+      <p class="muted" id="warning-modal-text">Você saiu da tela da prova.</p>
+      <button class="btn btn-primary" onclick="closeWarningModal()"><i class="fas fa-check"></i> Entendi</button>
+    </div>
+  </div>
+
+  <div class="floating-actions">
+    <div class="floating-menu" id="access-menu" aria-label="Menu de acessibilidade">
+      <div class="floating-title"><i class="fas fa-universal-access"></i> Acessibilidade</div>
+      <button class="btn btn-soft" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto contraste</button>
+      <button class="btn btn-soft" onclick="mudarFonte(2)"><i class="fas fa-font"></i> Aumentar texto</button>
+      <button class="btn btn-soft" onclick="mudarFonte(-2)"><i class="fas fa-font"></i> Diminuir texto</button>
+      <button class="btn btn-soft" onclick="toggleDislexia()"><i class="fas fa-book-reader"></i> Fonte alternativa</button>
+      <button class="btn btn-soft" onclick="toggleEspacamento()"><i class="fas fa-text-height"></i> Mais espaçamento</button>
+      <button class="btn btn-soft" onclick="toggleDestaqueLinks()"><i class="fas fa-link"></i> Destacar links</button>
+      <button class="btn btn-soft" onclick="toggleReduceMotion()"><i class="fas fa-person-walking-arrow-right"></i> Reduzir animações</button>
+      <button class="btn btn-danger" onclick="resetAccessibility()"><i class="fas fa-rotate-left"></i> Restaurar visual</button>
+    </div>
+    <button class="floating-button" onclick="toggleAccessMenu()" aria-label="Abrir acessibilidade"><i class="fas fa-universal-access"></i></button>
+  </div>
+
+  <div class="modal-overlay" id="profile-modal" role="dialog" aria-modal="true" aria-label="Perfil do usuário">
+    <div class="modal-card">
+      <div class="profile-big">
+        <div class="avatar js-avatar"></div>
+        <h2 data-user-name>Estudante</h2>
+        <p class="muted" data-user-email>E-mail não informado</p>
+        <div class="stats-mini">
+          <div class="stat"><strong data-user-xp>0</strong><span>XP</span></div>
+          <div class="stat"><strong data-user-streak>0 dias</strong><span>Ofensiva</span></div>
+          <div class="stat"><strong data-user-progress>0%</strong><span>Progresso</span></div>
+        </div>
+        <div class="track" style="width:100%"><div class="fill" data-user-progress-fill></div></div>
+      </div>
+      <div class="hero-actions" style="margin-top:18px">
+        <button class="btn btn-soft" onclick="toggleAvatarEditor()"><i class="fas fa-camera"></i> Trocar foto</button>
+        <button class="btn btn-soft" onclick="closeProfile()"><i class="fas fa-xmark"></i> Fechar</button>
+        <button class="btn btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+      </div>
+      <div class="avatar-tools" id="avatar-editor" style="display:none;margin-top:14px">
+        <p class="muted">Cole a URL de uma imagem ou envie um arquivo do dispositivo.</p>
+        <input class="input-text" id="avatar-url" placeholder="https://exemplo.com/foto.jpg">
+        <input class="input-text" id="avatar-file" type="file" accept="image/*" onchange="handleLocalAvatar(event)">
+        <button class="btn btn-primary" id="save-photo-btn" onclick="savePhoto()"><i class="fas fa-save"></i> Salvar foto</button>
+      </div>
+    </div>
+  </div>
+  <div id="toast" class="toast"></div>
+
+  <script>
+
+const API_URL = 'https://algoritmolab.onrender.com/api';
+let usuarioLogadoData = null;
+let currentScale = 100;
+let fotoSelecionadaTemp = '';
+
+function userKeyEmail(){
+  return usuarioLogadoData && usuarioLogadoData.email ? usuarioLogadoData.email : 'visitante';
+}
+function getProgressKey(){ return `eduminex_progress_${userKeyEmail()}`; }
+function getProgress(){
+  try { return JSON.parse(localStorage.getItem(getProgressKey())) || { completed:{} }; }
+  catch(e){ return { completed:{} }; }
+}
+function saveProgress(data){ localStorage.setItem(getProgressKey(), JSON.stringify(data)); }
+function totalCompleted(data){ return Object.values((data && data.completed) || {}).filter(Boolean).length; }
+function checkAuth(){
+  const raw = localStorage.getItem('userData');
+  if(!raw){ window.location.href='index.html'; return false; }
+  try { usuarioLogadoData = JSON.parse(raw); }
+  catch(e){ localStorage.removeItem('userData'); window.location.href='index.html'; return false; }
+  renderUser();
+  restoreAccessibility();
+  return true;
+}
+function renderAvatar(target, nome, foto){
+  if(!target) return;
+  if(foto){ target.innerHTML = `<img src="${foto}" alt="Foto de perfil">`; }
+  else { target.textContent = (nome || 'E').charAt(0).toUpperCase(); }
+}
+function renderUser(){
+  if(!usuarioLogadoData) return;
+  const nome = usuarioLogadoData.nome || usuarioLogadoData.name || 'Estudante';
+  const email = usuarioLogadoData.email || 'E-mail não informado';
+  const streak = usuarioLogadoData.streak || usuarioLogadoData.ofensiva || 0;
+  const xp = usuarioLogadoData.xp || 0;
+  const progress = getProgress();
+  const percent = Math.round((totalCompleted(progress) / 15) * 100);
+  document.querySelectorAll('[data-user-name]').forEach(el => el.textContent = nome);
+  document.querySelectorAll('[data-user-email]').forEach(el => el.textContent = email);
+  document.querySelectorAll('[data-user-xp]').forEach(el => el.textContent = xp);
+  document.querySelectorAll('[data-user-streak]').forEach(el => el.textContent = `${streak} dia${streak === 1 ? '' : 's'}`);
+  document.querySelectorAll('[data-user-progress]').forEach(el => el.textContent = `${percent}%`);
+  document.querySelectorAll('[data-user-progress-fill]').forEach(el => el.style.width = `${percent}%`);
+  document.querySelectorAll('.js-avatar').forEach(el => renderAvatar(el, nome, usuarioLogadoData.foto));
+}
+function openProfile(){ document.getElementById('profile-modal')?.classList.add('active'); }
+function closeProfile(){ document.getElementById('profile-modal')?.classList.remove('active'); }
+function toggleAvatarEditor(){ document.getElementById('avatar-editor')?.classList.toggle('active'); }
+function handleLocalAvatar(event){
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onloadend = () => { fotoSelecionadaTemp = reader.result; showToast('Imagem carregada. Clique em salvar foto.'); };
+  reader.readAsDataURL(file);
+}
+async function savePhoto(){
+  const input = document.getElementById('avatar-url');
+  const novaFoto = (input ? input.value.trim() : '') || fotoSelecionadaTemp;
+  if(!novaFoto){ showToast('Selecione uma imagem ou cole uma URL.'); return; }
+  const btn = document.getElementById('save-photo-btn');
+  if(btn){ btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...'; }
+  try{
+    const res = await fetch(`${API_URL}/update-photo`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email: usuarioLogadoData.email, foto:novaFoto }) });
+    if(!res.ok) throw new Error('Não foi possível salvar no servidor.');
+    usuarioLogadoData.foto = novaFoto;
+    localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+    renderUser();
+    showToast('Foto atualizada.');
+  }catch(err){
+    usuarioLogadoData.foto = novaFoto;
+    localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+    renderUser();
+    showToast('Foto salva no navegador. Servidor indisponível.');
+  }finally{
+    if(btn){ btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Salvar foto'; }
+    if(input) input.value=''; fotoSelecionadaTemp='';
+  }
+}
+function toggleAccessMenu(){ document.getElementById('access-menu')?.classList.toggle('active'); }
+function toggleAltoContraste(){ document.body.classList.toggle('high-contrast'); localStorage.setItem('acess_alto_contraste', document.body.classList.contains('high-contrast')); }
+function mudarFonte(delta){ currentScale += delta; currentScale = Math.max(82, Math.min(138, currentScale)); document.documentElement.style.setProperty('--font-scale', `${currentScale}%`); localStorage.setItem('acess_escala_fonte', String(currentScale)); }
+function toggleDislexia(){ document.body.classList.toggle('dyslexic-font'); localStorage.setItem('acess_dislexia', document.body.classList.contains('dyslexic-font')); }
+function toggleEspacamento(){ document.body.classList.toggle('spacing-increased'); localStorage.setItem('acess_espacamento', document.body.classList.contains('spacing-increased')); }
+function toggleDestaqueLinks(){ document.body.classList.toggle('highlight-links'); localStorage.setItem('acess_links', document.body.classList.contains('highlight-links')); }
+function toggleReduceMotion(){ document.body.classList.toggle('reduce-motion'); localStorage.setItem('acess_reduce_motion', document.body.classList.contains('reduce-motion')); }
+function resetAccessibility(){
+  ['acess_alto_contraste','acess_dislexia','acess_espacamento','acess_links','acess_reduce_motion','acess_escala_fonte'].forEach(k => localStorage.removeItem(k));
+  document.body.classList.remove('high-contrast','dyslexic-font','spacing-increased','highlight-links','reduce-motion');
+  currentScale = 100; document.documentElement.style.setProperty('--font-scale','100%'); showToast('Visual restaurado.');
+}
+function restoreAccessibility(){
+  if(localStorage.getItem('acess_alto_contraste')==='true') document.body.classList.add('high-contrast');
+  if(localStorage.getItem('acess_dislexia')==='true') document.body.classList.add('dyslexic-font');
+  if(localStorage.getItem('acess_espacamento')==='true') document.body.classList.add('spacing-increased');
+  if(localStorage.getItem('acess_links')==='true') document.body.classList.add('highlight-links');
+  if(localStorage.getItem('acess_reduce_motion')==='true') document.body.classList.add('reduce-motion');
+  const saved = parseInt(localStorage.getItem('acess_escala_fonte'), 10);
+  if(!isNaN(saved)){ currentScale = saved; document.documentElement.style.setProperty('--font-scale', `${currentScale}%`); }
+}
+let toastTimer;
+function showToast(msg){
+  let toast = document.getElementById('toast');
+  if(!toast){ toast = document.createElement('div'); toast.id='toast'; toast.className='toast'; document.body.appendChild(toast); }
+  toast.textContent = msg; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(()=>toast.classList.remove('show'), 2800);
+}
+function goBackUnit(){ window.location.href='modulo1-unidade1.html'; }
+function logout(){ localStorage.removeItem('userData'); localStorage.removeItem('userLogado'); localStorage.removeItem('userName'); window.location.href='index.html?logout=true'; }
+document.addEventListener('click', function(e){
+  const profile = document.getElementById('profile-modal');
+  if(profile && e.target === profile) closeProfile();
+});
+
+    const QUESTION_BANK = [
+      {id:'q01', q:'Qual alternativa representa um artefato computacional?', a:['Caderno de papel sem tecnologia digital','Computador usado para estudar e produzir documentos','Cadeira da sala de aula','Lápis comum'], c:1},
+      {id:'q02', q:'O teclado é considerado um dispositivo de:', a:['Entrada','Saída','Armazenamento','Conexão'], c:0},
+      {id:'q03', q:'A tela do celular apresenta respostas ao usuário, portanto é um dispositivo de:', a:['Entrada','Saída','Senha','Roteamento'], c:1},
+      {id:'q04', q:'Qual ação ajuda a proteger dados pessoais?', a:['Compartilhar CPF em qualquer formulário','Usar a mesma senha em todos os sites','Desconfiar de links estranhos e proteger senhas','Enviar senha por mensagem'], c:2},
+      {id:'q05', q:'Quando você pesquisa uma informação, uma atitude crítica é:', a:['Aceitar o primeiro resultado sem ler','Comparar fontes, data e autoria','Compartilhar antes de conferir','Usar apenas mensagens recebidas em grupos'], c:1},
+      {id:'q06', q:'O processamento acontece quando:', a:['O aparelho interpreta dados e gera uma resposta','A impressora fica sem papel','O usuário guarda o celular','A tela está desligada'], c:0},
+      {id:'q07', q:'Qual exemplo mostra uso da tecnologia na vida cotidiana?', a:['Usar aplicativo bancário com segurança','Colar senha no mural da escola','Abrir qualquer anexo desconhecido','Divulgar dados pessoais publicamente'], c:0},
+      {id:'q08', q:'A internet permite principalmente:', a:['Conectar dispositivos e trocar informações','Evitar todo tipo de golpe automaticamente','Substituir a leitura cuidadosa','Garantir que toda notícia seja verdadeira'], c:0},
+      {id:'q09', q:'Um exemplo de dispositivo de entrada é:', a:['Microfone','Monitor','Caixa de som','Projetor'], c:0},
+      {id:'q10', q:'Um exemplo de saída de informação é:', a:['Som emitido por uma caixa de som','Senha digitada','Clique do mouse','Comando de voz'], c:0},
+      {id:'q11', q:'Qual alternativa define melhor letramento digital?', a:['Saber usar tecnologias de forma crítica, segura e útil','Apenas saber ligar o computador','Ter celular caro','Usar redes sociais o dia inteiro'], c:0},
+      {id:'q12', q:'Qual cuidado é importante ao criar uma senha?', a:['Usar data de nascimento somente','Misturar letras, números e símbolos quando possível','Usar 123456','Contar a senha para amigos'], c:1},
+      {id:'q13', q:'O mouse ou touchpad permite:', a:['Apontar, clicar e selecionar comandos','Imprimir documentos','Aumentar a velocidade da internet sozinho','Guardar arquivos na nuvem automaticamente'], c:0},
+      {id:'q14', q:'O roteador está mais relacionado a:', a:['Conexão de rede','Impressão em papel','Digitação de textos','Edição de imagens'], c:0},
+      {id:'q15', q:'Qual situação representa uso responsável da comunicação digital?', a:['Enviar ofensas em comentários','Checar a informação antes de compartilhar','Divulgar foto de outra pessoa sem permissão','Responder golpes com dados pessoais'], c:1},
+      {id:'q16', q:'O armazenamento digital serve para:', a:['Guardar arquivos, fotos, documentos e informações','Digitar textos diretamente','Mostrar imagem na tela apenas','Enviar energia elétrica'], c:0},
+      {id:'q17', q:'Qual alternativa é uma ferramenta de busca?', a:['Google, Bing ou outro buscador','Carregador de celular','Cabo de energia','Cadeira gamer'], c:0},
+      {id:'q18', q:'Quando um site pede dados pessoais, o ideal é:', a:['Preencher sem ler nada','Verificar se o site é confiável e necessário','Informar dados falsos sempre','Mandar para todos os contatos'], c:1},
+      {id:'q19', q:'Qual é uma prática adequada para estudantes da EJA no uso digital?', a:['Usar tecnologia para estudar, resolver tarefas e buscar serviços','Evitar toda tecnologia sempre','Usar apenas para jogos, sem objetivo','Compartilhar dados em qualquer página'], c:0},
+      {id:'q20', q:'Qual item combina entrada, processamento e saída?', a:['Digitar uma busca, o sistema procurar e a tela mostrar resultados','Guardar o celular no bolso','Olhar para uma parede','Desligar o roteador'], c:0},
+      {id:'q21', q:'O que são dados pessoais?', a:['Informações que identificam uma pessoa, como CPF, endereço e telefone','Apenas desenhos na internet','Somente arquivos de música','Qualquer objeto físico'], c:0},
+      {id:'q22', q:'Qual alternativa ajuda a reconhecer uma informação confiável?', a:['Autor identificado, data e fonte conhecida','Texto sem fonte e com muitos alarmes','Mensagem que pede compartilhamento urgente','Print sem origem'], c:0},
+      {id:'q23', q:'No celular, tocar na tela é uma forma de:', a:['Entrada de comando','Saída de som','Impressão','Armazenamento externo'], c:0},
+      {id:'q24', q:'A nuvem, no contexto digital, pode ser entendida como:', a:['Servidores online usados para guardar e acessar dados pela internet','Um fenômeno do céu apenas','Um botão do teclado','Um vírus obrigatório'], c:0},
+      {id:'q25', q:'Qual frase mostra cidadania digital?', a:['Respeitar pessoas, proteger dados e agir com responsabilidade online','Atacar quem pensa diferente','Divulgar boatos','Entrar em contas de outras pessoas'], c:0},
+      {id:'q26', q:'Qual opção é exemplo de serviço digital cotidiano?', a:['Agendamento online, aplicativo de banco ou consulta de documentos','Apenas uma caneta azul','Uma mesa sem conexão','Um quadro de giz'], c:0},
+      {id:'q27', q:'Antes de baixar um arquivo, é melhor:', a:['Verificar a fonte e desconfiar de promessas exageradas','Baixar tudo imediatamente','Desativar proteção do aparelho','Enviar para todos os contatos'], c:0},
+      {id:'q28', q:'O pensamento computacional ajuda a:', a:['Organizar passos para resolver problemas','Decorar senhas de outras pessoas','Espalhar notícias falsas','Evitar qualquer tipo de estudo'], c:0},
+      {id:'q29', q:'Qual sequência é mais adequada para pesquisar?', a:['Abrir buscador, escrever palavras-chave, comparar resultados e verificar fonte','Compartilhar primeiro e pesquisar depois','Clicar no primeiro anúncio sempre','Pesquisar sem ler'], c:0},
+      {id:'q30', q:'Qual alternativa representa um uso de tecnologia para autonomia?', a:['Criar currículo digital e enviar por e-mail com cuidado','Nunca aprender novas ferramentas','Pedir sempre a senha de outra pessoa','Evitar serviços digitais úteis'], c:0}
+    ];
+    const EXAM_SECONDS = 15 * 60;
+    let selectedQuestions = [], answers = {}, current = 0, secondsLeft = EXAM_SECONDS, timerId = null, inExam = false, finished = false, warnings = 0, lastWarningAt = 0;
+    function seenKey(){ return `eduminex_m1u1_seen_${userKeyEmail()}`; }
+    function getSeen(){ try{return JSON.parse(localStorage.getItem(seenKey())) || []}catch(e){return []} }
+    function saveSeen(ids){ localStorage.setItem(seenKey(), JSON.stringify(ids)); }
+    function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
+    function selectQuestions(){
+      let seen = getSeen();
+      let unseen = QUESTION_BANK.filter(q => !seen.includes(q.id));
+      if(unseen.length < 10){ seen = []; unseen = QUESTION_BANK; showToast('Banco de questões renovado para manter a avaliação disponível.'); }
+      selectedQuestions = shuffle(unseen).slice(0,10);
+      saveSeen([...seen, ...selectedQuestions.map(q=>q.id)]);
+    }
+    function startExam(){
+      selectQuestions(); answers = {}; current = 0; secondsLeft = EXAM_SECONDS; warnings = 0; inExam = true; finished = false;
+      document.getElementById('intro-card').style.display='none'; document.getElementById('result-card').classList.remove('show','good','bad'); document.getElementById('exam-shell').style.display='block';
+      renderQuestions(); renderCurrent(); updateExamStats();
+      clearInterval(timerId); timerId = setInterval(tick, 1000);
+      showToast('Prova iniciada. Permaneça nesta tela até finalizar.');
+    }
+    function renderQuestions(){
+      const area = document.getElementById('questions-area'); area.innerHTML='';
+      selectedQuestions.forEach((q,idx)=>{
+        const div = document.createElement('div'); div.className='question'; div.id=`question-${idx}`;
+        div.innerHTML = `<h2>Questão ${idx+1}</h2><p class="muted">${q.q}</p><div class="answers">${q.a.map((opt,i)=>`<button class="answer" onclick="selectAnswer(${idx},${i},this)">${String.fromCharCode(65+i)}. ${opt}</button>`).join('')}</div>`;
+        area.appendChild(div);
+      });
+    }
+    function selectAnswer(qIndex, optIndex, btn){ answers[qIndex] = optIndex; const qDiv = document.getElementById(`question-${qIndex}`); qDiv.querySelectorAll('.answer').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); updateExamStats(); }
+    function renderCurrent(){ document.querySelectorAll('.question').forEach(q=>q.classList.remove('active')); document.getElementById(`question-${current}`)?.classList.add('active'); updateExamStats(); }
+    function nextQuestion(){ if(current < selectedQuestions.length - 1){ current++; renderCurrent(); } }
+    function prevQuestion(){ if(current > 0){ current--; renderCurrent(); } }
+    function tick(){ secondsLeft--; updateExamStats(); if(secondsLeft <= 0) finishExam('tempo'); }
+    function updateExamStats(){
+      const mm = Math.floor(secondsLeft/60).toString().padStart(2,'0'), ss=(secondsLeft%60).toString().padStart(2,'0');
+      document.getElementById('timer').textContent = `${mm}:${ss}`;
+      document.getElementById('question-count').textContent = `${Math.min(current+1,10)}/10`;
+      document.getElementById('answered-count').textContent = Object.keys(answers).length;
+      document.getElementById('warning-count').textContent = `${warnings}/3`;
+    }
+    function registerWarning(reason){
+      if(!inExam || finished) return;
+      const now = Date.now(); if(now - lastWarningAt < 2500) return; lastWarningAt = now;
+      warnings++; updateExamStats();
+      const box = document.getElementById('warning-box'); box.innerHTML = `<i class="fas fa-triangle-exclamation"></i> Advertência ${warnings}/3: ${reason}`; box.classList.add('show');
+      document.getElementById('warning-modal-text').textContent = `Advertência ${warnings}/3: ${reason}`; document.getElementById('warning-modal').classList.add('show');
+      if(warnings >= 3){ setTimeout(()=>finishExam('advertencias'), 800); }
+    }
+    function closeWarningModal(){ document.getElementById('warning-modal').classList.remove('show'); }
+    function finishExam(reason){
+      if(finished) return; finished = true; inExam = false; clearInterval(timerId);
+      let correct = 0; selectedQuestions.forEach((q,i)=>{ if(answers[i] === q.c) correct++; });
+      const percent = Math.round((correct/selectedQuestions.length)*100); const passed = percent >= 80 && reason !== 'advertencias';
+      document.getElementById('exam-shell').style.display='none';
+      const result = document.getElementById('result-card'); result.classList.add('show', passed ? 'good' : 'bad');
+      document.getElementById('result-score').textContent = `${percent}%`;
+      document.getElementById('result-title').textContent = passed ? 'Parabéns! Unidade 1 concluída.' : 'Você pode tentar novamente.';
+      let text = `Você acertou ${correct} de ${selectedQuestions.length} perguntas.`;
+      if(reason === 'tempo') text += ' A prova foi finalizada porque o tempo acabou.';
+      if(reason === 'advertencias') text += ' A prova foi finalizada automaticamente por 3 advertências.';
+      text += passed ? ' A Unidade 2 foi liberada.' : ' Estude o material, pratique novamente e refaça a prova com novas perguntas.';
+      document.getElementById('result-text').textContent = text;
+      if(passed){ markUnitComplete(); document.getElementById('next-unit-btn').style.display='inline-flex'; }
+      else { document.getElementById('next-unit-btn').style.display='none'; }
+      renderUser(); window.scrollTo({top:0, behavior:'smooth'});
+    }
+    function markUnitComplete(){
+      const p = getProgress(); if(!p.completed) p.completed = {};
+      if(!p.completed['1-1']){ p.completed['1-1'] = true; usuarioLogadoData.xp = (usuarioLogadoData.xp || 0) + 100; }
+      const total = totalCompleted(p); usuarioLogadoData.unidadesConcluidas = total; usuarioLogadoData.progresso = Math.round((total/15)*100);
+      saveProgress(p); localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+    }
+    function restartExam(){ document.getElementById('result-card').classList.remove('show','good','bad'); document.getElementById('intro-card').style.display='block'; window.scrollTo({top:0, behavior:'smooth'}); }
+    document.addEventListener('visibilitychange', () => { if(document.hidden) registerWarning('você saiu da guia, minimizou ou trocou de tela durante a prova.'); });
+    window.addEventListener('blur', () => { setTimeout(()=>{ if(inExam && !document.hasFocus() && document.visibilityState === 'visible') registerWarning('a janela da prova perdeu o foco.'); }, 1200); });
+    window.addEventListener('beforeunload', (e)=>{ if(inExam && !finished){ e.preventDefault(); e.returnValue='A prova está em andamento.'; } });
+    function initPage(){ checkAuth(); }
+  </script>
+</body>
+</html>
