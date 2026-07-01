@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercícios · Módulo 1 Unidade 1 - Eduminex</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --uea-blue:#003A70;
+  --uea-blue-2:#0057A8;
+  --uea-gold:#F4B000;
+  --uea-gold-2:#FFD36A;
+  --ink:#172033;
+  --muted:#64748B;
+  --bg:#F4F8FF;
+  --surface:rgba(255,255,255,.92);
+  --surface-solid:#FFFFFF;
+  --line:rgba(0,58,112,.13);
+  --success:#16A34A;
+  --danger:#DC2626;
+  --warning:#F59E0B;
+  --shadow:0 22px 60px rgba(0,58,112,.13);
+  --soft-shadow:0 12px 32px rgba(0,58,112,.09);
+  --radius-xl:30px;
+  --radius-lg:22px;
+  --radius-md:16px;
+  --font-scale:100%;
+}
+body.high-contrast {
+  --uea-blue:#00E5FF;
+  --uea-blue-2:#BFF7FF;
+  --uea-gold:#FFFF00;
+  --uea-gold-2:#FFF6A0;
+  --ink:#FFFFFF;
+  --muted:#D1D5DB;
+  --bg:#050505;
+  --surface:rgba(20,20,20,.96);
+  --surface-solid:#111111;
+  --line:rgba(255,255,255,.22);
+  --success:#00FF66;
+  --danger:#FF6B6B;
+  --warning:#FFFF00;
+  --shadow:0 22px 60px rgba(0,0,0,.55);
+  --soft-shadow:0 12px 32px rgba(0,0,0,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+html{font-size:var(--font-scale);scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(244,176,0,.18), transparent 28%),
+    radial-gradient(circle at 90% 4%, rgba(0,87,168,.20), transparent 32%),
+    linear-gradient(135deg,#F7FBFF 0%,var(--bg) 48%,#EDF5FF 100%);
+  color:var(--ink);
+  overflow-x:hidden;
+  padding-bottom:105px;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background-image:linear-gradient(rgba(0,58,112,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(0,58,112,.045) 1px,transparent 1px);
+  background-size:42px 42px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.84),rgba(0,0,0,.08));
+}
+body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shine{from{left:-90%}to{left:120%}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes burn{0%,100%{transform:scale(1);filter:drop-shadow(0 0 2px rgba(244,176,0,.45))}50%{transform:scale(1.10);filter:drop-shadow(0 0 12px rgba(244,176,0,.85))}}
+.navbar{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px clamp(14px,4vw,56px);
+  background:rgba(255,255,255,.78);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);box-shadow:0 12px 32px rgba(0,58,112,.08);
+}
+body.high-contrast .navbar{background:rgba(10,10,10,.88)}
+.brand{display:flex;align-items:center;gap:12px;min-width:0;text-decoration:none;color:inherit}
+.logo-mark{
+  width:52px;height:52px;border-radius:18px;display:grid;place-items:center;color:white;font-weight:800;letter-spacing:-1px;position:relative;overflow:hidden;flex:0 0 auto;
+  background:linear-gradient(135deg,var(--uea-blue),var(--uea-blue-2) 62%,var(--uea-gold));box-shadow:0 12px 26px rgba(0,58,112,.24);animation:pulse 3.5s ease-in-out infinite;
+}
+.logo-mark::after{content:"";position:absolute;width:92px;height:30px;background:rgba(255,255,255,.18);transform:rotate(-35deg);animation:shine 5s ease-in-out infinite}
+.logo-mark span{position:relative;z-index:1}.brand-text{min-width:0}.brand-text strong{display:block;color:var(--uea-blue);font-size:1rem;line-height:1.1}.brand-text small{display:block;color:var(--muted);font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:270px}
+.nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.profile-chip{display:flex;align-items:center;gap:10px;padding:7px 11px;border:1px solid var(--line);background:var(--surface);border-radius:999px;box-shadow:var(--soft-shadow);cursor:pointer;color:inherit}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:linear-gradient(135deg,var(--uea-blue),var(--uea-gold));color:white;font-weight:800;border:2px solid rgba(244,176,0,.45)}.avatar img{width:100%;height:100%;object-fit:cover}.profile-mini{display:grid;line-height:1.1;text-align:left}.profile-mini strong{font-size:.85rem;max-width:145px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-mini small{font-size:.72rem;color:var(--muted)}
+.container{width:min(1120px,100%);margin:0 auto;padding:30px clamp(14px,4vw,28px)}
+.hero-card{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);background:var(--surface);box-shadow:var(--shadow);padding:clamp(22px,4vw,40px);animation:fadeUp .65s ease both}.hero-card::before{content:"";position:absolute;inset:0;background:linear-gradient(130deg,rgba(244,176,0,.15),transparent 38%,rgba(0,87,168,.12));pointer-events:none}.hero-card>*{position:relative}.kicker{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(244,176,0,.16);border:1px solid rgba(244,176,0,.32);color:var(--uea-blue);font-weight:800;font-size:.78rem;margin-bottom:14px}.hero-card h1{font-size:clamp(1.8rem,5vw,3.5rem);line-height:1.05;color:var(--uea-blue);letter-spacing:-1.2px;margin-bottom:12px}.hero-card p{color:var(--muted);line-height:1.75;max-width:820px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.btn{border:none;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 16px;border-radius:15px;font-weight:800;font-size:.93rem;transition:.25s ease}.btn-primary{background:linear-gradient(135deg,var(--uea-blue),var(--uea-blue-2));color:white;box-shadow:0 14px 24px rgba(0,58,112,.20)}.btn-primary:hover{transform:translateY(-2px);filter:brightness(1.05)}.btn-gold{background:linear-gradient(135deg,var(--uea-gold),var(--uea-gold-2));color:#23314D;box-shadow:0 14px 24px rgba(244,176,0,.24)}.btn-soft{background:rgba(0,87,168,.08);color:var(--uea-blue);border:1px solid var(--line)}.btn-soft:hover{background:rgba(0,87,168,.13);transform:translateY(-2px)}.btn-danger{background:rgba(220,38,38,.10);color:var(--danger);border:1px solid rgba(220,38,38,.20)}.btn-disabled{opacity:.58;cursor:not-allowed;pointer-events:none}.btn-icon{width:46px;height:46px;border-radius:16px;padding:0}.section{margin-top:22px;animation:fadeUp .7s ease both}.section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.section-title h2{color:var(--uea-blue);font-size:clamp(1.25rem,3vw,1.8rem);letter-spacing:-.5px}.muted{color:var(--muted);line-height:1.7}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--surface);box-shadow:var(--soft-shadow);padding:20px;position:relative;overflow:hidden;animation:fadeUp .65s ease both}.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}.card-icon{width:52px;height:52px;border-radius:18px;display:grid;place-items:center;margin-bottom:13px;background:linear-gradient(135deg,rgba(0,58,112,.10),rgba(244,176,0,.22));color:var(--uea-blue);font-size:1.35rem}.card h3{color:var(--uea-blue);font-size:1.08rem;margin-bottom:8px}.card p{color:var(--muted);line-height:1.65;font-size:.92rem}.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.tag{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.65);border:1px solid var(--line);font-size:.74rem;font-weight:800;color:var(--uea-blue)}
+.progress-panel{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;margin-top:18px}.track{height:11px;border-radius:999px;background:rgba(0,58,112,.12);overflow:hidden}.fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--uea-gold),var(--success));transition:.5s ease}.status-pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:9px 12px;background:rgba(22,163,74,.10);border:1px solid rgba(22,163,74,.20);color:var(--success);font-weight:800;font-size:.82rem}.locked-pill{background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.22);color:var(--warning)}
+.floating-actions{position:fixed;right:20px;bottom:20px;z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:10px}.floating-menu{display:none;flex-direction:column;gap:8px;width:min(280px,calc(100vw - 40px));max-height:70vh;overflow:auto;border:1px solid var(--line);border-radius:20px;background:var(--surface-solid);box-shadow:var(--shadow);padding:12px}.floating-menu.active{display:flex}.floating-title{font-weight:800;color:var(--uea-blue);font-size:.88rem;padding:6px 4px;border-bottom:1px solid var(--line);margin-bottom:4px}.floating-button{width:58px;height:58px;border-radius:50%;border:none;display:grid;place-items:center;background:linear-gradient(135deg,var(--uea-blue),var(--uea-blue-2));color:white;font-size:1.35rem;box-shadow:0 16px 28px rgba(0,58,112,.25);cursor:pointer}.dyslexic-font *{font-family:'Comic Sans MS','Arial',sans-serif!important}.spacing-increased *{letter-spacing:.045em!important;line-height:1.85!important}.highlight-links a{text-decoration:underline!important;outline:2px dashed rgba(244,176,0,.55);outline-offset:3px}.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(24px);opacity:0;pointer-events:none;background:var(--surface-solid);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:999px;padding:12px 16px;color:var(--ink);font-weight:800;z-index:120;transition:.25s ease}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal-overlay{position:fixed;inset:0;background:rgba(9,18,33,.55);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px;z-index:110}.modal-overlay.active{display:flex}.modal-card{width:min(520px,100%);max-height:92vh;overflow:auto;border-radius:26px;background:var(--surface-solid);border:1px solid var(--line);box-shadow:var(--shadow);padding:24px;animation:fadeUp .25s ease}.profile-big{display:grid;place-items:center;text-align:center}.profile-big .avatar{width:112px;height:112px;font-size:2.4rem;margin-bottom:14px}.stats-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin:16px 0}.stat{padding:14px;border-radius:18px;border:1px solid var(--line);background:rgba(0,87,168,.06)}.stat strong{display:block;color:var(--uea-blue);font-size:1.25rem}.stat span{display:block;color:var(--muted);font-size:.74rem;font-weight:700}.avatar-tools{display:grid;gap:10px;text-align:left}.avatar-tools[style*=\"display:none\"]{display:none!important}.avatar-tools.active{display:grid!important}.input-text{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 13px;background:var(--bg);color:var(--ink);outline:none}.input-text:focus{box-shadow:0 0 0 4px rgba(0,87,168,.13);border-color:var(--uea-blue-2)}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.progress-panel{grid-template-columns:1fr}.navbar{align-items:flex-start}.profile-mini{display:none}.container{padding-top:20px}.hero-actions .btn{width:100%}.stats-mini{grid-template-columns:1fr}}
+@media(max-width:520px){.brand-text small{max-width:150px}.logo-mark{width:46px;height:46px;border-radius:16px}.navbar{gap:8px}.nav-actions{gap:6px}.profile-chip{padding:6px}.hero-card{border-radius:22px}.card{padding:17px;border-radius:20px}.btn{width:100%}.btn-icon{width:44px}.floating-actions{right:14px;bottom:14px}.toast{width:calc(100vw - 28px);border-radius:18px;text-align:center}}
+
+
+.exercise-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;margin-top:22px}.activity-list{display:grid;gap:14px}.activity{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--surface);box-shadow:var(--soft-shadow);padding:18px}.activity h3{color:var(--uea-blue);margin-bottom:8px}.choices{display:grid;gap:8px;margin-top:12px}.choice{border:1px solid var(--line);background:var(--surface-solid);border-radius:15px;padding:12px;text-align:left;cursor:pointer;color:var(--ink);font-weight:700}.choice:hover{border-color:var(--uea-blue-2);transform:translateY(-1px)}.choice.correct{background:rgba(22,163,74,.12);border-color:rgba(22,163,74,.45);color:var(--success)}.choice.wrong{background:rgba(220,38,38,.10);border-color:rgba(220,38,38,.35);color:var(--danger)}.feedback{display:none;margin-top:10px;border-radius:14px;padding:10px 12px;font-weight:700;line-height:1.55}.feedback.show{display:block}.feedback.good{background:rgba(22,163,74,.10);color:var(--success);border:1px solid rgba(22,163,74,.22)}.feedback.bad{background:rgba(220,38,38,.10);color:var(--danger);border:1px solid rgba(220,38,38,.22)}.practice-board{position:sticky;top:92px;border:1px solid var(--line);border-radius:var(--radius-xl);background:var(--surface);box-shadow:var(--shadow);padding:20px}.step-bank,.answer-line{display:grid;gap:10px;margin-top:12px}.step-chip{border:1px solid var(--line);border-radius:16px;background:var(--surface-solid);padding:12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px}.step-chip:hover{border-color:var(--uea-gold);transform:translateY(-1px)}.answer-slot{min-height:52px;border:2px dashed rgba(0,58,112,.18);border-radius:16px;padding:10px;background:rgba(255,255,255,.42);display:flex;align-items:center;gap:8px}.answer-slot.filled{border-style:solid;background:rgba(244,176,0,.10)}.score-card{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.score-item{padding:12px;border-radius:16px;border:1px solid var(--line);background:rgba(0,87,168,.06);text-align:center}.score-item strong{display:block;color:var(--uea-blue);font-size:1.25rem}.score-item span{color:var(--muted);font-size:.74rem;font-weight:800}@media(max-width:960px){.exercise-layout{grid-template-columns:1fr}.practice-board{position:relative;top:0}.score-card{grid-template-columns:1fr}} 
+</style>
+</head>
+<body onload="initPage()">
+  <header class="navbar">
+    <a class="brand" href="home.html" aria-label="Voltar para a página inicial da Eduminex">
+      <div class="logo-mark"><span>EM</span></div>
+      <div class="brand-text">
+        <strong>Eduminex</strong>
+        <small>Letramento digital para EJA</small>
+      </div>
+    </a>
+    <div class="nav-actions">
+      <a class="btn btn-soft" href="modulos.html"><i class="fas fa-layer-group"></i> Módulos</a>
+      <button class="profile-chip" type="button" onclick="openProfile()" aria-label="Abrir perfil">
+        <div class="avatar js-avatar"></div>
+        <div class="profile-mini"><strong data-user-name>Estudante</strong><small><i class="fas fa-fire"></i> <span data-user-streak>0 dias</span></small></div>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero-card">
+      <span class="kicker"><i class="fas fa-pen-to-square"></i> Exercícios com feedback imediato</span>
+      <h1>Pratique antes da avaliação</h1>
+      <p>Responda, observe o feedback e refaça quando quiser. Estes exercícios não liberam a Unidade 2 sozinhos; eles preparam você para a avaliação final.</p>
+      <div class="hero-actions"><a class="btn btn-soft" href="modulo1-unidade1.html"><i class="fas fa-arrow-left"></i> Voltar à unidade</a><a class="btn btn-gold" href="modulo1-unidade1-avaliacao.html"><i class="fas fa-clipboard-check"></i> Ir para avaliação</a></div>
+    </section>
+
+    <section class="exercise-layout section">
+      <div class="activity-list">
+        <article class="activity" data-activity="a1">
+          <h3>1. Qual item é um dispositivo de entrada?</h3>
+          <p class="muted">Entrada é o que permite colocar informação no aparelho.</p>
+          <div class="choices">
+            <button class="choice" onclick="answerChoice(this,false,'a1','Monitor mostra informações, mas não é entrada.')">Monitor</button>
+            <button class="choice" onclick="answerChoice(this,true,'a1','Correto! O teclado permite digitar informações no computador.')">Teclado</button>
+            <button class="choice" onclick="answerChoice(this,false,'a1','A impressora gera saída em papel.')">Impressora</button>
+          </div><div class="feedback" id="fb-a1"></div>
+        </article>
+        <article class="activity" data-activity="a2">
+          <h3>2. Qual atitude é mais segura?</h3>
+          <p class="muted">Pense no uso responsável de dados pessoais.</p>
+          <div class="choices">
+            <button class="choice" onclick="answerChoice(this,false,'a2','Não é seguro compartilhar senha, mesmo com conhecidos.')">Enviar a senha para um colega resolver algo</button>
+            <button class="choice" onclick="answerChoice(this,true,'a2','Correto! Senhas fortes e cuidado com links reduzem riscos.')">Criar senha forte e desconfiar de links estranhos</button>
+            <button class="choice" onclick="answerChoice(this,false,'a2','Links desconhecidos podem levar a golpes ou roubo de dados.')">Clicar em qualquer promoção recebida</button>
+          </div><div class="feedback" id="fb-a2"></div>
+        </article>
+        <article class="activity" data-activity="a3">
+          <h3>3. Onde aparece a saída de informação?</h3>
+          <p class="muted">Saída é o resultado apresentado ao usuário.</p>
+          <div class="choices">
+            <button class="choice" onclick="answerChoice(this,true,'a3','Correto! A tela exibe textos, imagens, vídeos e respostas.')">Tela do celular ou computador</button>
+            <button class="choice" onclick="answerChoice(this,false,'a3','O microfone é entrada de som.')">Microfone</button>
+            <button class="choice" onclick="answerChoice(this,false,'a3','O teclado é entrada de texto.')">Teclado</button>
+          </div><div class="feedback" id="fb-a3"></div>
+        </article>
+      </div>
+
+      <aside class="practice-board">
+        <h2 style="color:var(--uea-blue)"><i class="fas fa-list-check"></i> Exercício prático</h2>
+        <p class="muted">Monte a ordem correta para pesquisar uma informação confiável na internet. Clique nas ações na sequência correta.</p>
+        <div class="score-card">
+          <div class="score-item"><strong id="right-count">0</strong><span>Acertos</span></div>
+          <div class="score-item"><strong id="try-count">0</strong><span>Tentativas</span></div>
+          <div class="score-item"><strong id="practical-status">0%</strong><span>Prática</span></div>
+        </div>
+        <div class="answer-line" id="answer-line"></div>
+        <div class="step-bank" id="step-bank"></div>
+        <div class="hero-actions"><button class="btn btn-primary" onclick="checkSequence()"><i class="fas fa-check"></i> Verificar sequência</button><button class="btn btn-soft" onclick="resetSequence()"><i class="fas fa-rotate-left"></i> Refazer</button></div>
+        <div class="feedback" id="fb-sequence"></div>
+      </aside>
+    </section>
+  </main>
+
+  <div class="floating-actions">
+    <div class="floating-menu" id="access-menu" aria-label="Menu de acessibilidade">
+      <div class="floating-title"><i class="fas fa-universal-access"></i> Acessibilidade</div>
+      <button class="btn btn-soft" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto contraste</button>
+      <button class="btn btn-soft" onclick="mudarFonte(2)"><i class="fas fa-font"></i> Aumentar texto</button>
+      <button class="btn btn-soft" onclick="mudarFonte(-2)"><i class="fas fa-font"></i> Diminuir texto</button>
+      <button class="btn btn-soft" onclick="toggleDislexia()"><i class="fas fa-book-reader"></i> Fonte alternativa</button>
+      <button class="btn btn-soft" onclick="toggleEspacamento()"><i class="fas fa-text-height"></i> Mais espaçamento</button>
+      <button class="btn btn-soft" onclick="toggleDestaqueLinks()"><i class="fas fa-link"></i> Destacar links</button>
+      <button class="btn btn-soft" onclick="toggleReduceMotion()"><i class="fas fa-person-walking-arrow-right"></i> Reduzir animações</button>
+      <button class="btn btn-danger" onclick="resetAccessibility()"><i class="fas fa-rotate-left"></i> Restaurar visual</button>
+    </div>
+    <button class="floating-button" onclick="toggleAccessMenu()" aria-label="Abrir acessibilidade"><i class="fas fa-universal-access"></i></button>
+  </div>
+
+  <div class="modal-overlay" id="profile-modal" role="dialog" aria-modal="true" aria-label="Perfil do usuário">
+    <div class="modal-card">
+      <div class="profile-big">
+        <div class="avatar js-avatar"></div>
+        <h2 data-user-name>Estudante</h2>
+        <p class="muted" data-user-email>E-mail não informado</p>
+        <div class="stats-mini">
+          <div class="stat"><strong data-user-xp>0</strong><span>XP</span></div>
+          <div class="stat"><strong data-user-streak>0 dias</strong><span>Ofensiva</span></div>
+          <div class="stat"><strong data-user-progress>0%</strong><span>Progresso</span></div>
+        </div>
+        <div class="track" style="width:100%"><div class="fill" data-user-progress-fill></div></div>
+      </div>
+      <div class="hero-actions" style="margin-top:18px">
+        <button class="btn btn-soft" onclick="toggleAvatarEditor()"><i class="fas fa-camera"></i> Trocar foto</button>
+        <button class="btn btn-soft" onclick="closeProfile()"><i class="fas fa-xmark"></i> Fechar</button>
+        <button class="btn btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+      </div>
+      <div class="avatar-tools" id="avatar-editor" style="display:none;margin-top:14px">
+        <p class="muted">Cole a URL de uma imagem ou envie um arquivo do dispositivo.</p>
+        <input class="input-text" id="avatar-url" placeholder="https://exemplo.com/foto.jpg">
+        <input class="input-text" id="avatar-file" type="file" accept="image/*" onchange="handleLocalAvatar(event)">
+        <button class="btn btn-primary" id="save-photo-btn" onclick="savePhoto()"><i class="fas fa-save"></i> Salvar foto</button>
+      </div>
+    </div>
+  </div>
+  <div id="toast" class="toast"></div>
+
+  <script>
+
+const API_URL = 'https://algoritmolab.onrender.com/api';
+let usuarioLogadoData = null;
+let currentScale = 100;
+let fotoSelecionadaTemp = '';
+
+function userKeyEmail(){
+  return usuarioLogadoData && usuarioLogadoData.email ? usuarioLogadoData.email : 'visitante';
+}
+function getProgressKey(){ return `eduminex_progress_${userKeyEmail()}`; }
+function getProgress(){
+  try { return JSON.parse(localStorage.getItem(getProgressKey())) || { completed:{} }; }
+  catch(e){ return { completed:{} }; }
+}
+function saveProgress(data){ localStorage.setItem(getProgressKey(), JSON.stringify(data)); }
+function totalCompleted(data){ return Object.values((data && data.completed) || {}).filter(Boolean).length; }
+function checkAuth(){
+  const raw = localStorage.getItem('userData');
+  if(!raw){ window.location.href='index.html'; return false; }
+  try { usuarioLogadoData = JSON.parse(raw); }
+  catch(e){ localStorage.removeItem('userData'); window.location.href='index.html'; return false; }
+  renderUser();
+  restoreAccessibility();
+  return true;
+}
+function renderAvatar(target, nome, foto){
+  if(!target) return;
+  if(foto){ target.innerHTML = `<img src="${foto}" alt="Foto de perfil">`; }
+  else { target.textContent = (nome || 'E').charAt(0).toUpperCase(); }
+}
+function renderUser(){
+  if(!usuarioLogadoData) return;
+  const nome = usuarioLogadoData.nome || usuarioLogadoData.name || 'Estudante';
+  const email = usuarioLogadoData.email || 'E-mail não informado';
+  const streak = usuarioLogadoData.streak || usuarioLogadoData.ofensiva || 0;
+  const xp = usuarioLogadoData.xp || 0;
+  const progress = getProgress();
+  const percent = Math.round((totalCompleted(progress) / 15) * 100);
+  document.querySelectorAll('[data-user-name]').forEach(el => el.textContent = nome);
+  document.querySelectorAll('[data-user-email]').forEach(el => el.textContent = email);
+  document.querySelectorAll('[data-user-xp]').forEach(el => el.textContent = xp);
+  document.querySelectorAll('[data-user-streak]').forEach(el => el.textContent = `${streak} dia${streak === 1 ? '' : 's'}`);
+  document.querySelectorAll('[data-user-progress]').forEach(el => el.textContent = `${percent}%`);
+  document.querySelectorAll('[data-user-progress-fill]').forEach(el => el.style.width = `${percent}%`);
+  document.querySelectorAll('.js-avatar').forEach(el => renderAvatar(el, nome, usuarioLogadoData.foto));
+}
+function openProfile(){ document.getElementById('profile-modal')?.classList.add('active'); }
+function closeProfile(){ document.getElementById('profile-modal')?.classList.remove('active'); }
+function toggleAvatarEditor(){ document.getElementById('avatar-editor')?.classList.toggle('active'); }
+function handleLocalAvatar(event){
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onloadend = () => { fotoSelecionadaTemp = reader.result; showToast('Imagem carregada. Clique em salvar foto.'); };
+  reader.readAsDataURL(file);
+}
+async function savePhoto(){
+  const input = document.getElementById('avatar-url');
+  const novaFoto = (input ? input.value.trim() : '') || fotoSelecionadaTemp;
+  if(!novaFoto){ showToast('Selecione uma imagem ou cole uma URL.'); return; }
+  const btn = document.getElementById('save-photo-btn');
+  if(btn){ btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...'; }
+  try{
+    const res = await fetch(`${API_URL}/update-photo`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email: usuarioLogadoData.email, foto:novaFoto }) });
+    if(!res.ok) throw new Error('Não foi possível salvar no servidor.');
+    usuarioLogadoData.foto = novaFoto;
+    localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+    renderUser();
+    showToast('Foto atualizada.');
+  }catch(err){
+    usuarioLogadoData.foto = novaFoto;
+    localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+    renderUser();
+    showToast('Foto salva no navegador. Servidor indisponível.');
+  }finally{
+    if(btn){ btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Salvar foto'; }
+    if(input) input.value=''; fotoSelecionadaTemp='';
+  }
+}
+function toggleAccessMenu(){ document.getElementById('access-menu')?.classList.toggle('active'); }
+function toggleAltoContraste(){ document.body.classList.toggle('high-contrast'); localStorage.setItem('acess_alto_contraste', document.body.classList.contains('high-contrast')); }
+function mudarFonte(delta){ currentScale += delta; currentScale = Math.max(82, Math.min(138, currentScale)); document.documentElement.style.setProperty('--font-scale', `${currentScale}%`); localStorage.setItem('acess_escala_fonte', String(currentScale)); }
+function toggleDislexia(){ document.body.classList.toggle('dyslexic-font'); localStorage.setItem('acess_dislexia', document.body.classList.contains('dyslexic-font')); }
+function toggleEspacamento(){ document.body.classList.toggle('spacing-increased'); localStorage.setItem('acess_espacamento', document.body.classList.contains('spacing-increased')); }
+function toggleDestaqueLinks(){ document.body.classList.toggle('highlight-links'); localStorage.setItem('acess_links', document.body.classList.contains('highlight-links')); }
+function toggleReduceMotion(){ document.body.classList.toggle('reduce-motion'); localStorage.setItem('acess_reduce_motion', document.body.classList.contains('reduce-motion')); }
+function resetAccessibility(){
+  ['acess_alto_contraste','acess_dislexia','acess_espacamento','acess_links','acess_reduce_motion','acess_escala_fonte'].forEach(k => localStorage.removeItem(k));
+  document.body.classList.remove('high-contrast','dyslexic-font','spacing-increased','highlight-links','reduce-motion');
+  currentScale = 100; document.documentElement.style.setProperty('--font-scale','100%'); showToast('Visual restaurado.');
+}
+function restoreAccessibility(){
+  if(localStorage.getItem('acess_alto_contraste')==='true') document.body.classList.add('high-contrast');
+  if(localStorage.getItem('acess_dislexia')==='true') document.body.classList.add('dyslexic-font');
+  if(localStorage.getItem('acess_espacamento')==='true') document.body.classList.add('spacing-increased');
+  if(localStorage.getItem('acess_links')==='true') document.body.classList.add('highlight-links');
+  if(localStorage.getItem('acess_reduce_motion')==='true') document.body.classList.add('reduce-motion');
+  const saved = parseInt(localStorage.getItem('acess_escala_fonte'), 10);
+  if(!isNaN(saved)){ currentScale = saved; document.documentElement.style.setProperty('--font-scale', `${currentScale}%`); }
+}
+let toastTimer;
+function showToast(msg){
+  let toast = document.getElementById('toast');
+  if(!toast){ toast = document.createElement('div'); toast.id='toast'; toast.className='toast'; document.body.appendChild(toast); }
+  toast.textContent = msg; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(()=>toast.classList.remove('show'), 2800);
+}
+function goBackUnit(){ window.location.href='modulo1-unidade1.html'; }
+function logout(){ localStorage.removeItem('userData'); localStorage.removeItem('userLogado'); localStorage.removeItem('userName'); window.location.href='index.html?logout=true'; }
+document.addEventListener('click', function(e){
+  const profile = document.getElementById('profile-modal');
+  if(profile && e.target === profile) closeProfile();
+});
+
+    let right = 0, tries = 0;
+    const answered = {};
+    const correctOrder = ['abrir','buscar','comparar','verificar','salvar'];
+    const steps = [
+      {id:'verificar', text:'Verificar autoria, data e fonte'},
+      {id:'abrir', text:'Abrir navegador ou buscador'},
+      {id:'salvar', text:'Salvar ou anotar a informação confiável'},
+      {id:'buscar', text:'Digitar palavras-chave claras'},
+      {id:'comparar', text:'Comparar mais de um resultado'}
+    ];
+    let selected = [];
+    function answerChoice(btn, ok, id, msg){
+      const box = btn.closest('.activity');
+      if(!answered[id]){ tries++; if(ok) right++; answered[id] = true; }
+      box.querySelectorAll('.choice').forEach(b => b.disabled = true);
+      btn.classList.add(ok ? 'correct' : 'wrong');
+      if(!ok){ box.querySelectorAll('.choice').forEach(b => { if(b.getAttribute('onclick').includes('true')) b.classList.add('correct'); }); }
+      const fb = document.getElementById(`fb-${id}`);
+      fb.textContent = msg; fb.className = `feedback show ${ok ? 'good' : 'bad'}`;
+      updateScore();
+    }
+    function updateScore(){
+      document.getElementById('right-count').textContent = right;
+      document.getElementById('try-count').textContent = tries;
+      const pct = Math.round((right / 4) * 100);
+      document.getElementById('practical-status').textContent = `${Math.min(100,pct)}%`;
+    }
+    function renderSequence(){
+      const line = document.getElementById('answer-line');
+      line.innerHTML = '';
+      for(let i=0;i<5;i++){
+        const item = selected[i];
+        const div = document.createElement('div'); div.className = `answer-slot ${item ? 'filled' : ''}`;
+        div.innerHTML = item ? `<strong>${i+1}.</strong> ${item.text}` : `<strong>${i+1}.</strong> escolha uma ação`;
+        line.appendChild(div);
+      }
+      const bank = document.getElementById('step-bank');
+      bank.innerHTML = '';
+      steps.filter(s => !selected.find(x => x.id === s.id)).forEach(s => {
+        const b = document.createElement('button'); b.className='step-chip'; b.innerHTML = `<span>${s.text}</span><i class="fas fa-plus"></i>`;
+        b.onclick = () => { selected.push(s); renderSequence(); };
+        bank.appendChild(b);
+      });
+    }
+    function checkSequence(){
+      const fb = document.getElementById('fb-sequence');
+      if(selected.length < 5){ fb.textContent='Complete os 5 passos antes de verificar.'; fb.className='feedback show bad'; return; }
+      tries++;
+      const ok = selected.every((s,i) => s.id === correctOrder[i]);
+      if(ok){ right++; fb.textContent='Excelente! Essa sequência mostra uma pesquisa digital cuidadosa e confiável.'; fb.className='feedback show good'; }
+      else { fb.textContent='Ainda não. Pense: primeiro abre, depois busca, compara resultados, verifica a fonte e só então salva a informação.'; fb.className='feedback show bad'; }
+      updateScore();
+    }
+    function resetSequence(){ selected=[]; renderSequence(); document.getElementById('fb-sequence').className='feedback'; }
+    function initPage(){ checkAuth(); renderSequence(); updateScore(); }
+  </script>
+</body>
+</html>
