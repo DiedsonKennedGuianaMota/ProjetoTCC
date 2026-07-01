@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisador - ALGORITMOLAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. DIRETIVAS DE DESIGN E ANIMAÇÕES
+           ========================================== */
+        :root {
+            --primary-blue: #1c3d5a;
+            --accent-teal: #2b6cb0;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            --fire-color: #ff9f43;
+            --font-scale: 100%;
+        }
+
+        .high-contrast {
+            --primary-blue: #00ebff;
+            --accent-teal: #ffff00;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #ffffff;
+            --text-muted: #a0aec0;
+            --border-color: #4a5568;
+            --fire-color: #ff3f34;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background 0.3s, color 0.3s, font-size 0.3s; }
+        
+        html { font-size: var(--font-scale); }
+        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 60px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes burn {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255,159,67,0.5)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 10px rgba(255,159,67,0.9)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255,159,67,0.5)); }
+        }
+
+        /* ==========================================
+           2. HEADER E NAV
+           ========================================== */
+        .navbar { 
+            background: var(--card-bg); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color);
+        }
+        .nav-profile { display: flex; align-items: center; gap: 15px; }
+        .avatar { 
+            width: 55px; height: 55px; background: var(--accent-teal); color: white; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 700; 
+            cursor: pointer; border: 3px solid var(--border-color); box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden; object-fit: cover;
+        }
+        .avatar:hover { transform: scale(1.05); border-color: var(--primary-blue); }
+        .streak-badge { 
+            display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 159, 67, 0.15); 
+            color: var(--fire-color); padding: 3px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; margin-top: 2px;
+        }
+        .streak-badge i { animation: burn 1.5s infinite ease-in-out; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+
+        /* Botões */
+        .btn { 
+            padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; text-decoration: none;
+            border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; width: 100%;
+        }
+        .btn-auto { width: auto; }
+        .btn-primary { background: var(--accent-teal); color: white; }
+        .btn-primary:hover { filter: brightness(1.1); }
+        .btn-outline { background: transparent; color: var(--primary-blue); border: 2px solid var(--primary-blue); }
+        .btn-outline:hover { background: var(--primary-blue); color: white; }
+        .btn-logout { background: transparent; color: var(--text-main); border: 2px solid var(--border-color); }
+        .btn-logout:hover { background: #e2e8f0; }
+
+        /* ==========================================
+           3. SISTEMA DE PESQUISA (ESTILO GOOGLE)
+           ========================================== */
+        .page-header { text-align: center; margin: 40px 0 30px 0; }
+        .page-header h2 { color: var(--primary-blue); font-size: 2.2rem; margin-bottom: 10px;}
+        .page-header p { color: var(--text-muted); font-size: 1rem; }
+
+        .search-container {
+            display: flex; gap: 10px; justify-content: center; margin-bottom: 40px;
+            max-width: 700px; margin-left: auto; margin-right: auto; position: relative;
+        }
+        .search-input {
+            width: 100%; padding: 18px 25px 18px 50px; border-radius: 30px;
+            border: 2px solid var(--border-color); background: var(--card-bg);
+            color: var(--text-main); font-size: 1.1rem; outline: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .search-input:focus { border-color: var(--accent-teal); box-shadow: 0 5px 20px rgba(43,108,176,0.15); }
+        .search-icon-inside { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem; }
+        
+        .btn-search { border-radius: 30px; padding: 15px 30px; font-size: 1.1rem; }
+
+        /* Resultados da Pesquisa */
+        .results-container { display: flex; flex-direction: column; gap: 20px; }
+        
+        .result-card {
+            background: var(--card-bg); padding: 25px; border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid var(--border-color);
+            animation: fadeIn 0.4s ease-out; transition: transform 0.2s;
+        }
+        .result-card:hover { transform: translateY(-3px); border-color: var(--accent-teal); }
+        
+        .result-source { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; font-weight: 700; display: flex; align-items: center; gap: 5px;}
+        .result-title { font-size: 1.3rem; color: var(--primary-blue); text-decoration: none; font-weight: 700; margin-bottom: 10px; display: inline-block; }
+        .result-title:hover { text-decoration: underline; }
+        .result-snippet { font-size: 0.95rem; color: var(--text-main); line-height: 1.6; }
+        .result-snippet .searchmatch { font-weight: bold; background: rgba(255, 159, 67, 0.2); padding: 0 2px; border-radius: 3px; }
+
+        .loading-spinner { text-align: center; color: var(--accent-teal); font-size: 2rem; display: none; margin: 40px 0; }
+
+        /* ==========================================
+           4. ACESSIBILIDADE E MODAIS
+           ========================================== */
+        .floating-actions { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 10px; z-index: 99; }
+        .btn-floating { width: 55px; height: 55px; border-radius: 50%; background: var(--primary-blue); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); justify-content: center; font-size: 1.3rem; display: flex; align-items: center; border: none; cursor: pointer;}
+        .btn-floating:hover { background: var(--accent-teal); }
+        
+        .menu-acessibilidade {
+            position: absolute; bottom: 65px; right: 0; background: var(--card-bg); border: 1px solid var(--border-color);
+            padding: 15px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.15); display: none; flex-direction: column; gap: 10px; width: 230px; max-height: 400px; overflow-y: auto;
+        }
+        .menu-title { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-align: center; margin-bottom: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;}
+
+        .dyslexic-font * { font-family: 'Comic Sans MS', 'Arial', sans-serif !important; }
+        .spacing-increased * { letter-spacing: 0.05em !important; line-height: 1.8 !important; }
+        .highlight-links a { text-decoration: underline !important; font-weight: bold !important; color: var(--accent-teal) !important; padding: 2px 4px; border-radius: 4px; background: rgba(43, 108, 176, 0.1); }
+        .high-contrast.highlight-links a { color: #ffff00 !important; background: rgba(255, 255, 0, 0.1); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 100; }
+        .modal-card { background: var(--card-bg); padding: 30px; border-radius: 20px; width: 90%; max-width: 450px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
+        .modal-card h3 { margin-bottom: 20px; color: var(--primary-blue); }
+        .avatar-presets { display: flex; justify-content: space-around; margin: 20px 0; }
+        .preset-img { width: 60px; height: 60px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
+        .preset-img:hover, .preset-img.selected { border-color: var(--accent-teal); transform: scale(1.1); }
+        .input-text { width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 8px; margin-bottom: 15px; background: var(--bg-color); color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-profile">
+            <div class="avatar" id="user-avatar" onclick="abrirModalAvatar()" title="Alterar Avatar"></div>
+            <div>
+                <strong id="user-name" style="font-size: 1.1rem;">Carregando...</strong>
+                <div>
+                    <div class="streak-badge">
+                        <i class="fas fa-fire"></i> <span id="user-streak">0 Dias</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <a href="home.html" class="btn btn-outline btn-auto" style="margin-bottom: 10px;"><i class="fas fa-arrow-left"></i> Voltar ao Painel</a>
+
+        <div class="page-header">
+            <h2><i class="fas fa-search"></i> Pesquisador</h2>
+            <p>Busque por artigos, conceitos e informações confiáveis em nossa base de dados mundial.</p>
+        </div>
+
+        <div class="search-container">
+            <i class="fas fa-search search-icon-inside"></i>
+            <input type="text" id="search-input" class="search-input" placeholder="O que você deseja aprender hoje? Ex: Cibersegurança..." onkeypress="handleEnter(event)">
+            <button class="btn btn-primary btn-auto btn-search" onclick="realizarPesquisa()">Pesquisar</button>
+        </div>
+
+        <div class="loading-spinner" id="loading-spinner">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </div>
+
+        <div class="results-container" id="results-container">
+            </div>
+
+    </main>
+
+    <div class="floating-actions">
+        <div class="menu-acessibilidade" id="menu-acess">
+            <div class="menu-title">Opções de Visualização</div>
+            <button class="btn btn-primary" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto Contraste</button>
+            <button class="btn btn-logout" onclick="mudarFonte(2)"><i class="fas fa-font"></i><i class="fas fa-plus"></i> Aumentar Texto</button>
+            <button class="btn btn-logout" onclick="mudarFonte(-2)"><i class="fas fa-font"></i><i class="fas fa-minus"></i> Diminuir Texto</button>
+            <button class="btn btn-logout" onclick="toggleDislexia()"><i class="fas fa-book-reader"></i> Fonte Dislexia</button>
+            <button class="btn btn-logout" onclick="toggleEspacamento()"><i class="fas fa-text-height"></i> Mais Espaçamento</button>
+            <button class="btn btn-logout" onclick="toggleDestaqueLinks()"><i class="fas fa-link"></i> Destacar Links</button>
+        </div>
+        <button class="btn btn-floating" onclick="toggleMenuAcessibilidade()" title="Acessibilidade">
+            <i class="fas fa-universal-access"></i>
+        </button>
+    </div>
+
+    <div class="modal-overlay" id="avatar-modal">
+        <div class="modal-card">
+            <h3><i class="fas fa-camera"></i> Alterar Foto de Perfil</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 10px; color: var(--text-muted);">Escolha um avatar pronto:</p>
+            <div class="avatar-presets">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Felix" class="preset-img" onclick="selecionarPreset(this.src)">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Ane" class="preset-img" onclick="selecionarPreset(this.src)">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Jack" class="preset-img" onclick="selecionarPreset(this.src)">
+            </div>
+            <p style="font-size: 0.9rem; margin-bottom: 5px; color: var(--text-muted);">Ou cole a URL de uma imagem:</p>
+            <input type="text" id="avatar-url" class="input-text" placeholder="https://linkdafoto.com/foto.jpg">
+            <p style="font-size: 0.9rem; margin-bottom: 5px; color: var(--text-muted);">Ou envie do seu computador:</p>
+            <input type="file" id="avatar-file" accept="image/*" onchange="carregarArquivoLocal(event)" style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-logout btn-auto" onclick="fecharModalAvatar()">Cancelar</button>
+                <button class="btn btn-primary btn-auto" onclick="salvarNovaFoto()" id="btn-salvar-foto">Salvar Foto</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://algoritmolab.onrender.com/api';
+        let usuarioLogadoData = null; 
+        let fotoSelecionadaTemp = "";
+
+        // TRAVA DE SEGURANÇA: Garante autenticação
+        function checkAuth() {
+            const userString = localStorage.getItem('userData');
+            if (!userString) {
+                window.location.href = 'index.html'; 
+                return;
+            }
+            usuarioLogadoData = JSON.parse(userString);
+            renderizarDadosUsuario();
+        }
+
+        function renderizarDadosUsuario() {
+            document.getElementById('user-name').innerText = usuarioLogadoData.nome;
+            document.getElementById('user-streak').innerText = `${usuarioLogadoData.streak || 0} Dias`;
+            
+            const avatarDiv = document.getElementById('user-avatar');
+            if (usuarioLogadoData.foto && usuarioLogadoData.foto !== "") {
+                avatarDiv.innerHTML = `<img src="${usuarioLogadoData.foto}" style="width:100%; height:100%; object-fit:cover;">`;
+            } else {
+                avatarDiv.innerText = usuarioLogadoData.nome.charAt(0).toUpperCase();
+            }
+        }
+
+        /* ==========================================
+           SISTEMA DE PESQUISA (WIKIPEDIA API)
+           ========================================== */
+        function handleEnter(event) {
+            if (event.key === "Enter") realizarPesquisa();
+        }
+
+        async function realizarPesquisa() {
+            const query = document.getElementById('search-input').value.trim();
+            const resultsContainer = document.getElementById('results-container');
+            const spinner = document.getElementById('loading-spinner');
+
+            if (!query) return;
+
+            // Limpa resultados anteriores e mostra o carregamento
+            resultsContainer.innerHTML = '';
+            spinner.style.display = 'block';
+
+            try {
+                // Utilizando a API pública da Wikipedia para buscar artigos reais
+                const wikiApiUrl = `https://pt.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&utf8=&format=json&origin=*`;
+                
+                const response = await fetch(wikiApiUrl);
+                const data = await response.json();
+                
+                spinner.style.display = 'none';
+
+                if (data.query.search.length === 0) {
+                    resultsContainer.innerHTML = `<p style="text-align:center; color: var(--text-muted);">Nenhum artigo encontrado para "<strong>${query}</strong>". Tente outras palavras-chave.</p>`;
+                    return;
+                }
+
+                // Renderiza os resultados
+                data.query.search.forEach(item => {
+                    const articleLink = `https://pt.wikipedia.org/wiki/${encodeURIComponent(item.title)}`;
+                    
+                    const card = document.createElement('div');
+                    card.className = 'result-card';
+                    card.innerHTML = `
+                        <div class="result-source"><i class="fas fa-book"></i> Artigo / Enciclopédia</div>
+                        <a href="${articleLink}" target="_blank" class="result-title">${item.title}</a>
+                        <div class="result-snippet">${item.snippet}...</div>
+                    `;
+                    resultsContainer.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("Erro na pesquisa:", error);
+                spinner.style.display = 'none';
+                resultsContainer.innerHTML = `<p style="text-align:center; color: #e53e3e;">Ocorreu um erro ao buscar as informações. Verifique sua internet.</p>`;
+            }
+        }
+
+        /* ==========================================
+           MODAL DE FOTO DE PERFIL (Igual as outras telas)
+           ========================================== */
+        function abrirModalAvatar() { document.getElementById('avatar-modal').style.display = 'flex'; }
+        function fecharModalAvatar() { document.getElementById('avatar-modal').style.display = 'none'; }
+        
+        function selecionarPreset(src) {
+            fotoSelecionadaTemp = src;
+            document.querySelectorAll('.preset-img').forEach(img => img.classList.remove('selected'));
+            event.target.classList.add('selected');
+        }
+
+        function carregarArquivoLocal(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onloadend = function() { fotoSelecionadaTemp = reader.result; }
+            if (file) reader.readAsDataURL(file);
+        }
+
+        async function salvarNovaFoto() {
+            const urlInput = document.getElementById('avatar-url').value.trim();
+            const novaFoto = urlInput || fotoSelecionadaTemp;
+            if (!novaFoto) { alert("Selecione ou informe uma imagem."); return; }
+
+            const btnSalvar = document.getElementById('btn-salvar-foto');
+            btnSalvar.innerText = "Salvando..."; btnSalvar.disabled = true;
+
+            try {
+                const response = await fetch(`${API_URL}/update-photo`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: usuarioLogadoData.email, foto: novaFoto })
+                });
+
+                if (response.ok) {
+                    usuarioLogadoData.foto = novaFoto;
+                    localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+                    renderizarDadosUsuario();
+                    fecharModalAvatar();
+                } else {
+                    const data = await response.json();
+                    alert("Erro ao salvar: " + data.error);
+                }
+            } catch (error) {
+                alert("Erro de conexão com o servidor. Tente novamente.");
+            } finally {
+                btnSalvar.innerText = "Salvar Foto"; btnSalvar.disabled = false;
+                document.getElementById('avatar-url').value = ""; fotoSelecionadaTemp = "";
+            }
+        }
+
+        /* ==========================================
+           SISTEMA DE ACESSIBILIDADE
+           ========================================== */
+        function toggleMenuAcessibilidade() {
+            const menu = document.getElementById('menu-acess');
+            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function toggleAltoContraste() {
+            document.body.classList.toggle('high-contrast');
+            localStorage.setItem('acess_alto_contraste', document.body.classList.contains('high-contrast'));
+        }
+
+        let currentScale = 100;
+        function mudarFonte(delta) {
+            currentScale += delta;
+            if (currentScale < 80) currentScale = 80;
+            if (currentScale > 140) currentScale = 140;
+            document.documentElement.style.setProperty('--font-scale', `${currentScale}%`);
+            localStorage.setItem('acess_escala_fonte', currentScale);
+        }
+
+        function toggleDislexia() {
+            document.body.classList.toggle('dyslexic-font');
+            localStorage.setItem('acess_dislexia', document.body.classList.contains('dyslexic-font'));
+        }
+
+        function toggleEspacamento() {
+            document.body.classList.toggle('spacing-increased');
+            localStorage.setItem('acess_espacamento', document.body.classList.contains('spacing-increased'));
+        }
+
+        function toggleDestaqueLinks() {
+            document.body.classList.toggle('highlight-links');
+            localStorage.setItem('acess_links', document.body.classList.contains('highlight-links'));
+        }
+
+        // Inicialização
+        window.onload = function() {
+            checkAuth();
+            
+            // Restaura configurações de acessibilidade
+            if (localStorage.getItem('acess_alto_contraste') === 'true') document.body.classList.add('high-contrast');
+            if (localStorage.getItem('acess_dislexia') === 'true') document.body.classList.add('dyslexic-font');
+            if (localStorage.getItem('acess_espacamento') === 'true') document.body.classList.add('spacing-increased');
+            if (localStorage.getItem('acess_links') === 'true') document.body.classList.add('highlight-links');
+            
+            const savedScale = localStorage.getItem('acess_escala_fonte');
+            if (savedScale) {
+                currentScale = parseInt(savedScale);
+                document.documentElement.style.setProperty('--font-scale', `${currentScale}%`);
+            }
+        };
+    </script>
+</body>
+</html>
