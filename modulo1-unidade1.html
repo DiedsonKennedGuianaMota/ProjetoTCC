@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 1 · Unidade 1 - Eduminex</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --uea-blue: #003A70;
+            --uea-blue-2: #0057A8;
+            --uea-gold: #F4B000;
+            --uea-gold-2: #FFD36A;
+            --ink: #172033;
+            --muted: #64748B;
+            --bg: #F4F8FF;
+            --surface: rgba(255,255,255,0.92);
+            --surface-solid: #FFFFFF;
+            --line: rgba(0,58,112,0.13);
+            --success: #16A34A;
+            --danger: #DC2626;
+            --warning: #F59E0B;
+            --shadow: 0 22px 60px rgba(0,58,112,0.13);
+            --soft-shadow: 0 12px 32px rgba(0,58,112,0.09);
+            --radius-xl: 30px;
+            --radius-lg: 22px;
+            --radius-md: 16px;
+            --font-scale: 100%;
+        }
+
+        body.high-contrast {
+            --uea-blue: #00E5FF;
+            --uea-blue-2: #BFF7FF;
+            --uea-gold: #FFFF00;
+            --uea-gold-2: #FFF6A0;
+            --ink: #FFFFFF;
+            --muted: #D1D5DB;
+            --bg: #050505;
+            --surface: rgba(20,20,20,0.96);
+            --surface-solid: #111111;
+            --line: rgba(255,255,255,0.22);
+            --success: #00FF66;
+            --danger: #FF6B6B;
+            --warning: #FFFF00;
+            --shadow: 0 22px 60px rgba(0,0,0,0.55);
+            --soft-shadow: 0 12px 32px rgba(0,0,0,0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            font-size: var(--font-scale);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 8% 8%, rgba(244,176,0,0.18), transparent 28%),
+                radial-gradient(circle at 90% 4%, rgba(0,87,168,0.20), transparent 32%),
+                linear-gradient(135deg, #F7FBFF 0%, var(--bg) 48%, #EDF5FF 100%);
+            color: var(--ink);
+            overflow-x: hidden;
+            padding-bottom: 105px;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,58,112,0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,58,112,0.045) 1px, transparent 1px);
+            background-size: 44px 44px;
+            pointer-events: none;
+            z-index: -3;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.82), rgba(0,0,0,0.12));
+        }
+
+        body.reduce-motion *,
+        body.reduce-motion *::before,
+        body.reduce-motion *::after {
+            animation: none !important;
+            transition: none !important;
+            scroll-behavior: auto !important;
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(26px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 0 rgba(244,176,0,0); transform: scale(1); }
+            50% { box-shadow: 0 0 28px rgba(244,176,0,0.30); transform: scale(1.03); }
+        }
+
+        @keyframes floaty {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+
+        @keyframes fire {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(245,158,11,0.45)); }
+            50% { transform: scale(1.13); filter: drop-shadow(0 0 12px rgba(245,158,11,0.8)); }
+        }
+
+        a { color: inherit; }
+
+        button, a, input, label {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible,
+        label:focus-within {
+            outline: 4px solid rgba(244,176,0,0.45);
+            outline-offset: 4px;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 80;
+            background: rgba(255,255,255,0.78);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--line);
+            animation: fadeDown .55s ease both;
+        }
+
+        .topbar-inner {
+            width: min(1160px, calc(100% - 32px));
+            margin: 0 auto;
+            min-height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            text-decoration: none;
+        }
+
+        .logo-mark {
+            width: 54px;
+            height: 54px;
+            border-radius: 19px;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2) 58%, var(--uea-gold));
+            color: white;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 14px 30px rgba(0,58,112,0.20);
+            animation: glowPulse 3.4s ease-in-out infinite;
+            flex: 0 0 auto;
+        }
+
+        .logo-mark::before {
+            content: "";
+            position: absolute;
+            inset: 7px;
+            border: 1px dashed rgba(255,255,255,0.58);
+            border-radius: 15px;
+        }
+
+        .logo-mark span {
+            position: relative;
+            z-index: 2;
+            font-size: 1rem;
+        }
+
+        .brand-text { min-width: 0; }
+
+        .brand-text strong {
+            display: block;
+            font-size: 1.05rem;
+            color: var(--uea-blue);
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+
+        .brand-text small {
+            display: block;
+            font-size: .76rem;
+            color: var(--muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 330px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-chip {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 7px 12px 7px 7px;
+            box-shadow: var(--soft-shadow);
+            cursor: pointer;
+            min-width: 0;
+        }
+
+        .user-chip:hover { transform: translateY(-1px); }
+
+        .avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            color: white;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            overflow: hidden;
+            border: 3px solid rgba(244,176,0,0.35);
+            flex: 0 0 auto;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-meta { min-width: 0; }
+
+        .user-meta strong {
+            display: block;
+            font-size: .92rem;
+            color: var(--ink);
+            max-width: 140px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .user-meta small {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--warning);
+            font-weight: 800;
+            font-size: .75rem;
+        }
+
+        .user-meta i { animation: fire 1.6s infinite ease-in-out; }
+
+        .container {
+            width: min(1160px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 26px 0 0;
+        }
+
+        .btn {
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 15px;
+            padding: 12px 17px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: .25s ease;
+            min-height: 46px;
+            color: inherit;
+            font-size: .92rem;
+            line-height: 1.1;
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            box-shadow: 0 14px 28px rgba(0,58,112,0.22);
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); }
+
+        .btn-gold {
+            color: #17314F;
+            background: linear-gradient(135deg, var(--uea-gold), var(--uea-gold-2));
+            box-shadow: 0 14px 28px rgba(244,176,0,0.25);
+        }
+
+        .btn-soft {
+            color: var(--uea-blue);
+            background: rgba(0,87,168,0.08);
+            border: 1px solid var(--line);
+        }
+
+        .btn-danger {
+            color: var(--danger);
+            background: rgba(220,38,38,0.08);
+            border: 1px solid rgba(220,38,38,0.18);
+        }
+
+        .btn-disabled,
+        button:disabled {
+            opacity: .58;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(290px, .85fr);
+            gap: 22px;
+            align-items: stretch;
+            margin: 22px 0;
+        }
+
+        .hero-card,
+        .status-card,
+        .content-card,
+        .step-card,
+        .question-card,
+        .profile-modal-card,
+        .menu-acessibilidade {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+        }
+
+        .hero-card {
+            border-radius: var(--radius-xl);
+            padding: clamp(22px, 4vw, 38px);
+            position: relative;
+            overflow: hidden;
+            animation: rise .6s ease both;
+        }
+
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            right: -95px;
+            top: -95px;
+            background: radial-gradient(circle, rgba(244,176,0,0.26), transparent 72%);
+            pointer-events: none;
+        }
+
+        .kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(244,176,0,0.15);
+            border: 1px solid rgba(244,176,0,0.30);
+            color: var(--uea-blue);
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: .78rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            color: var(--uea-blue);
+            font-size: clamp(1.85rem, 5.5vw, 3.7rem);
+            line-height: 1.02;
+            letter-spacing: -1.8px;
+            margin-bottom: 14px;
+        }
+
+        .hero p {
+            color: var(--muted);
+            line-height: 1.75;
+            font-size: 1rem;
+            max-width: 680px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 11px;
+            margin-top: 20px;
+        }
+
+        .status-card {
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 18px;
+            animation: rise .7s ease both;
+        }
+
+        .status-card h2 {
+            color: var(--uea-blue);
+            font-size: 1.2rem;
+        }
+
+        .score-circle {
+            width: 148px;
+            height: 148px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background:
+                conic-gradient(var(--uea-gold) var(--score-deg, 0deg), rgba(0,58,112,0.12) 0deg);
+            display: grid;
+            place-items: center;
+            position: relative;
+            box-shadow: inset 0 0 0 1px var(--line), 0 16px 30px rgba(0,58,112,0.12);
+        }
+
+        .score-circle::before {
+            content: "";
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: var(--surface-solid);
+        }
+
+        .score-circle strong,
+        .score-circle span {
+            position: relative;
+            z-index: 2;
+            display: block;
+            text-align: center;
+        }
+
+        .score-circle strong {
+            font-size: 2rem;
+            color: var(--uea-blue);
+            line-height: 1;
+        }
+
+        .score-circle span {
+            color: var(--muted);
+            font-size: .74rem;
+            font-weight: 700;
+        }
+
+        .status-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .status-item {
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.56);
+            border-radius: 17px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: .88rem;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .status-item strong { color: var(--ink); }
+
+        .status-icon {
+            width: 31px;
+            height: 31px;
+            border-radius: 11px;
+            display: grid;
+            place-items: center;
+            color: var(--uea-blue);
+            background: rgba(0,87,168,0.08);
+            flex: 0 0 auto;
+        }
+
+        .tabs-wrap {
+            position: sticky;
+            top: 82px;
+            z-index: 70;
+            padding: 12px 0;
+            background: linear-gradient(to bottom, rgba(244,248,255,0.95), rgba(244,248,255,0.70));
+            backdrop-filter: blur(14px);
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .tab-btn {
+            border: 1px solid var(--line);
+            background: var(--surface);
+            border-radius: 17px;
+            min-height: 64px;
+            padding: 12px;
+            color: var(--muted);
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            box-shadow: var(--soft-shadow);
+            transition: .25s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .tab-btn.done {
+            border-color: rgba(22,163,74,0.30);
+        }
+
+        .tab-btn.done .tab-check {
+            display: inline-grid;
+        }
+
+        .tab-check {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            place-items: center;
+            background: var(--success);
+            color: white;
+            font-size: .65rem;
+        }
+
+        .content-card {
+            border-radius: var(--radius-xl);
+            padding: clamp(18px, 4vw, 30px);
+            margin: 16px 0 28px;
+            animation: rise .55s ease both;
+        }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        .section-title {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .section-title h2 {
+            color: var(--uea-blue);
+            font-size: clamp(1.35rem, 4vw, 2rem);
+            line-height: 1.2;
+        }
+
+        .section-title p {
+            color: var(--muted);
+            line-height: 1.65;
+            margin-top: 6px;
+            max-width: 760px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(0,87,168,0.08);
+            color: var(--uea-blue);
+            font-size: .76rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .study-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin: 22px 0;
+        }
+
+        .step-card {
+            border-radius: 21px;
+            padding: 18px;
+            box-shadow: var(--soft-shadow);
+            animation: floaty 5s ease-in-out infinite;
+        }
+
+        .step-card:nth-child(2) { animation-delay: .3s; }
+        .step-card:nth-child(3) { animation-delay: .6s; }
+
+        .step-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            color: white;
+            display: grid;
+            place-items: center;
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            box-shadow: 0 12px 22px rgba(0,58,112,0.18);
+        }
+
+        .step-card h3 {
+            color: var(--uea-blue);
+            font-size: 1.05rem;
+            margin-bottom: 7px;
+        }
+
+        .step-card p,
+        .info-box p,
+        .question-card p {
+            color: var(--muted);
+            line-height: 1.65;
+            font-size: .92rem;
+        }
+
+        .info-box {
+            border-radius: 21px;
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(244,176,0,0.15), rgba(0,87,168,0.08));
+            border: 1px solid rgba(244,176,0,0.25);
+            margin: 18px 0;
+        }
+
+        .info-box strong { color: var(--uea-blue); }
+
+        .mini-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 12px;
+            list-style: none;
+        }
+
+        .mini-list li {
+            display: flex;
+            gap: 10px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .mini-list i {
+            color: var(--success);
+            margin-top: 4px;
+        }
+
+        .exercise-box {
+            display: grid;
+            gap: 14px;
+        }
+
+        .dragless-card,
+        .question-card {
+            border-radius: 20px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.64);
+            padding: 18px;
+            box-shadow: var(--soft-shadow);
+        }
+
+        .option-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .check-option,
+        .radio-option {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            background: var(--surface-solid);
+            color: var(--ink);
+            font-weight: 600;
+            line-height: 1.4;
+            transition: .2s ease;
+        }
+
+        .check-option:hover,
+        .radio-option:hover {
+            border-color: rgba(0,87,168,0.35);
+            transform: translateY(-1px);
+        }
+
+        .check-option input,
+        .radio-option input {
+            margin-top: 3px;
+            accent-color: var(--uea-blue);
+            flex: 0 0 auto;
+        }
+
+        .feedback {
+            display: none;
+            border-radius: 16px;
+            padding: 13px;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-top: 12px;
+        }
+
+        .feedback.success {
+            display: block;
+            color: var(--success);
+            background: rgba(22,163,74,0.09);
+            border: 1px solid rgba(22,163,74,0.18);
+        }
+
+        .feedback.error {
+            display: block;
+            color: var(--danger);
+            background: rgba(220,38,38,0.08);
+            border: 1px solid rgba(220,38,38,0.18);
+        }
+
+        .quiz-form {
+            display: grid;
+            gap: 16px;
+            margin-top: 18px;
+        }
+
+        .question-card h3 {
+            color: var(--uea-blue);
+            font-size: 1.02rem;
+            margin-bottom: 10px;
+        }
+
+        .result-card {
+            display: none;
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-top: 18px;
+            border: 1px solid var(--line);
+            background: var(--surface-solid);
+            box-shadow: var(--soft-shadow);
+        }
+
+        .result-card.show { display: block; }
+        .result-card.success { border-color: rgba(22,163,74,0.28); }
+        .result-card.error { border-color: rgba(220,38,38,0.28); }
+
+        .result-card h3 {
+            color: var(--uea-blue);
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+
+        .result-card p {
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        .bottom-actions {
+            position: fixed;
+            left: 50%;
+            bottom: 18px;
+            transform: translateX(-50%);
+            width: min(820px, calc(100% - 28px));
+            z-index: 75;
+            background: rgba(255,255,255,0.80);
+            backdrop-filter: blur(18px);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow);
+            border-radius: 23px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .bottom-actions small {
+            color: var(--muted);
+            font-weight: 700;
+            padding-left: 8px;
+        }
+
+        .floating-actions {
+            position: fixed;
+            right: 22px;
+            bottom: 98px;
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .btn-floating {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            color: white;
+            box-shadow: 0 16px 34px rgba(0,58,112,0.24);
+            font-size: 1.35rem;
+            padding: 0;
+        }
+
+        .menu-acessibilidade {
+            width: 260px;
+            border-radius: 22px;
+            padding: 14px;
+            display: none;
+            flex-direction: column;
+            gap: 9px;
+            max-height: min(430px, calc(100vh - 170px));
+            overflow-y: auto;
+        }
+
+        .menu-acessibilidade.open { display: flex; }
+
+        .menu-title {
+            color: var(--uea-blue);
+            font-size: .92rem;
+            font-weight: 800;
+            padding: 4px 6px 8px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .dyslexic-font * { font-family: 'Comic Sans MS', Arial, sans-serif !important; }
+        .spacing-increased * { letter-spacing: .04em !important; line-height: 1.85 !important; }
+        .highlight-links a { text-decoration: underline !important; text-decoration-thickness: 3px !important; background: rgba(244,176,0,0.20); border-radius: 6px; }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 120;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(9, 18, 32, 0.55);
+            backdrop-filter: blur(8px);
+            padding: 18px;
+        }
+
+        .modal-overlay.open { display: flex; }
+
+        .profile-modal-card {
+            width: min(460px, 100%);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            animation: rise .3s ease both;
+        }
+
+        .profile-head {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .profile-avatar {
+            width: 108px;
+            height: 108px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            border: 5px solid rgba(244,176,0,0.45);
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-head h2 {
+            color: var(--uea-blue);
+            font-size: 1.35rem;
+        }
+
+        .profile-head p {
+            color: var(--muted);
+            font-size: .88rem;
+            word-break: break-word;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .stat-box {
+            border: 1px solid var(--line);
+            border-radius: 17px;
+            padding: 12px;
+            text-align: center;
+            background: rgba(255,255,255,0.62);
+        }
+
+        .stat-box strong {
+            display: block;
+            color: var(--uea-blue);
+            font-size: 1.1rem;
+        }
+
+        .stat-box span {
+            color: var(--muted);
+            font-size: .72rem;
+            font-weight: 700;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 95px;
+            transform: translateX(-50%) translateY(20px);
+            background: #10233D;
+            color: white;
+            border-radius: 999px;
+            padding: 12px 17px;
+            font-weight: 700;
+            box-shadow: 0 18px 36px rgba(0,0,0,0.24);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: .25s ease;
+            max-width: calc(100% - 24px);
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 920px) {
+            .hero { grid-template-columns: 1fr; }
+            .study-grid { grid-template-columns: 1fr; }
+            .tabs-wrap { top: 76px; }
+            .section-title { flex-direction: column; align-items: flex-start; }
+        }
+
+        @media (max-width: 720px) {
+            .topbar-inner {
+                min-height: 76px;
+                width: min(100% - 22px, 1160px);
+            }
+
+            .brand-text small { display: none; }
+            .user-meta { display: none; }
+            .user-chip { padding: 6px; }
+            .avatar { width: 44px; height: 44px; }
+            .btn-nav-text { display: none; }
+            .container { width: min(100% - 22px, 1160px); padding-top: 16px; }
+            .tabs { grid-template-columns: 1fr; }
+            .tab-btn { min-height: 54px; justify-content: flex-start; }
+            .option-list { grid-template-columns: 1fr; }
+            .bottom-actions { flex-direction: column; align-items: stretch; border-radius: 20px; }
+            .bottom-actions small { text-align: center; padding: 0; }
+            .bottom-actions .btn { width: 100%; }
+            .floating-actions { right: 14px; bottom: 156px; }
+            .btn-floating { width: 54px; height: 54px; }
+        }
+
+        @media (max-width: 410px) {
+            .logo-mark { width: 48px; height: 48px; border-radius: 17px; }
+            .brand-text strong { font-size: .92rem; }
+            .hero-card, .status-card, .content-card { border-radius: 22px; }
+            .hero h1 { letter-spacing: -1px; }
+            .profile-stats { grid-template-columns: 1fr; }
+            .menu-acessibilidade { width: calc(100vw - 28px); }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" href="home.html" aria-label="Ir para a página inicial">
+                <div class="logo-mark"><span>ED</span></div>
+                <div class="brand-text">
+                    <strong>Eduminex</strong>
+                    <small>Letramento digital para a modalidade EJA</small>
+                </div>
+            </a>
+
+            <div class="nav-actions">
+                <a class="btn btn-soft" href="modulos.html"><i class="fas fa-arrow-left"></i> <span class="btn-nav-text">Módulos</span></a>
+                <button class="user-chip" onclick="abrirPerfil()" aria-label="Abrir painel de perfil">
+                    <div class="avatar" id="user-avatar"></div>
+                    <div class="user-meta">
+                        <strong id="user-name">Estudante</strong>
+                        <small><i class="fas fa-fire"></i> <span id="user-streak">0 dias</span></small>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-card">
+                <div class="kicker"><i class="fas fa-layer-group"></i> Módulo 1 · Unidade 1</div>
+                <h1>Primeiros passos no mundo digital</h1>
+                <p>
+                    Nesta unidade, você vai compreender o que são dispositivos digitais, reconhecer elementos básicos da tela
+                    e praticar ações importantes para começar a usar a tecnologia com mais segurança e autonomia.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="abrirAba('material')"><i class="fas fa-book-open"></i> Material de estudo</button>
+                    <button class="btn btn-soft" onclick="abrirAba('exercicio')"><i class="fas fa-pencil-alt"></i> Exercício</button>
+                    <button class="btn btn-gold" onclick="abrirAba('avaliacao')"><i class="fas fa-star"></i> Avaliação final</button>
+                </div>
+            </div>
+
+            <aside class="status-card" aria-label="Resumo da unidade">
+                <div>
+                    <h2><i class="fas fa-chart-simple"></i> Situação da unidade</h2>
+                    <p style="color: var(--muted); line-height: 1.6; font-size: .92rem; margin-top: 6px;">
+                        Para liberar a Unidade 2, alcance pelo menos <strong style="color: var(--uea-blue);">80%</strong> na avaliação final.
+                    </p>
+                </div>
+
+                <div class="score-circle" id="score-circle">
+                    <div>
+                        <strong id="best-score">0%</strong>
+                        <span>melhor nota</span>
+                    </div>
+                </div>
+
+                <div class="status-list">
+                    <div class="status-item"><span><i class="fas fa-book status-icon"></i></span><strong id="status-material">Material pendente</strong></div>
+                    <div class="status-item"><span><i class="fas fa-pen status-icon"></i></span><strong id="status-exercicio">Exercício pendente</strong></div>
+                    <div class="status-item"><span><i class="fas fa-lock-open status-icon"></i></span><strong id="status-unidade">Unidade não concluída</strong></div>
+                </div>
+            </aside>
+        </section>
+
+        <div class="tabs-wrap">
+            <nav class="tabs" aria-label="Etapas da unidade">
+                <button class="tab-btn active" id="tab-material" onclick="abrirAba('material')"><span class="tab-check"><i class="fas fa-check"></i></span><i class="fas fa-book-open"></i> Material de estudo</button>
+                <button class="tab-btn" id="tab-exercicio" onclick="abrirAba('exercicio')"><span class="tab-check"><i class="fas fa-check"></i></span><i class="fas fa-pencil-alt"></i> Exercício</button>
+                <button class="tab-btn" id="tab-avaliacao" onclick="abrirAba('avaliacao')"><span class="tab-check"><i class="fas fa-check"></i></span><i class="fas fa-star"></i> Avaliação final</button>
+            </nav>
+        </div>
+
+        <section class="content-card">
+            <article class="tab-panel active" id="panel-material">
+                <div class="section-title">
+                    <div>
+                        <h2>Material de estudo</h2>
+                        <p>Leia com calma. A ideia é começar pelo básico, com palavras simples e exemplos do dia a dia.</p>
+                    </div>
+                    <span class="pill"><i class="fas fa-clock"></i> Leitura curta</span>
+                </div>
+
+                <div class="study-grid">
+                    <div class="step-card">
+                        <div class="step-icon"><i class="fas fa-mobile-screen"></i></div>
+                        <h3>O que é um dispositivo digital?</h3>
+                        <p>É um aparelho que ajuda a acessar, produzir, guardar ou enviar informações. Exemplos: celular, computador, tablet e caixa eletrônico.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-icon"><i class="fas fa-hand-pointer"></i></div>
+                        <h3>Como interagir com a tela?</h3>
+                        <p>No celular usamos toques. No computador usamos mouse, teclado e clique. Ícones e botões indicam ações como entrar, voltar, salvar ou pesquisar.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-icon"><i class="fas fa-keyboard"></i></div>
+                        <h3>Primeiras ações digitais</h3>
+                        <p>Digitar nome, abrir aplicativo, pesquisar informação, criar senha e fechar uma janela são ações básicas para ganhar autonomia digital.</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong><i class="fas fa-lightbulb"></i> Exemplo prático:</strong>
+                    <p>
+                        Quando você toca no ícone do WhatsApp, digita uma mensagem e envia para alguém, está usando letramento digital:
+                        você reconhece o aplicativo, entende a função do campo de texto e escolhe uma ação de comunicação.
+                    </p>
+                    <ul class="mini-list">
+                        <li><i class="fas fa-check-circle"></i> Ícone: desenho que representa um aplicativo, arquivo ou função.</li>
+                        <li><i class="fas fa-check-circle"></i> Botão: área que executa uma ação quando clicada ou tocada.</li>
+                        <li><i class="fas fa-check-circle"></i> Campo de texto: espaço onde você digita uma informação.</li>
+                        <li><i class="fas fa-check-circle"></i> Menu: lista de opções disponíveis em uma tela.</li>
+                    </ul>
+                </div>
+
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="marcarMaterialVisto()"><i class="fas fa-check"></i> Marcar material como visto</button>
+                    <button class="btn btn-soft" onclick="abrirAba('exercicio')"><i class="fas fa-arrow-right"></i> Ir para exercício</button>
+                </div>
+            </article>
+
+            <article class="tab-panel" id="panel-exercicio">
+                <div class="section-title">
+                    <div>
+                        <h2>Exercício de fixação</h2>
+                        <p>Marque as opções que representam ações básicas e seguras no mundo digital.</p>
+                    </div>
+                    <span class="pill"><i class="fas fa-person-chalkboard"></i> Prática guiada</span>
+                </div>
+
+                <div class="exercise-box">
+                    <div class="dragless-card">
+                        <h3 style="color: var(--uea-blue); margin-bottom: 8px;">Selecione as ações corretas</h3>
+                        <p style="color: var(--muted); line-height: 1.65;">Escolha todas as alternativas que demonstram uso consciente de dispositivos digitais.</p>
+                        <div class="option-list">
+                            <label class="check-option"><input type="checkbox" name="exercise" value="correct"> Conferir se digitou o e-mail corretamente antes de enviar.</label>
+                            <label class="check-option"><input type="checkbox" name="exercise" value="correct"> Usar senha que não seja fácil de adivinhar.</label>
+                            <label class="check-option"><input type="checkbox" name="exercise" value="wrong"> Clicar em qualquer botão sem ler o que aparece na tela.</label>
+                            <label class="check-option"><input type="checkbox" name="exercise" value="correct"> Pedir ajuda quando uma mensagem parecer estranha ou suspeita.</label>
+                            <label class="check-option"><input type="checkbox" name="exercise" value="wrong"> Compartilhar sua senha com outras pessoas para facilitar o acesso.</label>
+                            <label class="check-option"><input type="checkbox" name="exercise" value="correct"> Identificar ícones, botões e campos de texto antes de realizar uma ação.</label>
+                        </div>
+                        <div class="feedback" id="exercise-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="corrigirExercicio()"><i class="fas fa-check-double"></i> Corrigir exercício</button>
+                    <button class="btn btn-gold" onclick="abrirAba('avaliacao')"><i class="fas fa-star"></i> Fazer avaliação final</button>
+                </div>
+            </article>
+
+            <article class="tab-panel" id="panel-avaliacao">
+                <div class="section-title">
+                    <div>
+                        <h2>Avaliação final</h2>
+                        <p>Responda às 5 perguntas. Você precisa acertar pelo menos 4 para alcançar 80% e liberar a Unidade 2.</p>
+                    </div>
+                    <span class="pill"><i class="fas fa-award"></i> Nota mínima: 80%</span>
+                </div>
+
+                <form class="quiz-form" id="quiz-form">
+                    <div class="question-card">
+                        <h3>1. Qual alternativa representa um dispositivo digital?</h3>
+                        <label class="radio-option"><input type="radio" name="q1" value="0"> Caderno de papel</label>
+                        <label class="radio-option"><input type="radio" name="q1" value="1"> Celular</label>
+                        <label class="radio-option"><input type="radio" name="q1" value="0"> Garrafa de água</label>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>2. Para que serve um botão em uma tela?</h3>
+                        <label class="radio-option"><input type="radio" name="q2" value="0"> Apenas para decorar a página</label>
+                        <label class="radio-option"><input type="radio" name="q2" value="1"> Para executar uma ação, como entrar, salvar ou enviar</label>
+                        <label class="radio-option"><input type="radio" name="q2" value="0"> Para desligar sempre o aparelho</label>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>3. O que é um campo de texto?</h3>
+                        <label class="radio-option"><input type="radio" name="q3" value="1"> Um espaço onde a pessoa pode digitar informações</label>
+                        <label class="radio-option"><input type="radio" name="q3" value="0"> Um cabo do computador</label>
+                        <label class="radio-option"><input type="radio" name="q3" value="0"> Um tipo de tomada</label>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>4. Qual atitude é mais segura ao usar tecnologia?</h3>
+                        <label class="radio-option"><input type="radio" name="q4" value="0"> Compartilhar sua senha com qualquer pessoa</label>
+                        <label class="radio-option"><input type="radio" name="q4" value="0"> Clicar em mensagens suspeitas sem ler</label>
+                        <label class="radio-option"><input type="radio" name="q4" value="1"> Ler com atenção antes de clicar e proteger seus dados</label>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>5. O que significa reconhecer um ícone?</h3>
+                        <label class="radio-option"><input type="radio" name="q5" value="1"> Entender que um desenho representa uma função ou aplicativo</label>
+                        <label class="radio-option"><input type="radio" name="q5" value="0"> Apagar todos os aplicativos do celular</label>
+                        <label class="radio-option"><input type="radio" name="q5" value="0"> Aumentar o volume do aparelho</label>
+                    </div>
+
+                    <div class="result-card" id="result-card"></div>
+
+                    <div class="hero-actions">
+                        <button type="button" class="btn btn-gold" onclick="corrigirAvaliacao()"><i class="fas fa-check-circle"></i> Finalizar avaliação</button>
+                        <button type="reset" class="btn btn-soft" onclick="limparResultado()"><i class="fas fa-rotate-left"></i> Refazer respostas</button>
+                    </div>
+                </form>
+            </article>
+        </section>
+    </main>
+
+    <div class="bottom-actions">
+        <small id="bottom-message">Comece pelo material de estudo e avance no seu ritmo.</small>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+            <a class="btn btn-soft" href="modulos.html"><i class="fas fa-list"></i> Ver módulos</a>
+            <a class="btn btn-primary" id="next-unit-btn" href="modulo1-unidade2.html" onclick="bloquearProximaSeNecessario(event)"><i class="fas fa-arrow-right"></i> Unidade 2</a>
+        </div>
+    </div>
+
+    <div class="floating-actions">
+        <div class="menu-acessibilidade" id="menu-acess">
+            <div class="menu-title"><i class="fas fa-universal-access"></i> Acessibilidade</div>
+            <button class="btn btn-soft" onclick="toggleAltoContraste()"><i class="fas fa-adjust"></i> Alto contraste</button>
+            <button class="btn btn-soft" onclick="mudarFonte(5)"><i class="fas fa-font"></i> Aumentar texto</button>
+            <button class="btn btn-soft" onclick="mudarFonte(-5)"><i class="fas fa-font"></i> Diminuir texto</button>
+            <button class="btn btn-soft" onclick="toggleDislexia()"><i class="fas fa-book-reader"></i> Fonte alternativa</button>
+            <button class="btn btn-soft" onclick="toggleEspacamento()"><i class="fas fa-text-height"></i> Mais espaçamento</button>
+            <button class="btn btn-soft" onclick="toggleDestaqueLinks()"><i class="fas fa-link"></i> Destacar links</button>
+            <button class="btn btn-soft" onclick="toggleReduzirAnimacoes()"><i class="fas fa-person-walking-arrow-loop-left"></i> Reduzir animações</button>
+            <button class="btn btn-danger" onclick="restaurarAcessibilidade()"><i class="fas fa-rotate-left"></i> Restaurar visual</button>
+        </div>
+        <button class="btn btn-floating" onclick="toggleMenuAcessibilidade()" title="Acessibilidade" aria-label="Abrir menu de acessibilidade">
+            <i class="fas fa-universal-access"></i>
+        </button>
+    </div>
+
+    <div class="modal-overlay" id="profile-modal" onclick="fecharPerfilAoFundo(event)">
+        <div class="profile-modal-card" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+            <div class="profile-head">
+                <div class="profile-avatar" id="profile-avatar"></div>
+                <h2 id="profile-title">Estudante</h2>
+                <p id="profile-email">E-mail não informado</p>
+            </div>
+            <div class="profile-stats">
+                <div class="stat-box"><strong id="profile-xp">0</strong><span>XP</span></div>
+                <div class="stat-box"><strong id="profile-streak">0 dias</strong><span>Ofensiva</span></div>
+                <div class="stat-box"><strong id="profile-progress">0%</strong><span>Progresso</span></div>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap;">
+                <button class="btn btn-soft" onclick="fecharPerfil()"><i class="fas fa-xmark"></i> Fechar</button>
+                <a class="btn btn-primary" href="home.html"><i class="fas fa-house"></i> Painel</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Mensagem</div>
+
+    <script>
+        const UNIT_MODULE_ID = 1;
+        const UNIT_ID = 1;
+        const TOTAL_UNITS = 15;
+        const PASSING_SCORE = 80;
+
+        let usuarioLogadoData = null;
+        let progressData = { completed: {} };
+        let unitState = { materialSeen: false, exerciseDone: false, bestScore: 0, attempts: 0, passed: false };
+        let currentScale = 100;
+
+        function getUserEmail() {
+            return usuarioLogadoData && usuarioLogadoData.email ? usuarioLogadoData.email : 'visitante';
+        }
+
+        function getProgressKey() {
+            return `eduminex_progress_${getUserEmail()}`;
+        }
+
+        function getUnitStateKey() {
+            return `eduminex_unit_1_1_state_${getUserEmail()}`;
+        }
+
+        function unitKey(moduleId = UNIT_MODULE_ID, unitId = UNIT_ID) {
+            return `${moduleId}-${unitId}`;
+        }
+
+        function checkAuth() {
+            const userString = localStorage.getItem('userData');
+            if (!userString) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                usuarioLogadoData = JSON.parse(userString);
+            } catch (error) {
+                localStorage.removeItem('userData');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            carregarProgresso();
+            carregarEstadoUnidade();
+            renderizarUsuario();
+            atualizarInterface();
+        }
+
+        function carregarProgresso() {
+            const saved = localStorage.getItem(getProgressKey());
+            if (saved) {
+                try {
+                    progressData = JSON.parse(saved);
+                } catch (error) {
+                    progressData = { completed: {} };
+                }
+            }
+            if (!progressData || typeof progressData !== 'object') progressData = { completed: {} };
+            if (!progressData.completed) progressData.completed = {};
+        }
+
+        function salvarProgresso() {
+            localStorage.setItem(getProgressKey(), JSON.stringify(progressData));
+            const total = getTotalCompletedUnits();
+            const percent = Math.round((total / TOTAL_UNITS) * 100);
+            usuarioLogadoData.progresso = percent;
+            usuarioLogadoData.unidadesConcluidas = total;
+            usuarioLogadoData.modulosConcluidos = getCompletedModulesCount();
+            usuarioLogadoData.xp = usuarioLogadoData.xp || 0;
+            localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+        }
+
+        function carregarEstadoUnidade() {
+            const saved = localStorage.getItem(getUnitStateKey());
+            if (saved) {
+                try {
+                    unitState = { ...unitState, ...JSON.parse(saved) };
+                } catch (error) {
+                    unitState = { materialSeen: false, exerciseDone: false, bestScore: 0, attempts: 0, passed: false };
+                }
+            }
+            unitState.passed = unitState.passed || !!progressData.completed[unitKey()];
+        }
+
+        function salvarEstadoUnidade() {
+            localStorage.setItem(getUnitStateKey(), JSON.stringify(unitState));
+        }
+
+        function getTotalCompletedUnits() {
+            return Object.values(progressData.completed).filter(Boolean).length;
+        }
+
+        function getCompletedModulesCount() {
+            let count = 0;
+            for (let moduleId = 1; moduleId <= 5; moduleId++) {
+                const done = [1, 2, 3].every(unitId => progressData.completed[unitKey(moduleId, unitId)]);
+                if (done) count++;
+            }
+            return count;
+        }
+
+        function renderizarUsuario() {
+            const nome = usuarioLogadoData.nome || usuarioLogadoData.name || 'Estudante';
+            const email = usuarioLogadoData.email || 'E-mail não informado';
+            const streak = usuarioLogadoData.streak || usuarioLogadoData.ofensiva || 0;
+            const xp = usuarioLogadoData.xp || 0;
+            const percent = Math.round((getTotalCompletedUnits() / TOTAL_UNITS) * 100);
+
+            document.getElementById('user-name').innerText = nome;
+            document.getElementById('user-streak').innerText = `${streak} dia${streak === 1 ? '' : 's'}`;
+            document.getElementById('profile-title').innerText = nome;
+            document.getElementById('profile-email').innerText = email;
+            document.getElementById('profile-xp').innerText = xp;
+            document.getElementById('profile-streak').innerText = `${streak} dia${streak === 1 ? '' : 's'}`;
+            document.getElementById('profile-progress').innerText = `${percent}%`;
+
+            renderAvatar(document.getElementById('user-avatar'), nome, usuarioLogadoData.foto);
+            renderAvatar(document.getElementById('profile-avatar'), nome, usuarioLogadoData.foto);
+        }
+
+        function renderAvatar(target, nome, foto) {
+            if (!target) return;
+            if (foto) {
+                target.innerHTML = `<img src="${foto}" alt="Foto de perfil">`;
+            } else {
+                target.textContent = (nome || 'E').charAt(0).toUpperCase();
+            }
+        }
+
+        function atualizarInterface() {
+            const score = Math.max(0, Math.min(100, unitState.bestScore || 0));
+            document.getElementById('best-score').innerText = `${score}%`;
+            document.getElementById('score-circle').style.setProperty('--score-deg', `${score * 3.6}deg`);
+
+            document.getElementById('status-material').innerText = unitState.materialSeen ? 'Material visto' : 'Material pendente';
+            document.getElementById('status-exercicio').innerText = unitState.exerciseDone ? 'Exercício concluído' : 'Exercício pendente';
+            document.getElementById('status-unidade').innerText = progressData.completed[unitKey()] ? 'Unidade concluída' : 'Unidade não concluída';
+
+            document.getElementById('tab-material').classList.toggle('done', unitState.materialSeen);
+            document.getElementById('tab-exercicio').classList.toggle('done', unitState.exerciseDone);
+            document.getElementById('tab-avaliacao').classList.toggle('done', progressData.completed[unitKey()]);
+
+            const nextBtn = document.getElementById('next-unit-btn');
+            const bottomMessage = document.getElementById('bottom-message');
+            if (progressData.completed[unitKey()]) {
+                nextBtn.classList.remove('btn-disabled');
+                bottomMessage.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> Unidade 1 concluída. A Unidade 2 está liberada.';
+            } else {
+                nextBtn.classList.add('btn-disabled');
+                bottomMessage.innerText = 'A Unidade 2 libera somente com 80% ou mais na avaliação final.';
+            }
+
+            renderizarUsuario();
+        }
+
+        function abrirAba(nome) {
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(button => button.classList.remove('active'));
+
+            document.getElementById(`panel-${nome}`).classList.add('active');
+            document.getElementById(`tab-${nome}`).classList.add('active');
+
+            window.scrollTo({ top: document.querySelector('.tabs-wrap').offsetTop - 84, behavior: 'smooth' });
+        }
+
+        function marcarMaterialVisto() {
+            unitState.materialSeen = true;
+            salvarEstadoUnidade();
+            atualizarInterface();
+            showToast('Material marcado como visto. Agora faça o exercício de fixação.');
+            setTimeout(() => abrirAba('exercicio'), 450);
+        }
+
+        function corrigirExercicio() {
+            const checks = [...document.querySelectorAll('input[name="exercise"]')];
+            const selected = checks.filter(input => input.checked);
+            const correctSelected = selected.filter(input => input.value === 'correct').length;
+            const wrongSelected = selected.filter(input => input.value === 'wrong').length;
+            const totalCorrect = checks.filter(input => input.value === 'correct').length;
+            const feedback = document.getElementById('exercise-feedback');
+
+            if (selected.length === 0) {
+                feedback.className = 'feedback error';
+                feedback.innerHTML = '<i class="fas fa-circle-exclamation"></i> Selecione pelo menos uma alternativa para corrigir.';
+                return;
+            }
+
+            if (correctSelected === totalCorrect && wrongSelected === 0) {
+                unitState.exerciseDone = true;
+                salvarEstadoUnidade();
+                atualizarInterface();
+                feedback.className = 'feedback success';
+                feedback.innerHTML = '<i class="fas fa-check-circle"></i> Muito bem! Você identificou as ações digitais corretas e seguras.';
+                showToast('Exercício concluído. Você já pode fazer a avaliação final.');
+            } else {
+                feedback.className = 'feedback error';
+                feedback.innerHTML = '<i class="fas fa-lightbulb"></i> Quase lá. Evite marcar atitudes como clicar sem ler ou compartilhar senha.';
+            }
+        }
+
+        function corrigirAvaliacao() {
+            const totalQuestions = 5;
+            let correct = 0;
+            let unanswered = 0;
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!selected) {
+                    unanswered++;
+                    continue;
+                }
+                correct += Number(selected.value);
+            }
+
+            if (unanswered > 0) {
+                showToast(`Responda todas as perguntas. Faltam ${unanswered}.`);
+                return;
+            }
+
+            const score = Math.round((correct / totalQuestions) * 100);
+            unitState.attempts = (unitState.attempts || 0) + 1;
+            unitState.bestScore = Math.max(unitState.bestScore || 0, score);
+
+            const resultCard = document.getElementById('result-card');
+            resultCard.classList.add('show');
+
+            if (score >= PASSING_SCORE) {
+                unitState.passed = true;
+                concluirUnidade(score);
+                resultCard.className = 'result-card show success';
+                resultCard.innerHTML = `
+                    <h3><i class="fas fa-trophy" style="color: var(--success);"></i> Parabéns, você alcançou ${score}%!</h3>
+                    <p>Você atingiu a nota mínima de 80%, concluiu a Unidade 1 e liberou a Unidade 2. Continue sua trilha de letramento digital.</p>
+                    <div class="hero-actions" style="margin-top:14px;">
+                        <a class="btn btn-primary" href="modulo1-unidade2.html"><i class="fas fa-arrow-right"></i> Ir para Unidade 2</a>
+                        <a class="btn btn-soft" href="modulos.html"><i class="fas fa-layer-group"></i> Ver módulos</a>
+                    </div>
+                `;
+                showToast('Unidade 1 concluída! Unidade 2 liberada.');
+            } else {
+                salvarEstadoUnidade();
+                resultCard.className = 'result-card show error';
+                resultCard.innerHTML = `
+                    <h3><i class="fas fa-circle-exclamation" style="color: var(--danger);"></i> Sua nota foi ${score}%</h3>
+                    <p>Você precisa alcançar pelo menos 80%. Revise o material, refaça o exercício e tente novamente.</p>
+                `;
+                showToast('Você ainda não alcançou 80%. Revise e tente novamente.');
+            }
+
+            atualizarInterface();
+        }
+
+        function concluirUnidade(score) {
+            const key = unitKey();
+            const jaConcluida = !!progressData.completed[key];
+            progressData.completed[key] = true;
+            unitState.passed = true;
+            unitState.bestScore = Math.max(unitState.bestScore || 0, score || PASSING_SCORE);
+
+            if (!jaConcluida) {
+                usuarioLogadoData.xp = (usuarioLogadoData.xp || 0) + 100;
+            }
+
+            salvarEstadoUnidade();
+            salvarProgresso();
+        }
+
+        function limparResultado() {
+            const resultCard = document.getElementById('result-card');
+            resultCard.className = 'result-card';
+            resultCard.innerHTML = '';
+        }
+
+        function bloquearProximaSeNecessario(event) {
+            if (!progressData.completed[unitKey()]) {
+                event.preventDefault();
+                showToast('A Unidade 2 ainda está bloqueada. Alcance 80% na avaliação final.');
+                abrirAba('avaliacao');
+            }
+        }
+
+        function abrirPerfil() {
+            document.getElementById('profile-modal').classList.add('open');
+        }
+
+        function fecharPerfil() {
+            document.getElementById('profile-modal').classList.remove('open');
+        }
+
+        function fecharPerfilAoFundo(event) {
+            if (event.target.id === 'profile-modal') fecharPerfil();
+        }
+
+        function toggleMenuAcessibilidade() {
+            document.getElementById('menu-acess').classList.toggle('open');
+        }
+
+        function toggleAltoContraste() {
+            document.body.classList.toggle('high-contrast');
+            localStorage.setItem('acess_alto_contraste', document.body.classList.contains('high-contrast'));
+        }
+
+        function mudarFonte(delta) {
+            currentScale += delta;
+            if (currentScale < 85) currentScale = 85;
+            if (currentScale > 145) currentScale = 145;
+            document.documentElement.style.setProperty('--font-scale', `${currentScale}%`);
+            localStorage.setItem('acess_escala_fonte', currentScale);
+        }
+
+        function toggleDislexia() {
+            document.body.classList.toggle('dyslexic-font');
+            localStorage.setItem('acess_dislexia', document.body.classList.contains('dyslexic-font'));
+        }
+
+        function toggleEspacamento() {
+            document.body.classList.toggle('spacing-increased');
+            localStorage.setItem('acess_espacamento', document.body.classList.contains('spacing-increased'));
+        }
+
+        function toggleDestaqueLinks() {
+            document.body.classList.toggle('highlight-links');
+            localStorage.setItem('acess_links', document.body.classList.contains('highlight-links'));
+        }
+
+        function toggleReduzirAnimacoes() {
+            document.body.classList.toggle('reduce-motion');
+            localStorage.setItem('acess_reduce_motion', document.body.classList.contains('reduce-motion'));
+        }
+
+        function restaurarAcessibilidade() {
+            ['acess_alto_contraste', 'acess_dislexia', 'acess_espacamento', 'acess_links', 'acess_reduce_motion', 'acess_escala_fonte'].forEach(key => localStorage.removeItem(key));
+            document.body.classList.remove('high-contrast', 'dyslexic-font', 'spacing-increased', 'highlight-links', 'reduce-motion');
+            currentScale = 100;
+            document.documentElement.style.setProperty('--font-scale', '100%');
+            showToast('Visual restaurado.');
+        }
+
+        function restaurarAcessibilidadeSalva() {
+            if (localStorage.getItem('acess_alto_contraste') === 'true') document.body.classList.add('high-contrast');
+            if (localStorage.getItem('acess_dislexia') === 'true') document.body.classList.add('dyslexic-font');
+            if (localStorage.getItem('acess_espacamento') === 'true') document.body.classList.add('spacing-increased');
+            if (localStorage.getItem('acess_links') === 'true') document.body.classList.add('highlight-links');
+            if (localStorage.getItem('acess_reduce_motion') === 'true') document.body.classList.add('reduce-motion');
+
+            const savedScale = parseInt(localStorage.getItem('acess_escala_fonte'), 10);
+            if (!Number.isNaN(savedScale)) {
+                currentScale = savedScale;
+                document.documentElement.style.setProperty('--font-scale', `${currentScale}%`);
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(window.__toastTimer);
+            window.__toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                fecharPerfil();
+                document.getElementById('menu-acess').classList.remove('open');
+            }
+        });
+
+        window.onload = function() {
+            restaurarAcessibilidadeSalva();
+            checkAuth();
+        };
+    </script>
+</body>
+</html>
