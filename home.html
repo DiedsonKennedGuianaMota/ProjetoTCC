@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eduminex - Home</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --uea-blue: #003f7d;
+            --uea-blue-2: #075ca8;
+            --uea-dark: #062044;
+            --uea-gold: #f5b700;
+            --uea-gold-2: #ffd66b;
+            --bg-soft: #f6f9ff;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --white: #ffffff;
+            --text-main: #14213d;
+            --text-muted: #5c6b80;
+            --line: rgba(0, 63, 125, 0.12);
+            --success: #16844a;
+            --danger: #c62828;
+            --fire: #f27b13;
+            --shadow: 0 24px 70px rgba(6, 32, 68, 0.15);
+            --shadow-soft: 0 16px 36px rgba(6, 32, 68, 0.09);
+            --radius-lg: 30px;
+            --radius-md: 20px;
+            --radius-sm: 14px;
+            --font-scale: 100%;
+        }
+
+        body.high-contrast {
+            --uea-blue: #00e5ff;
+            --uea-blue-2: #7df9ff;
+            --uea-dark: #000000;
+            --uea-gold: #ffff00;
+            --uea-gold-2: #ffff99;
+            --bg-soft: #050505;
+            --card-bg: rgba(18, 18, 18, 0.96);
+            --white: #111111;
+            --text-main: #ffffff;
+            --text-muted: #d6d6d6;
+            --line: rgba(255, 255, 255, 0.28);
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.65);
+            --shadow-soft: 0 16px 36px rgba(0, 0, 0, 0.45);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: var(--font-scale);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at top left, rgba(245, 183, 0, 0.20), transparent 32%),
+                radial-gradient(circle at top right, rgba(0, 63, 125, 0.16), transparent 34%),
+                linear-gradient(135deg, #f8fbff 0%, var(--bg-soft) 54%, #edf4ff 100%);
+            overflow-x: hidden;
+            padding-bottom: 90px;
+        }
+
+        body.high-contrast {
+            background: #050505;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 63, 125, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 63, 125, 0.045) 1px, transparent 1px);
+            background-size: 42px 42px;
+            pointer-events: none;
+            z-index: -3;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0.08));
+        }
+
+        body.high-contrast::before {
+            opacity: 0.2;
+        }
+
+        .bg-orb {
+            position: fixed;
+            border-radius: 999px;
+            pointer-events: none;
+            z-index: -2;
+            filter: blur(3px);
+            animation: floatOrb 10s ease-in-out infinite alternate;
+        }
+
+        .orb-one {
+            width: 340px;
+            height: 340px;
+            right: -140px;
+            top: 105px;
+            background: radial-gradient(circle, rgba(0, 63, 125, 0.18), transparent 68%);
+        }
+
+        .orb-two {
+            width: 260px;
+            height: 260px;
+            left: -110px;
+            bottom: 50px;
+            background: radial-gradient(circle, rgba(245, 183, 0, 0.18), transparent 72%);
+            animation-delay: 0.8s;
+        }
+
+        @keyframes floatOrb {
+            from { transform: translateY(0) scale(1); }
+            to { transform: translateY(30px) scale(1.05); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes burn {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(242, 123, 19, 0.40)); }
+            50% { transform: scale(1.12); filter: drop-shadow(0 0 10px rgba(242, 123, 19, 0.80)); }
+        }
+
+        @keyframes shine {
+            from { left: -100%; }
+            to { left: 130%; }
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+
+        body.reduced-motion *,
+        body.reduced-motion *::before,
+        body.reduced-motion *::after {
+            animation: none !important;
+            transition: none !important;
+            scroll-behavior: auto !important;
+        }
+
+        body.dyslexic-font * {
+            font-family: 'Comic Sans MS', 'Trebuchet MS', Arial, sans-serif !important;
+        }
+
+        body.spacing-increased * {
+            letter-spacing: 0.045em !important;
+            line-height: 1.75 !important;
+        }
+
+        body.highlight-links a {
+            text-decoration: underline !important;
+            text-decoration-thickness: 3px !important;
+            text-underline-offset: 4px !important;
+        }
+
+        a, button, input {
+            font: inherit;
+        }
+
+        button, a, .avatar, .profile-mini {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .navbar {
+            width: min(1180px, calc(100% - 32px));
+            margin: 16px auto 0;
+            position: sticky;
+            top: 12px;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 12px;
+            border-radius: 26px;
+            background: rgba(255, 255, 255, 0.76);
+            border: 1px solid rgba(255, 255, 255, 0.86);
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(18px);
+            animation: scaleIn 0.55s ease both;
+        }
+
+        body.high-contrast .navbar,
+        body.high-contrast .glass-card,
+        body.high-contrast .dash-item,
+        body.high-contrast .profile-panel,
+        body.high-contrast .modal-card,
+        body.high-contrast .tutorial-card,
+        body.high-contrast .accessibility-menu {
+            background: var(--card-bg);
+            border-color: var(--line);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-width: 0;
+        }
+
+        .brand-mark {
+            width: 50px;
+            height: 50px;
+            flex: 0 0 auto;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            color: white;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 14px 28px rgba(0, 63, 125, 0.22);
+        }
+
+        .brand-mark::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.30), transparent);
+            animation: shine 4.5s ease-in-out infinite;
+        }
+
+        .brand-mark span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-text strong {
+            display: block;
+            color: var(--uea-dark);
+            font-size: 1rem;
+            line-height: 1.1;
+        }
+
+        .brand-text small {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.74rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 280px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-mini {
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.66);
+            color: var(--text-main);
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 11px 7px 7px;
+            cursor: pointer;
+            transition: 0.25s ease;
+            min-width: 0;
+        }
+
+        .profile-mini:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(6, 32, 68, 0.12);
+            border-color: rgba(0, 63, 125, 0.22);
+        }
+
+        .avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-gold));
+            color: white;
+            font-weight: 800;
+            border: 3px solid rgba(245, 183, 0, 0.38);
+            flex: 0 0 auto;
+        }
+
+        .avatar img,
+        .profile-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .profile-mini-text {
+            min-width: 0;
+            text-align: left;
+        }
+
+        .profile-mini-text strong {
+            display: block;
+            max-width: 165px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--uea-dark);
+            font-size: 0.92rem;
+        }
+
+        .profile-mini-text small {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--fire);
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .profile-mini-text i {
+            animation: burn 1.6s ease-in-out infinite;
+        }
+
+        .container {
+            width: min(1180px, 100%);
+            margin: 0 auto;
+            padding: 26px 24px;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.86);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(18px);
+        }
+
+        .welcome-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+            gap: 18px;
+            align-items: stretch;
+            margin-bottom: 18px;
+        }
+
+        .welcome-card {
+            padding: clamp(22px, 4vw, 36px);
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.65s ease both;
+        }
+
+        .welcome-card::after {
+            content: "";
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 999px;
+            right: -80px;
+            top: -90px;
+            background: radial-gradient(circle, rgba(245, 183, 0, 0.18), transparent 68%);
+            pointer-events: none;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            color: var(--uea-blue);
+            background: rgba(0, 63, 125, 0.08);
+            border: 1px solid rgba(0, 63, 125, 0.09);
+            font-size: 0.78rem;
+            font-weight: 800;
+            margin-bottom: 18px;
+        }
+
+        .welcome-card h1 {
+            position: relative;
+            z-index: 2;
+            color: var(--uea-dark);
+            font-size: clamp(1.8rem, 4vw, 3.1rem);
+            line-height: 1.05;
+            letter-spacing: -1.8px;
+            max-width: 720px;
+            margin-bottom: 14px;
+        }
+
+        .welcome-card h1 span {
+            color: var(--uea-blue);
+        }
+
+        .welcome-card p {
+            position: relative;
+            z-index: 2;
+            color: var(--text-muted);
+            line-height: 1.75;
+            max-width: 710px;
+            font-size: 0.98rem;
+        }
+
+        .hero-actions {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .btn {
+            border: none;
+            min-height: 44px;
+            border-radius: 14px;
+            padding: 11px 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border 0.25s ease;
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            box-shadow: 0 16px 30px rgba(0, 63, 125, 0.20);
+        }
+
+        .btn-primary:hover,
+        .btn-secondary:hover,
+        .btn-light:hover,
+        .btn-danger:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            color: var(--uea-dark);
+            background: linear-gradient(135deg, var(--uea-gold), var(--uea-gold-2));
+            box-shadow: 0 16px 30px rgba(245, 183, 0, 0.22);
+        }
+
+        .btn-light {
+            color: var(--uea-blue);
+            background: rgba(255,255,255,0.72);
+            border: 1px solid var(--line);
+        }
+
+        .btn-danger {
+            color: var(--danger);
+            background: rgba(198, 40, 40, 0.08);
+            border: 1px solid rgba(198, 40, 40, 0.15);
+        }
+
+        .btn-danger:hover {
+            background: rgba(198, 40, 40, 0.14);
+        }
+
+        .stats-card {
+            padding: 22px;
+            display: grid;
+            gap: 13px;
+            animation: fadeUp 0.65s 0.08s ease both;
+        }
+
+        .stats-card h2,
+        .section-title h2 {
+            color: var(--uea-dark);
+            font-size: 1.18rem;
+            line-height: 1.2;
+        }
+
+        .progress-box {
+            padding: 16px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, rgba(0,63,125,0.10), rgba(245,183,0,0.13));
+            border: 1px solid var(--line);
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            color: var(--uea-dark);
+            font-weight: 800;
+        }
+
+        .progress-bar {
+            height: 12px;
+            border-radius: 999px;
+            background: rgba(0, 63, 125, 0.10);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--uea-blue), var(--uea-gold));
+            transition: width 0.7s ease;
+        }
+
+        .stat-mini-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-mini {
+            border-radius: 20px;
+            padding: 14px;
+            background: rgba(255,255,255,0.62);
+            border: 1px solid var(--line);
+        }
+
+        .stat-mini i {
+            color: var(--uea-blue);
+            margin-right: 6px;
+        }
+
+        .stat-mini strong {
+            display: block;
+            margin-top: 7px;
+            color: var(--uea-dark);
+            font-size: 1.15rem;
+        }
+
+        .stat-mini span {
+            color: var(--text-muted);
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .daily-card {
+            padding: 20px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            overflow: hidden;
+            position: relative;
+            animation: fadeUp 0.65s 0.16s ease both;
+        }
+
+        .daily-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,63,125,0.10), transparent 45%, rgba(245,183,0,0.14));
+            pointer-events: none;
+        }
+
+        .daily-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .daily-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 22px;
+            display: grid;
+            place-items: center;
+            color: var(--fire);
+            background: rgba(242, 123, 19, 0.10);
+            flex: 0 0 auto;
+            font-size: 1.5rem;
+        }
+
+        .daily-icon i {
+            animation: burn 1.5s ease-in-out infinite;
+        }
+
+        .daily-text {
+            flex: 1;
+        }
+
+        .daily-text h3 {
+            color: var(--uea-dark);
+            font-size: 1.05rem;
+            margin-bottom: 3px;
+        }
+
+        .daily-text p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 8px 0 14px;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 0.86rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .dash-item {
+            min-height: 170px;
+            padding: 18px;
+            border-radius: 26px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.86);
+            box-shadow: var(--shadow-soft);
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+            transition: 0.25s ease;
+            animation: fadeUp 0.55s ease both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dash-item::after {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 999px;
+            right: -55px;
+            bottom: -65px;
+            background: rgba(0,63,125,0.08);
+            transition: 0.25s ease;
+        }
+
+        .dash-item:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0, 63, 125, 0.20);
+            box-shadow: var(--shadow);
+        }
+
+        .dash-item:hover::after {
+            transform: scale(1.2);
+            background: rgba(245,183,0,0.16);
+        }
+
+        .dash-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 19px;
+            display: grid;
+            place-items: center;
+            color: white;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            font-size: 1.35rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .dash-item:nth-child(2) .dash-icon,
+        .dash-item:nth-child(4) .dash-icon {
+            color: var(--uea-dark);
+            background: linear-gradient(135deg, var(--uea-gold), var(--uea-gold-2));
+        }
+
+        .dash-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .dash-text strong {
+            display: block;
+            color: var(--uea-dark);
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .dash-text small {
+            color: var(--text-muted);
+            line-height: 1.55;
+            font-size: 0.78rem;
+            display: block;
+        }
+
+        .modules-strip {
+            padding: 20px;
+            animation: fadeUp 0.65s 0.25s ease both;
+        }
+
+        .modules-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .modules-header h2 {
+            color: var(--uea-dark);
+            font-size: 1.1rem;
+        }
+
+        .modules-list {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .module-pill {
+            border-radius: 18px;
+            padding: 13px;
+            background: rgba(255,255,255,0.60);
+            border: 1px solid var(--line);
+            min-height: 104px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            animation: gentleFloat 5s ease-in-out infinite;
+        }
+
+        .module-pill:nth-child(2) { animation-delay: 0.2s; }
+        .module-pill:nth-child(3) { animation-delay: 0.4s; }
+        .module-pill:nth-child(4) { animation-delay: 0.6s; }
+        .module-pill:nth-child(5) { animation-delay: 0.8s; }
+
+        .module-number {
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            color: white;
+            background: var(--uea-blue);
+            font-size: 0.76rem;
+            font-weight: 800;
+        }
+
+        .module-pill:nth-child(even) .module-number {
+            color: var(--uea-dark);
+            background: var(--uea-gold);
+        }
+
+        .module-pill strong {
+            color: var(--uea-dark);
+            line-height: 1.25;
+            font-size: 0.78rem;
+        }
+
+        .floating-actions {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 90;
+            display: flex;
+            align-items: flex-end;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .floating-btn {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-blue-2));
+            box-shadow: 0 16px 32px rgba(0, 63, 125, 0.28);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            font-size: 1.35rem;
+            transition: 0.25s ease;
+        }
+
+        .floating-btn:hover {
+            transform: translateY(-3px) rotate(-4deg);
+        }
+
+        .accessibility-menu {
+            width: min(310px, calc(100vw - 34px));
+            max-height: min(520px, calc(100vh - 120px));
+            overflow-y: auto;
+            padding: 16px;
+            border-radius: 24px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.86);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+            display: none;
+            gap: 9px;
+            flex-direction: column;
+            animation: scaleIn 0.22s ease both;
+        }
+
+        .accessibility-menu.show {
+            display: flex;
+        }
+
+        .accessibility-menu h3 {
+            color: var(--uea-dark);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .accessibility-menu p {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .access-btn {
+            width: 100%;
+            justify-content: flex-start;
+            color: var(--text-main);
+            background: rgba(255,255,255,0.62);
+            border: 1px solid var(--line);
+            min-height: 43px;
+            font-size: 0.86rem;
+        }
+
+        .access-btn.active {
+            color: var(--uea-dark);
+            background: linear-gradient(135deg, rgba(245,183,0,0.35), rgba(0,63,125,0.12));
+            border-color: rgba(245, 183, 0, 0.55);
+        }
+
+        .modal-overlay,
+        .panel-overlay,
+        .tutorial-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 32, 68, 0.52);
+            backdrop-filter: blur(7px);
+            z-index: 120;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+        }
+
+        .modal-overlay.show,
+        .panel-overlay.show,
+        .tutorial-overlay.show {
+            display: flex;
+        }
+
+        .modal-card,
+        .tutorial-card {
+            width: min(470px, 100%);
+            max-height: calc(100vh - 36px);
+            overflow-y: auto;
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.90);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            padding: 26px;
+            animation: scaleIn 0.24s ease both;
+        }
+
+        .modal-header,
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .modal-header h3,
+        .panel-header h3 {
+            color: var(--uea-dark);
+            font-size: 1.18rem;
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.65);
+            color: var(--text-main);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+        }
+
+        .close-btn:hover {
+            color: var(--danger);
+        }
+
+        .avatar-presets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 12px 0 18px;
+        }
+
+        .preset-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            max-height: 86px;
+            border-radius: 22px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            background: rgba(0,63,125,0.06);
+            transition: 0.2s ease;
+            object-fit: cover;
+        }
+
+        .preset-img:hover,
+        .preset-img.selected {
+            transform: translateY(-3px);
+            border-color: var(--uea-gold);
+        }
+
+        .field-label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin: 13px 0 6px;
+        }
+
+        .input-text,
+        input[type="file"] {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.72);
+            color: var(--text-main);
+            border-radius: 15px;
+            padding: 12px 13px;
+            outline: none;
+        }
+
+        .input-text:focus {
+            border-color: rgba(0, 63, 125, 0.32);
+            box-shadow: 0 0 0 5px rgba(0, 63, 125, 0.09);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .profile-panel {
+            margin-left: auto;
+            width: min(430px, 100%);
+            height: 100%;
+            background: var(--card-bg);
+            border-left: 1px solid rgba(255,255,255,0.90);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            overflow-y: auto;
+            animation: slidePanel 0.25s ease both;
+        }
+
+        @keyframes slidePanel {
+            from { opacity: 0; transform: translateX(24px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .profile-panel-card {
+            text-align: center;
+            padding: 24px 18px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(0,63,125,0.10), rgba(245,183,0,0.15));
+            border: 1px solid var(--line);
+        }
+
+        .profile-avatar-large {
+            width: 132px;
+            height: 132px;
+            margin: 0 auto 14px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            color: white;
+            font-weight: 800;
+            font-size: 3rem;
+            border: 5px solid rgba(245, 183, 0, 0.50);
+            background: linear-gradient(135deg, var(--uea-blue), var(--uea-gold));
+            box-shadow: 0 18px 40px rgba(0, 63, 125, 0.18);
+        }
+
+        .profile-panel-card h2 {
+            color: var(--uea-dark);
+            line-height: 1.2;
+            font-size: 1.35rem;
+            margin-bottom: 5px;
+            overflow-wrap: anywhere;
+        }
+
+        .profile-panel-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+        .profile-stat {
+            padding: 14px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.66);
+            border: 1px solid var(--line);
+            text-align: left;
+        }
+
+        .profile-stat span {
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+        .profile-stat strong {
+            display: block;
+            color: var(--uea-dark);
+            font-size: 1.18rem;
+            margin-top: 4px;
+        }
+
+        .profile-progress {
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .profile-progress label {
+            display: flex;
+            justify-content: space-between;
+            color: var(--uea-dark);
+            font-weight: 800;
+            font-size: 0.86rem;
+            margin-bottom: 8px;
+        }
+
+        .tutorial-card {
+            text-align: center;
+        }
+
+        .tutorial-step-count {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            font-weight: 800;
+            margin-bottom: 9px;
+        }
+
+        .tutorial-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 16px;
+            border-radius: 26px;
+            display: grid;
+            place-items: center;
+            font-size: 1.75rem;
+            color: var(--uea-dark);
+            background: linear-gradient(135deg, var(--uea-gold), var(--uea-gold-2));
+            box-shadow: 0 16px 30px rgba(245, 183, 0, 0.18);
+        }
+
+        .tutorial-card h3 {
+            color: var(--uea-dark);
+            font-size: 1.35rem;
+            margin-bottom: 10px;
+        }
+
+        .tutorial-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .tutorial-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .tutorial-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: rgba(0,63,125,0.18);
+        }
+
+        .tutorial-dot.active {
+            width: 24px;
+            border-radius: 999px;
+            background: var(--uea-gold);
+        }
+
+        .tutorial-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--uea-dark);
+            color: white;
+            border-radius: 999px;
+            padding: 12px 16px;
+            box-shadow: var(--shadow);
+            z-index: 160;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.25s ease;
+            max-width: min(520px, calc(100vw - 28px));
+            text-align: center;
+            font-size: 0.88rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 1024px) {
+            .welcome-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .modules-list {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 780px) {
+            body {
+                padding-bottom: 86px;
+            }
+
+            .navbar {
+                width: calc(100% - 22px);
+                border-radius: 22px;
+                top: 8px;
+                align-items: flex-start;
+            }
+
+            .brand-text small {
+                display: none;
+            }
+
+            .profile-mini-text {
+                display: none;
+            }
+
+            .profile-mini {
+                padding: 6px;
+            }
+
+            .container {
+                padding: 20px 12px;
+            }
+
+            .daily-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .section-title {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .modules-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .profile-panel {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .navbar {
+                gap: 8px;
+                padding: 9px;
+            }
+
+            .brand-mark {
+                width: 44px;
+                height: 44px;
+                border-radius: 16px;
+                font-size: 0.86rem;
+            }
+
+            .brand-text strong {
+                font-size: 0.9rem;
+            }
+
+            .avatar {
+                width: 42px;
+                height: 42px;
+            }
+
+            .btn {
+                min-height: 42px;
+                padding: 10px 12px;
+                font-size: 0.86rem;
+            }
+
+            .btn-danger span {
+                display: none;
+            }
+
+            .welcome-card,
+            .stats-card,
+            .daily-card,
+            .modules-strip {
+                border-radius: 24px;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+            }
+
+            .stat-mini-grid,
+            .dashboard-grid,
+            .profile-stats-grid,
+            .modules-list {
+                grid-template-columns: 1fr;
+            }
+
+            .dash-item {
+                min-height: 132px;
+            }
+
+            .module-pill {
+                min-height: auto;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .floating-actions {
+                right: 14px;
+                bottom: 14px;
+            }
+
+            .floating-btn {
+                width: 54px;
+                height: 54px;
+            }
+
+            .accessibility-menu {
+                width: calc(100vw - 28px);
+            }
+
+            .modal-card,
+            .tutorial-card {
+                padding: 20px;
+                border-radius: 24px;
+            }
+
+            .modal-actions,
+            .tutorial-actions {
+                flex-direction: column;
+            }
+
+            .modal-actions .btn,
+            .tutorial-actions .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .brand-text strong {
+                display: none;
+            }
+
+            .welcome-card h1 {
+                font-size: 1.55rem;
+                letter-spacing: -1px;
+            }
+
+            .welcome-card p,
+            .daily-text p,
+            .tutorial-card p {
+                font-size: 0.86rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-orb orb-one"></div>
+    <div class="bg-orb orb-two"></div>
+
+    <header class="navbar" data-tour="topo">
+        <div class="brand">
+            <div class="brand-mark"><span>EM</span></div>
+            <div class="brand-text">
+                <strong>Eduminex</strong>
+                <small>Letramento digital para estudantes da EJA</small>
+            </div>
+        </div>
+
+        <div class="nav-actions">
+            <button class="profile-mini" onclick="abrirPainelPerfil()" title="Abrir painel de perfil" aria-label="Abrir painel de perfil" data-tour="perfil">
+                <div class="avatar" id="user-avatar"></div>
+                <div class="profile-mini-text">
+                    <strong id="user-name">Carregando...</strong>
+                    <small><i class="fas fa-fire"></i> <span id="user-streak">0 dias</span></small>
+                </div>
+            </button>
+
+            <button class="btn btn-danger" onclick="fazerLogout()" title="Sair da plataforma">
+                <i class="fas fa-sign-out-alt"></i> <span>Sair</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="welcome-grid">
+            <article class="glass-card welcome-card" data-tour="inicio">
+                <span class="eyebrow"><i class="fas fa-graduation-cap"></i> Painel do estudante</span>
+                <h1>Olá, <span id="welcome-name">estudante</span>!</h1>
+                <p>
+                    Continue sua trilha de aprendizagem em letramento digital. Aqui você acessa os módulos,
+                    acompanha seu progresso, mantém sua ofensiva diária e usa recursos de acessibilidade sempre que precisar.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="modulos.html"><i class="fas fa-layer-group"></i> Ir para módulos</a>
+                    <button class="btn btn-secondary" onclick="iniciarTutorial(true)"><i class="fas fa-route"></i> Ver tutorial</button>
+                </div>
+            </article>
+
+            <aside class="glass-card stats-card" data-tour="progresso">
+                <h2><i class="fas fa-chart-line"></i> Seu progresso</h2>
+                <div class="progress-box">
+                    <div class="progress-top">
+                        <span>Trilha concluída</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="progress-bar" aria-label="Progresso do usuário">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+                <div class="stat-mini-grid">
+                    <div class="stat-mini">
+                        <span><i class="fas fa-star"></i> XP atual</span>
+                        <strong id="user-xp">0</strong>
+                    </div>
+                    <div class="stat-mini">
+                        <span><i class="fas fa-fire"></i> Ofensiva</span>
+                        <strong id="user-streak-card">0 dias</strong>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="glass-card daily-card" data-tour="ofensiva">
+            <div class="daily-icon"><i class="fas fa-fire-flame-curved"></i></div>
+            <div class="daily-text">
+                <h3>Sua ofensiva diária</h3>
+                <p id="mission-status">
+                    Entre na plataforma todos os dias para manter sua sequência. O primeiro acesso do dia garante +1 dia de ofensiva e +50 XP.
+                </p>
+            </div>
+            <a class="btn btn-light" href="modulos.html"><i class="fas fa-play"></i> Estudar agora</a>
+        </section>
+
+        <section class="section-title">
+            <div>
+                <h2><i class="fas fa-home"></i> Painel de controle</h2>
+                <p>Escolha uma opção para continuar aprendendo de forma simples e organizada.</p>
+            </div>
+        </section>
+
+        <section class="dashboard-grid" data-tour="botoes">
+            <a href="modulos.html" class="dash-item" style="animation-delay: 0.06s;">
+                <div class="dash-icon"><i class="fas fa-layer-group"></i></div>
+                <div class="dash-text">
+                    <strong>Módulos de estudo</strong>
+                    <small>Acesse as aulas e avance passo a passo na trilha digital.</small>
+                </div>
+            </a>
+
+            <a href="pesquisador.html" class="dash-item" style="animation-delay: 0.12s;">
+                <div class="dash-icon"><i class="fas fa-search"></i></div>
+                <div class="dash-text">
+                    <strong>Pesquisador</strong>
+                    <small>Busque informações, organize ideias e pratique pesquisa segura.</small>
+                </div>
+            </a>
+
+            <a href="forum.html" class="dash-item" style="animation-delay: 0.18s;">
+                <div class="dash-icon"><i class="fas fa-comments"></i></div>
+                <div class="dash-text">
+                    <strong>Fórum</strong>
+                    <small>Converse, tire dúvidas e compartilhe aprendizagens com a turma.</small>
+                </div>
+            </a>
+
+            <a href="configuracoes.html" class="dash-item" style="animation-delay: 0.24s;">
+                <div class="dash-icon"><i class="fas fa-cog"></i></div>
+                <div class="dash-text">
+                    <strong>Configurações</strong>
+                    <small>Personalize sua conta, tema, visualização e preferências.</small>
+                </div>
+            </a>
+        </section>
+
+        <section class="glass-card modules-strip" data-tour="modulos">
+            <div class="modules-header">
+                <h2><i class="fas fa-book-open"></i> Conteúdos propostos</h2>
+                <a href="modulos.html" class="btn btn-light"><i class="fas fa-arrow-right"></i> Abrir trilha</a>
+            </div>
+            <div class="modules-list">
+                <div class="module-pill"><span class="module-number">1</span><strong>Primeiros passos no mundo digital</strong></div>
+                <div class="module-pill"><span class="module-number">2</span><strong>Internet e comunicação</strong></div>
+                <div class="module-pill"><span class="module-number">3</span><strong>Segurança e cidadania digital</strong></div>
+                <div class="module-pill"><span class="module-number">4</span><strong>Serviços digitais e vida cotidiana</strong></div>
+                <div class="module-pill"><span class="module-number">5</span><strong>Educação, trabalho e autonomia digital</strong></div>
+            </div>
+        </section>
+    </main>
+
+    <div class="floating-actions" data-tour="acessibilidade">
+        <div class="accessibility-menu" id="menu-acess" aria-hidden="true">
+            <h3><i class="fas fa-universal-access"></i> Acessibilidade</h3>
+            <p>Ajuste a visualização da plataforma. Suas escolhas ficam salvas neste navegador.</p>
+
+            <button class="btn access-btn" id="btn-contrast" onclick="toggleClasseAcessibilidade('high-contrast', 'acess_alto_contraste')">
+                <i class="fas fa-adjust"></i> Alto contraste
+            </button>
+            <button class="btn access-btn" onclick="mudarFonte(5)">
+                <i class="fas fa-font"></i> Aumentar texto
+            </button>
+            <button class="btn access-btn" onclick="mudarFonte(-5)">
+                <i class="fas fa-font"></i> Diminuir texto
+            </button>
+            <button class="btn access-btn" id="btn-dyslexia" onclick="toggleClasseAcessibilidade('dyslexic-font', 'acess_dislexia')">
+                <i class="fas fa-book-reader"></i> Fonte alternativa
+            </button>
+            <button class="btn access-btn" id="btn-spacing" onclick="toggleClasseAcessibilidade('spacing-increased', 'acess_espacamento')">
+                <i class="fas fa-text-height"></i> Mais espaçamento
+            </button>
+            <button class="btn access-btn" id="btn-links" onclick="toggleClasseAcessibilidade('highlight-links', 'acess_links')">
+                <i class="fas fa-link"></i> Destacar links
+            </button>
+            <button class="btn access-btn" id="btn-motion" onclick="toggleClasseAcessibilidade('reduced-motion', 'acess_reduzir_movimento')">
+                <i class="fas fa-person-walking-arrow-loop-left"></i> Reduzir animações
+            </button>
+            <button class="btn btn-danger" onclick="resetarAcessibilidade()">
+                <i class="fas fa-rotate-left"></i> Restaurar visual
+            </button>
+        </div>
+        <button class="floating-btn" onclick="toggleMenuAcessibilidade(event)" title="Abrir acessibilidade" aria-label="Abrir menu de acessibilidade" aria-expanded="false" id="btn-floating-access">
+            <i class="fas fa-universal-access"></i>
+        </button>
+    </div>
+
+    <div class="panel-overlay" id="profile-panel-overlay" onclick="fecharPainelPerfil(event)">
+        <aside class="profile-panel" role="dialog" aria-modal="true" aria-labelledby="profile-title" onclick="event.stopPropagation()">
+            <div class="panel-header">
+                <div>
+                    <h3 id="profile-title"><i class="fas fa-user-circle"></i> Perfil do estudante</h3>
+                    <p style="color: var(--text-muted); font-size: 0.84rem; margin-top: 4px;">Resumo da sua conta na Eduminex.</p>
+                </div>
+                <button class="close-btn" onclick="fecharPainelPerfil()" aria-label="Fechar painel de perfil"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="profile-panel-card">
+                <div class="profile-avatar-large" id="profile-avatar-large"></div>
+                <h2 id="profile-full-name">Nome do estudante</h2>
+                <p id="profile-email">email@exemplo.com</p>
+
+                <div class="profile-stats-grid">
+                    <div class="profile-stat">
+                        <span><i class="fas fa-star"></i> XP</span>
+                        <strong id="profile-xp">0</strong>
+                    </div>
+                    <div class="profile-stat">
+                        <span><i class="fas fa-fire"></i> Ofensiva</span>
+                        <strong id="profile-streak">0 dias</strong>
+                    </div>
+                </div>
+
+                <div class="profile-progress">
+                    <label><span>Progresso geral</span><span id="profile-progress-percent">0%</span></label>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="profile-progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="hero-actions" style="justify-content:center; margin-top:20px;">
+                    <button class="btn btn-primary" onclick="abrirModalAvatar()"><i class="fas fa-camera"></i> Trocar foto</button>
+                    <button class="btn btn-secondary" onclick="iniciarTutorial(true)"><i class="fas fa-route"></i> Rever tutorial</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <div class="modal-overlay" id="avatar-modal" onclick="fecharModalAvatar(event)">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="avatar-title" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <h3 id="avatar-title"><i class="fas fa-camera"></i> Alterar foto de perfil</h3>
+                    <p style="color: var(--text-muted); font-size: 0.84rem; margin-top: 4px;">Escolha um avatar, cole uma URL ou envie uma imagem.</p>
+                </div>
+                <button class="close-btn" onclick="fecharModalAvatar()" aria-label="Fechar modal de foto"><i class="fas fa-times"></i></button>
+            </div>
+
+            <label class="field-label">Avatares prontos</label>
+            <div class="avatar-presets">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Felix" alt="Avatar azul" class="preset-img" onclick="selecionarPreset(this, this.src)">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Ane" alt="Avatar amarelo" class="preset-img" onclick="selecionarPreset(this, this.src)">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Jack" alt="Avatar verde" class="preset-img" onclick="selecionarPreset(this, this.src)">
+            </div>
+
+            <label class="field-label" for="avatar-url">URL da imagem</label>
+            <input type="text" id="avatar-url" class="input-text" placeholder="https://link-da-foto.com/foto.jpg">
+
+            <label class="field-label" for="avatar-file">Arquivo do computador</label>
+            <input type="file" id="avatar-file" accept="image/*" onchange="carregarArquivoLocal(event)">
+
+            <div class="modal-actions">
+                <button class="btn btn-light" onclick="fecharModalAvatar()">Cancelar</button>
+                <button class="btn btn-primary" onclick="salvarNovaFoto()" id="btn-salvar-foto"><i class="fas fa-save"></i> Salvar foto</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="tutorial-overlay" id="tutorial-overlay">
+        <div class="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+            <div class="tutorial-step-count" id="tutorial-count">Etapa 1 de 8</div>
+            <div class="tutorial-icon"><i id="tutorial-icon" class="fas fa-hand-sparkles"></i></div>
+            <h3 id="tutorial-title">Bem-vindo à Eduminex</h3>
+            <p id="tutorial-text">Este tutorial explica como usar a tela inicial.</p>
+            <div class="tutorial-dots" id="tutorial-dots"></div>
+            <div class="tutorial-actions">
+                <button class="btn btn-light" onclick="pularTutorial()" id="tutorial-skip">Pular</button>
+                <button class="btn btn-light" onclick="voltarTutorial()" id="tutorial-back">Voltar</button>
+                <button class="btn btn-primary" onclick="avancarTutorial()" id="tutorial-next">Próximo</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const API_URL = 'https://algoritmolab.onrender.com/api';
+
+        let usuarioLogadoData = null;
+        let fotoSelecionadaTemp = '';
+        let currentScale = 100;
+        let tutorialIndex = 0;
+
+        const tutorialSteps = [
+            {
+                icon: 'fas fa-hand-sparkles',
+                title: 'Bem-vindo à Eduminex',
+                text: 'Esta é a sua tela inicial. Ela foi pensada para ser simples: você acompanha seu progresso, acessa os módulos e usa as ferramentas principais da plataforma.'
+            },
+            {
+                icon: 'fas fa-user-circle',
+                title: 'Perfil do estudante',
+                text: 'Toque na sua foto ou no seu nome para abrir um painel maior com nome completo, e-mail, XP, ofensiva, foto de perfil e progresso geral.'
+            },
+            {
+                icon: 'fas fa-chart-line',
+                title: 'Progresso geral',
+                text: 'A barra de progresso mostra quanto você já avançou na trilha. Quando não houver um progresso salvo, a plataforma calcula uma estimativa usando o seu XP.'
+            },
+            {
+                icon: 'fas fa-fire',
+                title: 'Ofensiva diária',
+                text: 'A ofensiva representa sua sequência de dias acessando a plataforma. O primeiro acesso do dia garante +1 dia de ofensiva e +50 XP. A ideia é incentivar constância nos estudos.'
+            },
+            {
+                icon: 'fas fa-layer-group',
+                title: 'Módulos de estudo',
+                text: 'O botão Módulos de estudo leva você para as aulas da trilha de letramento digital, começando pelos primeiros passos até autonomia digital para educação e trabalho.'
+            },
+            {
+                icon: 'fas fa-search',
+                title: 'Pesquisador',
+                text: 'O Pesquisador ajuda a praticar busca, organização e análise de informações digitais, trabalhando leitura crítica e uso consciente da internet.'
+            },
+            {
+                icon: 'fas fa-comments',
+                title: 'Fórum e configurações',
+                text: 'No Fórum você interage com colegas e tira dúvidas. Em Configurações você ajusta preferências da conta e recursos visuais da plataforma.'
+            },
+            {
+                icon: 'fas fa-universal-access',
+                title: 'Acessibilidade',
+                text: 'O botão flutuante de acessibilidade permite aumentar texto, ativar alto contraste, destacar links, reduzir animações e melhorar espaçamento. Essas escolhas ficam salvas.'
+            }
+        ];
+
+        function checkAuth() {
+            const userString = localStorage.getItem('userData');
+
+            if (!userString) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                usuarioLogadoData = JSON.parse(userString);
+            } catch (error) {
+                localStorage.removeItem('userData');
+                localStorage.removeItem('userLogado');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            if (!usuarioLogadoData.nome && localStorage.getItem('userName')) {
+                usuarioLogadoData.nome = localStorage.getItem('userName');
+            }
+
+            if (!usuarioLogadoData.nome) usuarioLogadoData.nome = 'Estudante Eduminex';
+            if (!usuarioLogadoData.email) usuarioLogadoData.email = '';
+
+            registrarAcessoDiario();
+            renderizarDadosUsuario();
+            mostrarTutorialSeNecessario();
+        }
+
+        function obterXP() {
+            return Number(usuarioLogadoData.xp || usuarioLogadoData.XP || usuarioLogadoData.pontos || 0);
+        }
+
+        function definirXP(valor) {
+            usuarioLogadoData.xp = Math.max(0, Number(valor) || 0);
+        }
+
+        function obterOfensiva() {
+            return Number(usuarioLogadoData.streak || usuarioLogadoData.ofensiva || usuarioLogadoData.diasOfensiva || 0);
+        }
+
+        function definirOfensiva(valor) {
+            usuarioLogadoData.streak = Math.max(0, Number(valor) || 0);
+            usuarioLogadoData.ofensiva = usuarioLogadoData.streak;
+        }
+
+        function obterChaveUsuario(sufixo) {
+            const base = usuarioLogadoData.email || usuarioLogadoData.nome || 'usuario';
+            return `eduminex_${sufixo}_${base.toLowerCase().replace(/\s+/g, '_')}`;
+        }
+
+        function dataLocalISO(data = new Date()) {
+            const ano = data.getFullYear();
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const dia = String(data.getDate()).padStart(2, '0');
+            return `${ano}-${mes}-${dia}`;
+        }
+
+        function ontemISO() {
+            const ontem = new Date();
+            ontem.setDate(ontem.getDate() - 1);
+            return dataLocalISO(ontem);
+        }
+
+        function registrarAcessoDiario() {
+            const hoje = dataLocalISO();
+            const chave = obterChaveUsuario('ultimo_acesso_diario');
+            const ultimoAcesso = localStorage.getItem(chave) || usuarioLogadoData.lastLoginReward || usuarioLogadoData.ultimoAcessoOfensiva;
+
+            if (ultimoAcesso === hoje) {
+                const status = document.getElementById('mission-status');
+                if (status) status.innerHTML = '<strong>Ofensiva de hoje garantida!</strong> Volte amanhã para continuar sua sequência de estudos.';
+                return;
+            }
+
+            const ofensivaAtual = obterOfensiva();
+            const novaOfensiva = ultimoAcesso === ontemISO() ? ofensivaAtual + 1 : 1;
+            definirOfensiva(novaOfensiva);
+            definirXP(obterXP() + 50);
+
+            usuarioLogadoData.lastLoginReward = hoje;
+            usuarioLogadoData.ultimoAcessoOfensiva = hoje;
+            localStorage.setItem(chave, hoje);
+            salvarUsuarioLocal();
+
+            setTimeout(() => {
+                const status = document.getElementById('mission-status');
+                if (status) status.innerHTML = `<strong>Parabéns!</strong> Primeiro acesso de hoje registrado. Você ganhou +50 XP e agora tem ${novaOfensiva} ${novaOfensiva === 1 ? 'dia' : 'dias'} de ofensiva.`;
+                mostrarToast(`🔥 +50 XP! Ofensiva diária registrada.`);
+            }, 250);
+        }
+
+        function salvarUsuarioLocal() {
+            localStorage.setItem('userData', JSON.stringify(usuarioLogadoData));
+            if (usuarioLogadoData.nome) localStorage.setItem('userName', usuarioLogadoData.nome);
+
+            const cache = JSON.parse(localStorage.getItem('algoritmolab_usuarios') || '[]');
+            const indice = cache.findIndex(u => (u.email && u.email === usuarioLogadoData.email) || (u.nome && u.nome === usuarioLogadoData.nome));
+            if (indice >= 0) cache[indice] = { ...cache[indice], ...usuarioLogadoData };
+            else cache.push(usuarioLogadoData);
+            localStorage.setItem('algoritmolab_usuarios', JSON.stringify(cache));
+        }
+
+        function calcularProgressoUsuario() {
+            const valoresDiretos = [
+                usuarioLogadoData.progresso,
+                usuarioLogadoData.progress,
+                usuarioLogadoData.percentualProgresso,
+                usuarioLogadoData.progressoGeral
+            ];
+
+            for (const valor of valoresDiretos) {
+                const numero = Number(valor);
+                if (!Number.isNaN(numero) && numero > 0) {
+                    return Math.max(0, Math.min(100, Math.round(numero <= 1 ? numero * 100 : numero)));
+                }
+            }
+
+            const modulos = usuarioLogadoData.modulosConcluidos || usuarioLogadoData.completedModules || usuarioLogadoData.modulosFinalizados;
+            if (Array.isArray(modulos)) {
+                return Math.max(0, Math.min(100, Math.round((modulos.length / 5) * 100)));
+            }
+
+            const xp = obterXP();
+            return Math.max(0, Math.min(100, Math.round((xp / 1000) * 100)));
+        }
+
+        function formatarDias(valor) {
+            const dias = Number(valor) || 0;
+            return `${dias} ${dias === 1 ? 'dia' : 'dias'}`;
+        }
+
+        function aplicarFotoEmElemento(elemento, foto, nome) {
+            elemento.innerHTML = '';
+
+            if (foto && typeof foto === 'string' && foto.trim() !== '') {
+                const img = document.createElement('img');
+                img.src = foto;
+                img.alt = `Foto de perfil de ${nome || 'estudante'}`;
+                img.onerror = () => {
+                    elemento.innerHTML = '';
+                    elemento.textContent = (nome || 'E').charAt(0).toUpperCase();
+                };
+                elemento.appendChild(img);
+                return;
+            }
+
+            elemento.textContent = (nome || 'E').charAt(0).toUpperCase();
+        }
+
+        function renderizarDadosUsuario() {
+            const nome = usuarioLogadoData.nome || 'Estudante Eduminex';
+            const primeiroNome = nome.split(' ')[0];
+            const xp = obterXP();
+            const ofensiva = obterOfensiva();
+            const progresso = calcularProgressoUsuario();
+
+            document.getElementById('user-name').innerText = nome;
+            document.getElementById('welcome-name').innerText = primeiroNome;
+            document.getElementById('user-streak').innerText = formatarDias(ofensiva);
+            document.getElementById('user-streak-card').innerText = formatarDias(ofensiva);
+            document.getElementById('user-xp').innerText = xp;
+            document.getElementById('progress-percent').innerText = `${progresso}%`;
+            document.getElementById('progress-fill').style.width = `${progresso}%`;
+
+            aplicarFotoEmElemento(document.getElementById('user-avatar'), usuarioLogadoData.foto, nome);
+
+            document.getElementById('profile-full-name').innerText = nome;
+            document.getElementById('profile-email').innerText = usuarioLogadoData.email || 'E-mail não informado';
+            document.getElementById('profile-xp').innerText = xp;
+            document.getElementById('profile-streak').innerText = formatarDias(ofensiva);
+            document.getElementById('profile-progress-percent').innerText = `${progresso}%`;
+            document.getElementById('profile-progress-fill').style.width = `${progresso}%`;
+            aplicarFotoEmElemento(document.getElementById('profile-avatar-large'), usuarioLogadoData.foto, nome);
+        }
+
+        function abrirPainelPerfil() {
+            document.getElementById('profile-panel-overlay').classList.add('show');
+        }
+
+        function fecharPainelPerfil(event) {
+            if (event && event.target !== document.getElementById('profile-panel-overlay')) return;
+            document.getElementById('profile-panel-overlay').classList.remove('show');
+        }
+
+        function abrirModalAvatar() {
+            document.getElementById('profile-panel-overlay').classList.remove('show');
+            document.getElementById('avatar-modal').classList.add('show');
+            fotoSelecionadaTemp = '';
+            document.querySelectorAll('.preset-img').forEach(img => img.classList.remove('selected'));
+        }
+
+        function fecharModalAvatar(event) {
+            if (event && event.target !== document.getElementById('avatar-modal')) return;
+            document.getElementById('avatar-modal').classList.remove('show');
+            document.getElementById('avatar-url').value = '';
+            document.getElementById('avatar-file').value = '';
+            fotoSelecionadaTemp = '';
+            document.querySelectorAll('.preset-img').forEach(img => img.classList.remove('selected'));
+        }
+
+        function selecionarPreset(elemento, src) {
+            fotoSelecionadaTemp = src;
+            document.getElementById('avatar-url').value = '';
+            document.getElementById('avatar-file').value = '';
+            document.querySelectorAll('.preset-img').forEach(img => img.classList.remove('selected'));
+            elemento.classList.add('selected');
+        }
+
+        function carregarArquivoLocal(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                mostrarToast('Escolha um arquivo de imagem válido.');
+                event.target.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                fotoSelecionadaTemp = reader.result;
+                document.getElementById('avatar-url').value = '';
+                document.querySelectorAll('.preset-img').forEach(img => img.classList.remove('selected'));
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function salvarNovaFoto() {
+            const urlInput = document.getElementById('avatar-url').value.trim();
+            const novaFoto = urlInput || fotoSelecionadaTemp;
+
+            if (!novaFoto) {
+                mostrarToast('Selecione, envie ou cole uma imagem primeiro.');
+                return;
+            }
+
+            const btnSalvar = document.getElementById('btn-salvar-foto');
+            const textoOriginal = btnSalvar.innerHTML;
+            btnSalvar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+            btnSalvar.disabled = true;
+
+            try {
+                const response = await fetch(`${API_URL}/update-photo`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: usuarioLogadoData.email,
+                        foto: novaFoto
+                    })
+                });
+
+                if (!response.ok) {
+                    let mensagem = 'Não foi possível salvar no servidor.';
+                    try {
+                        const data = await response.json();
+                        mensagem = data.error || mensagem;
+                    } catch (e) {}
+                    throw new Error(mensagem);
+                }
+
+                usuarioLogadoData.foto = novaFoto;
+                salvarUsuarioLocal();
+                renderizarDadosUsuario();
+                fecharModalAvatar();
+                mostrarToast('Foto de perfil atualizada com sucesso.');
+            } catch (error) {
+                usuarioLogadoData.foto = novaFoto;
+                salvarUsuarioLocal();
+                renderizarDadosUsuario();
+                fecharModalAvatar();
+                mostrarToast('Foto salva localmente. O servidor não respondeu agora.');
+                console.warn(error);
+            } finally {
+                btnSalvar.innerHTML = textoOriginal;
+                btnSalvar.disabled = false;
+            }
+        }
+
+        function toggleMenuAcessibilidade(event) {
+            if (event) event.stopPropagation();
+            const menu = document.getElementById('menu-acess');
+            const botao = document.getElementById('btn-floating-access');
+            const aberto = menu.classList.toggle('show');
+            menu.setAttribute('aria-hidden', String(!aberto));
+            botao.setAttribute('aria-expanded', String(aberto));
+        }
+
+        function toggleClasseAcessibilidade(classe, chave) {
+            document.body.classList.toggle(classe);
+            localStorage.setItem(chave, document.body.classList.contains(classe));
+            atualizarBotoesAcessibilidade();
+        }
+
+        function mudarFonte(delta) {
+            currentScale += delta;
+            currentScale = Math.max(80, Math.min(145, currentScale));
+            document.documentElement.style.setProperty('--font-scale', `${currentScale}%`);
+            localStorage.setItem('acess_escala_fonte', String(currentScale));
+            mostrarToast(`Tamanho do texto: ${currentScale}%`);
+        }
+
+        function carregarAcessibilidade() {
+            const classes = [
+                ['high-contrast', 'acess_alto_contraste'],
+                ['dyslexic-font', 'acess_dislexia'],
+                ['spacing-increased', 'acess_espacamento'],
+                ['highlight-links', 'acess_links'],
+                ['reduced-motion', 'acess_reduzir_movimento']
+            ];
+
+            classes.forEach(([classe, chave]) => {
+                document.body.classList.toggle(classe, localStorage.getItem(chave) === 'true');
+            });
+
+            const savedScale = Number(localStorage.getItem('acess_escala_fonte'));
+            if (savedScale) {
+                currentScale = Math.max(80, Math.min(145, savedScale));
+                document.documentElement.style.setProperty('--font-scale', `${currentScale}%`);
+            }
+
+            atualizarBotoesAcessibilidade();
+        }
+
+        function atualizarBotoesAcessibilidade() {
+            const mapa = [
+                ['btn-contrast', 'high-contrast'],
+                ['btn-dyslexia', 'dyslexic-font'],
+                ['btn-spacing', 'spacing-increased'],
+                ['btn-links', 'highlight-links'],
+                ['btn-motion', 'reduced-motion']
+            ];
+
+            mapa.forEach(([id, classe]) => {
+                const botao = document.getElementById(id);
+                if (botao) botao.classList.toggle('active', document.body.classList.contains(classe));
+            });
+        }
+
+        function resetarAcessibilidade() {
+            ['high-contrast', 'dyslexic-font', 'spacing-increased', 'highlight-links', 'reduced-motion'].forEach(classe => {
+                document.body.classList.remove(classe);
+            });
+
+            ['acess_alto_contraste', 'acess_dislexia', 'acess_espacamento', 'acess_links', 'acess_reduzir_movimento', 'acess_escala_fonte'].forEach(chave => {
+                localStorage.removeItem(chave);
+            });
+
+            currentScale = 100;
+            document.documentElement.style.setProperty('--font-scale', '100%');
+            atualizarBotoesAcessibilidade();
+            mostrarToast('Visual restaurado.');
+        }
+
+        function tutorialKey() {
+            return obterChaveUsuario('tutorial_concluido');
+        }
+
+        function mostrarTutorialSeNecessario() {
+            if (localStorage.getItem(tutorialKey()) !== 'true') {
+                setTimeout(() => iniciarTutorial(false), 650);
+            }
+        }
+
+        function iniciarTutorial(manual) {
+            tutorialIndex = 0;
+            document.getElementById('tutorial-overlay').classList.add('show');
+            renderizarTutorial();
+        }
+
+        function renderizarTutorial() {
+            const step = tutorialSteps[tutorialIndex];
+            document.getElementById('tutorial-count').innerText = `Etapa ${tutorialIndex + 1} de ${tutorialSteps.length}`;
+            document.getElementById('tutorial-icon').className = step.icon;
+            document.getElementById('tutorial-title').innerText = step.title;
+            document.getElementById('tutorial-text').innerText = step.text;
+            document.getElementById('tutorial-back').style.visibility = tutorialIndex === 0 ? 'hidden' : 'visible';
+            document.getElementById('tutorial-next').innerHTML = tutorialIndex === tutorialSteps.length - 1 ? '<i class="fas fa-check"></i> Concluir' : 'Próximo <i class="fas fa-arrow-right"></i>';
+
+            const dots = document.getElementById('tutorial-dots');
+            dots.innerHTML = '';
+            tutorialSteps.forEach((_, index) => {
+                const dot = document.createElement('span');
+                dot.className = `tutorial-dot ${index === tutorialIndex ? 'active' : ''}`;
+                dots.appendChild(dot);
+            });
+        }
+
+        function avancarTutorial() {
+            if (tutorialIndex < tutorialSteps.length - 1) {
+                tutorialIndex += 1;
+                renderizarTutorial();
+            } else {
+                concluirTutorial();
+            }
+        }
+
+        function voltarTutorial() {
+            if (tutorialIndex > 0) {
+                tutorialIndex -= 1;
+                renderizarTutorial();
+            }
+        }
+
+        function concluirTutorial() {
+            localStorage.setItem(tutorialKey(), 'true');
+            document.getElementById('tutorial-overlay').classList.remove('show');
+            mostrarToast('Tutorial concluído. Você pode rever pelo botão Ver tutorial.');
+        }
+
+        function pularTutorial() {
+            localStorage.setItem(tutorialKey(), 'true');
+            document.getElementById('tutorial-overlay').classList.remove('show');
+        }
+
+        function mostrarToast(mensagem) {
+            const toast = document.getElementById('toast');
+            toast.innerText = mensagem;
+            toast.classList.add('show');
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+        }
+
+        function fazerLogout() {
+            localStorage.removeItem('userData');
+            localStorage.removeItem('userLogado');
+            localStorage.removeItem('userName');
+            window.location.href = 'index.html?logout=true';
+        }
+
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu-acess');
+            const area = document.querySelector('.floating-actions');
+            if (menu && area && menu.classList.contains('show') && !area.contains(event.target)) {
+                menu.classList.remove('show');
+                document.getElementById('btn-floating-access').setAttribute('aria-expanded', 'false');
+                menu.setAttribute('aria-hidden', 'true');
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.getElementById('menu-acess').classList.remove('show');
+                document.getElementById('profile-panel-overlay').classList.remove('show');
+                document.getElementById('avatar-modal').classList.remove('show');
+                document.getElementById('tutorial-overlay').classList.remove('show');
+            }
+        });
+
+        window.addEventListener('load', function() {
+            carregarAcessibilidade();
+            checkAuth();
+        });
+    </script>
+</body>
+</html>
