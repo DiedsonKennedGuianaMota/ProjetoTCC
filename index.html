@@ -3,405 +3,218 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F3FBF">
 <title>Questionário pós-intervenção · EJA</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#EAF3FF;--card:#fff;--ink:#101936;--muted:#34406A;--brand:#1F3FBF;--brand-ink:#fff;--accent:#FFC93C;--ok:#0B7A4B;--err:#B3261E;--soft:#DCE8FF;color-scheme:light;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);font-size:20px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1230;--card:#16204A;--ink:#fff;--muted:#C9D3F5;--brand:#FFC93C;--brand-ink:#101936;--accent:#5CE1E6;--ok:#5FE3A1;--err:#FF9A93;--soft:#222E63;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0B1230;--card:#16204A;--ink:#fff;--muted:#C9D3F5;--brand:#FFC93C;--brand-ink:#101936;--accent:#5CE1E6;--ok:#5FE3A1;--err:#FF9A93;--soft:#222E63;color-scheme:dark}
-*{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;line-height:1.55;min-height:100vh;overflow-x:hidden}
+:root{--bg:#EAF3FF;--card:#fff;--ink:#101936;--muted:#34406A;--brand:#1F3FBF;--brandInk:#fff;--accent:#FFC93C;--ok:#0B7A4B;--err:#B3261E;--soft:#DCE8FF;font-size:20px;color-scheme:light}
+:root[data-theme=dark]{--bg:#0B1230;--card:#16204A;--ink:#fff;--muted:#C9D3F5;--brand:#FFC93C;--brandInk:#101936;--accent:#5CE1E6;--ok:#5FE3A1;--err:#FF9A93;--soft:#222E63;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Verdana,sans-serif;line-height:1.55;min-height:100vh}
 :focus-visible{outline:4px solid var(--accent);outline-offset:3px}
-.blocks{position:fixed;inset:0;pointer-events:none;z-index:0}
-.blocks i{position:absolute;width:56px;height:56px;border-radius:14px;background:var(--brand);opacity:.12;animation:drift 14s ease-in-out infinite alternate}
-.blocks i:nth-child(1){left:6%;top:12%}.blocks i:nth-child(2){left:82%;top:22%;background:var(--accent);animation-delay:-4s;width:40px;height:40px}
-.blocks i:nth-child(3){left:14%;top:72%;animation-delay:-8s;width:72px;height:72px}.blocks i:nth-child(4){left:88%;top:78%;background:var(--accent);animation-delay:-2s}
-.blocks i:nth-child(5){left:48%;top:92%;animation-delay:-6s;width:34px;height:34px}
-@keyframes drift{to{transform:translate(30px,-60px) rotate(40deg)}}
-.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:16px 16px 96px}
-.tools{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-bottom:8px}
-.tools button{font:inherit;font-size:.85rem;font-weight:700;min-height:48px;padding:0 16px;border-radius:14px;border:3px solid var(--brand);background:var(--card);color:var(--ink);cursor:pointer}
-header.top{display:flex;gap:14px;align-items:center;margin:8px 0 18px}
-.bot{font-size:3.2rem;animation:bob 2.4s ease-in-out infinite;line-height:1}
-@keyframes bob{50%{transform:translateY(-10px) rotate(-6deg)}}
-.bubble{position:relative;background:var(--accent);color:#101936;font-weight:700;padding:12px 18px;border-radius:18px;font-size:1rem}
-.bubble::before{content:"";position:absolute;left:-10px;top:50%;margin-top:-10px;border:10px solid transparent;border-left:0;border-right-color:var(--accent)}
-h1{font-size:1.5rem;line-height:1.25;margin:0 0 4px}
-.prog{background:var(--soft);border-radius:999px;height:22px;overflow:hidden;border:3px solid var(--brand)}
-.prog div{height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--accent));border-radius:999px;transition:width .7s cubic-bezier(.3,1.4,.5,1)}
-.plabel{font-weight:700;margin:8px 0 18px;color:var(--muted)}
-.card{background:var(--card);border:3px solid var(--brand);border-radius:24px;padding:22px 18px;box-shadow:0 8px 0 var(--brand)}
-.enter{animation:slide .5s cubic-bezier(.2,.9,.3,1.1)}
-@keyframes slide{from{opacity:0;transform:translateX(40px)}}
-h2{font-size:1.45rem;margin:0 0 14px;line-height:1.25}
-.q{margin:0 0 30px;border:0;padding:0}
-.q legend,.q label.t{display:block;font-size:1.15rem;font-weight:700;margin-bottom:12px;line-height:1.4;padding:0}
-.hint{font-weight:400;color:var(--muted);font-size:.9rem}
-.opt{display:flex;gap:14px;align-items:center;min-height:64px;padding:12px 16px;margin:10px 0;border:3px solid var(--muted);border-radius:16px;cursor:pointer;background:var(--card);font-size:1.05rem;transition:transform .15s,background .15s}
-.opt:hover{background:var(--soft)}
-.opt input{width:32px;height:32px;flex:none;accent-color:var(--brand);margin:0}
-.opt:has(input:checked){border-color:var(--brand);background:var(--soft);font-weight:700;animation:pop .3s}
-@keyframes pop{50%{transform:scale(1.03)}}
-textarea,input[type=text]{width:100%;font:inherit;font-size:1.05rem;padding:14px;border:3px solid var(--muted);border-radius:16px;background:var(--card);color:var(--ink)}
-textarea{min-height:130px;resize:vertical}
-.mic{font:inherit;font-weight:700;margin-top:8px;min-height:52px;padding:0 18px;border-radius:14px;border:3px solid var(--brand);background:var(--card);color:var(--ink);cursor:pointer}
-.mic.on{background:var(--err);color:#fff;animation:pop 1s infinite}
-.tcle p{margin:0 0 12px}
-.nav{display:flex;gap:14px;margin-top:24px;flex-wrap:wrap}
-.btn{font:inherit;font-weight:700;font-size:1.1rem;min-height:64px;padding:0 28px;border-radius:18px;border:3px solid var(--brand);background:var(--card);color:var(--ink);cursor:pointer;flex:1 1 150px;transition:transform .12s}
-.btn:active{transform:scale(.97)}
-.btn.go{background:var(--brand);color:var(--brand-ink)}
-.btn.save{background:var(--ok);border-color:var(--ok);color:#fff}
-.btn:disabled{opacity:.55}
-.err{color:var(--err);font-weight:700;margin-top:10px}
-.shake{animation:shake .4s}
-@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-a.btn{display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:14px}
-.done{text-align:center}.done pre{text-align:left;white-space:pre-wrap;font:inherit;font-size:.9rem;margin:10px 0 0}.done details{text-align:left}.done .big{font-size:4.5rem;animation:bob 1.6s infinite}
-.fall{position:fixed;top:-30px;z-index:9;font-size:1.6rem;pointer-events:none;animation:fall linear forwards}
-@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
-.panel{position:fixed;inset:0;z-index:20;background:var(--bg);overflow:auto;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(40px + env(safe-area-inset-bottom,0px))}
-.panel .in{max-width:820px;margin:0 auto}
-details{background:var(--card);border:3px solid var(--brand);border-radius:16px;margin:12px 0;padding:12px 16px}
-summary{font-weight:700;cursor:pointer;min-height:44px;display:flex;align-items:center}
-details dl{margin:10px 0 0}details dt{font-weight:700;margin-top:10px;color:var(--muted);font-size:.85rem}details dd{margin:2px 0 0;font-size:.95rem}
-.owner{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:5;min-height:56px;padding:0 20px;border-radius:999px;border:3px solid var(--ink);background:var(--accent);color:#101936;font:inherit;font-weight:700;cursor:pointer}
-@media (max-width:480px){:root{font-size:18px}header.top{align-items:flex-start}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.wrap{max-width:760px;margin:auto;padding:16px 16px 80px}.tools{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-bottom:12px}
+button{font:inherit;cursor:pointer}.tools button,.mic{font-size:.85rem;font-weight:bold;min-height:46px;padding:8px 14px;border-radius:12px;border:2px solid var(--brand);background:var(--card);color:var(--ink)}
+header{display:flex;gap:14px;align-items:center;margin:10px 0 18px}.bot{font-size:3rem}.bubble{background:var(--accent);color:#101936;font-weight:bold;padding:12px 16px;border-radius:18px}
+h1{font-size:1.5rem;line-height:1.25;margin:0 0 12px}.prog{height:20px;background:var(--soft);border:2px solid var(--brand);border-radius:30px;overflow:hidden}.prog div{height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--accent));transition:width .3s}
+.plabel{font-weight:bold;color:var(--muted);margin:8px 0 18px}.card{background:var(--card);border:3px solid var(--brand);border-radius:22px;padding:22px 18px;box-shadow:0 7px 0 var(--brand)}
+h2{font-size:1.4rem;margin:0 0 16px}.q{margin:0 0 26px;border:0;padding:0}.q legend,.q label.t{display:block;font-size:1.1rem;font-weight:bold;margin-bottom:12px}
+.hint{font-weight:normal;color:var(--muted);font-size:.9rem}.opt{display:flex;gap:12px;align-items:center;min-height:58px;padding:11px 14px;margin:9px 0;border:2px solid var(--muted);border-radius:14px;background:var(--card);cursor:pointer}
+.opt input{width:26px;height:26px;flex:none;accent-color:var(--brand)}.opt:has(input:checked){border-color:var(--brand);background:var(--soft);font-weight:bold}
+textarea,input[type=text]{width:100%;font:inherit;padding:13px;border:2px solid var(--muted);border-radius:13px;background:var(--card);color:var(--ink)}textarea{min-height:120px;resize:vertical}
+.nav{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}.btn{font-weight:bold;min-height:58px;padding:10px 20px;border-radius:15px;border:2px solid var(--brand);background:var(--card);color:var(--ink);flex:1 1 140px}.btn.go{background:var(--brand);color:var(--brandInk)}.btn.save{background:var(--ok);border-color:var(--ok);color:white}.btn:disabled{opacity:.5}
+.err{color:var(--err);font-weight:bold;margin-top:10px}.done{text-align:center}.done .big{font-size:4rem}.done pre{white-space:pre-wrap;text-align:left;font:inherit;font-size:.9rem}
+.owner{position:fixed;right:12px;bottom:12px;z-index:5;background:var(--accent);color:#101936;border:2px solid var(--ink);border-radius:30px;padding:12px 18px;font-weight:bold}
+.panel{position:fixed;inset:0;z-index:10;background:var(--bg);overflow:auto;padding:18px}.panel .in{max-width:850px;margin:auto}details{background:var(--card);border:2px solid var(--brand);border-radius:14px;margin:12px 0;padding:12px}summary{font-weight:bold;cursor:pointer}details dd{margin:4px 0 12px} .actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+@media(max-width:480px){:root{font-size:18px}.card{padding:18px 14px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{body{background:white;color:black}.tools,.owner,.nav,.no-print{display:none!important}.wrap{max-width:none;padding:0}.card{box-shadow:none;border:0}.panel{position:static;background:white;color:black}.panel[hidden]{display:none!important}}
 </style>
 </head>
 <body>
-<div class="blocks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
 <main class="wrap">
-  <div class="tools" role="group" aria-label="Ajustes de leitura">
-    <button type="button" id="aMenos" aria-label="Diminuir letra">A−</button>
-    <button type="button" id="aMais" aria-label="Aumentar letra">A+</button>
-    <button type="button" id="tema" aria-label="Trocar claro e escuro">🌓 Contraste</button>
+  <div class="tools" aria-label="Ajustes de leitura">
+    <button type="button" id="aMenos">A−</button><button type="button" id="aMais">A+</button><button type="button" id="tema">🌓 Contraste</button>
   </div>
-  <header class="top">
-    <div class="bot" aria-hidden="true">🤖</div>
-    <div><div class="bubble" id="fala" aria-live="polite"></div></div>
-  </header>
+  <header><div class="bot" aria-hidden="true">🤖</div><div class="bubble" id="fala" aria-live="polite">Olá! Vamos começar com calma. 😊</div></header>
   <h1>Conte como foi a nossa experiência</h1>
   <div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="prog"><div id="bar"></div></div>
   <div class="plabel" id="plabel"></div>
   <section class="card" id="stage" aria-live="polite"></section>
 </main>
-<button type="button" class="owner" id="ownerBtn" hidden>📋 Ver respostas (só eu)</button>
-<div class="panel" id="panel" hidden role="dialog" aria-label="Respostas salvas"></div>
+<button type="button" class="owner" id="ownerBtn">📋 Área do pesquisador</button>
+<section class="panel" id="panel" hidden role="dialog" aria-label="Respostas salvas"><div class="in" id="panelIn"></div></section>
 
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script>
-/* ===== Edite aqui os dados da pesquisa ===== */
-const PESQUISA={titulo:"A criação de jogos como ferramenta para o desenvolvimento do pensamento computacional no ensino EJA",responsavel:"Prof. Diedson Kenned Guiana Mota",instituicao:"Universidade do Estado do Amazonas (UEA)",email:"dkgm.lic20@uea.edu.br",whatsapp:"https://wa.me/qr/52XMGSSUBJFYB1",contato:"dkgm.lic20@uea.edu.br · (92) 98421-9571"};
-
-const SIM_NAO_ESC=["Concordo muito","Concordo um pouco","Discordo um pouco","Discordo muito"];
+"use strict";
+/* DADOS DA PESQUISA */
+const PESQUISA={
+ titulo:"A criação de jogos como ferramenta para o desenvolvimento do pensamento computacional no ensino EJA",
+ responsavel:"Prof. Diedson Kenned Guiana Mota",
+ instituicao:"Universidade do Estado do Amazonas (UEA)",
+ contato:"dkgm.lic20@uea.edu.br · (92) 98421-9571"
+};
+const STORAGE_KEY="questionario_eja_respostas_v1";
+const ESCALA=["Concordo muito","Concordo um pouco","Discordo um pouco","Discordo muito"];
 const SECOES=[
 {id:"tcle",titulo:"Termo de Consentimento",icone:"📝",fala:"Olá! Vamos começar com calma. 😊"},
 {id:"perfil",titulo:"Parte 1: Perfil",icone:"🙋",fala:"Queremos conhecer você um pouquinho!",qs:[
- {id:"p1",t:"one",q:"Qual é a sua idade?",o:["18 a 29 anos","30 a 44 anos","45 a 59 anos","60 anos ou mais"]},
- {id:"p2",t:"one",q:"Com qual gênero você se identifica?",o:["Feminino","Masculino","Outro / prefiro não dizer"]},
- {id:"p3",t:"one",q:"Em qual etapa da EJA você estuda?",o:["Anos iniciais (alfabetização)","Anos finais (6º ao 9º ano)","Ensino Médio"]},
- {id:"p4",t:"one",q:"Você trabalha atualmente?",o:["Sim, com carteira assinada","Sim, por conta própria / informal","Não trabalho","Sou aposentado(a)"]}]},
+{id:"p1",t:"one",q:"Qual é a sua idade?",o:["18 a 29 anos","30 a 44 anos","45 a 59 anos","60 anos ou mais"]},
+{id:"p2",t:"one",q:"Com qual gênero você se identifica?",o:["Feminino","Masculino","Outro / prefiro não dizer"]},
+{id:"p3",t:"one",q:"Em qual etapa da EJA você estuda?",o:["Anos iniciais (alfabetização)","Anos finais (6º ao 9º ano)","Ensino Médio"]},
+{id:"p4",t:"one",q:"Você trabalha atualmente?",o:["Sim, com carteira assinada","Sim, por conta própria / informal","Não trabalho","Sou aposentado(a)"]}]},
 {id:"jogos",titulo:"Parte 2: Jogos no dia a dia",icone:"🎲",fala:"Jogar também é aprender!",qs:[
- {id:"j1",t:"one",q:"Com que frequência você joga (celular, dominó, cartas, bingo, videogame…)?",o:["Todos os dias","Algumas vezes na semana","Raramente","Nunca jogo"]},
- {id:"j2",t:"multi",q:"Quais jogos você costuma jogar?",h:"Pode marcar mais de um.",o:["Jogos de celular","Dominó, cartas ou damas","Bingo","Videogame","Nenhum"]},
- {id:"j3",t:"one",q:"Com quem você costuma jogar?",o:["Com a família","Com amigos","Sozinho(a)","Não jogo com ninguém"]},
- {id:"j4",t:"one",q:"“Jogar ajuda a pensar melhor.” Você…",o:SIM_NAO_ESC}]},
+{id:"j1",t:"one",q:"Com que frequência você joga (celular, dominó, cartas, bingo, videogame…)?",o:["Todos os dias","Algumas vezes na semana","Raramente","Nunca jogo"]},
+{id:"j2",t:"multi",q:"Quais jogos você costuma jogar?",h:"Pode marcar mais de um.",o:["Jogos de celular","Dominó, cartas ou damas","Bingo","Videogame","Nenhum"]},
+{id:"j3",t:"one",q:"Com quem você costuma jogar?",o:["Com a família","Com amigos","Sozinho(a)","Não jogo com ninguém"]},
+{id:"j4",t:"one",q:"“Jogar ajuda a pensar melhor.” Você…",o:ESCALA}]},
 {id:"tec",titulo:"Parte 3: Tecnologia",icone:"📱",fala:"Agora vamos falar de tecnologia.",qs:[
- {id:"t1",t:"multi",q:"Quais aparelhos você usa?",h:"Pode marcar mais de um.",o:["Celular","Computador","Tablet","Nenhum"]},
- {id:"t2",t:"one",q:"Como você se sente ao usar tecnologia?",o:["Muito à vontade","Mais ou menos","Com dificuldade","Quase não uso"]},
- {id:"t3",t:"multi",q:"Para que você usa a internet?",h:"Pode marcar mais de um.",o:["WhatsApp e redes sociais","Vídeos e músicas","Banco e serviços","Pesquisar e estudar","Não uso internet"]},
- {id:"t4",t:"one",q:"“Depois das atividades, me sinto mais confiante com a tecnologia.” Você…",o:SIM_NAO_ESC},
- {id:"t5",t:"one",q:"Você sabe procurar uma informação na internet?",o:["Sim, com facilidade","Sim, com ajuda de alguém","Não sei fazer","Não uso internet"]},
- {id:"t6",t:"one",q:"Você já usou algum aplicativo para aprender ou estudar?",o:["Sim, várias vezes","Sim, poucas vezes","Nunca usei","Não sei o que é"]}]},
+{id:"t1",t:"multi",q:"Quais aparelhos você usa?",h:"Pode marcar mais de um.",o:["Celular","Computador","Tablet","Nenhum"]},
+{id:"t2",t:"one",q:"Como você se sente ao usar tecnologia?",o:["Muito à vontade","Mais ou menos","Com dificuldade","Quase não uso"]},
+{id:"t3",t:"multi",q:"Para que você usa a internet?",h:"Pode marcar mais de um.",o:["WhatsApp e redes sociais","Vídeos e músicas","Banco e serviços","Pesquisar e estudar","Não uso internet"]},
+{id:"t4",t:"one",q:"“Depois das atividades, me sinto mais confiante com a tecnologia.” Você…",o:ESCALA},
+{id:"t5",t:"one",q:"Você sabe procurar uma informação na internet?",o:["Sim, com facilidade","Sim, com ajuda de alguém","Não sei fazer","Não uso internet"]},
+{id:"t6",t:"one",q:"Você já usou algum aplicativo para aprender ou estudar?",o:["Sim, várias vezes","Sim, poucas vezes","Nunca usei","Não sei o que é"]}]},
 {id:"pc",titulo:"Parte 4: Vamos pensar?",icone:"🧩",fala:"Sem pressão! Se não souber, tudo bem.",qs:[
- {id:"c1",t:"one",ok:0,q:"Para fazer um bolo difícil, qual é a melhor forma de começar?",o:["Dividir a receita em pequenas etapas","Misturar tudo de uma vez","Esperar o forno esquentar sem fazer nada","Não sei"]},
- {id:"c2",t:"one",ok:1,q:"Veja a sequência: ⭐ 🌙 ⭐ 🌙 ⭐ … Qual figura vem depois?",o:["⭐","🌙","☀️","Não sei"]},
- {id:"c3",t:"one",ok:2,q:"Qual é a ordem correta para lavar as mãos?",o:["Secar, ensaboar, molhar, enxaguar","Ensaboar, secar, molhar, enxaguar","Molhar, ensaboar, esfregar, enxaguar, secar","Não sei"]},
- {id:"c4",t:"one",ok:1,q:"Um robô seguiu as ordens “ande 3 passos, vire à direita, ande 2 passos”, mas chegou ao lugar errado. O que fazer?",o:["Jogar o robô fora","Procurar o erro nas ordens e corrigir","Repetir as mesmas ordens sem mudar","Não sei"]},
- {id:"c5",t:"one",ok:1,q:"Um robô repete 4 vezes: “ande 1 passo e vire à direita”. Quantos passos ele anda no total?",o:["1 passo","4 passos","8 passos","Não sei"]},
- {id:"c6",t:"one",ok:1,q:"Regra: SE estiver chovendo, levo o guarda-chuva; SE NÃO estiver, deixo em casa. Hoje o sol está forte. O que fazer?",o:["Levar o guarda-chuva","Deixar o guarda-chuva em casa","Levar dois guarda-chuvas","Não sei"]}]},
+{id:"c1",t:"one",ok:0,q:"Para fazer um bolo difícil, qual é a melhor forma de começar?",o:["Dividir a receita em pequenas etapas","Misturar tudo de uma vez","Esperar o forno esquentar sem fazer nada","Não sei"]},
+{id:"c2",t:"one",ok:1,q:"Veja a sequência: ⭐ 🌙 ⭐ 🌙 ⭐ … Qual figura vem depois?",o:["⭐","🌙","☀️","Não sei"]},
+{id:"c3",t:"one",ok:2,q:"Qual é a ordem correta para lavar as mãos?",o:["Secar, ensaboar, molhar, enxaguar","Ensaboar, secar, molhar, enxaguar","Molhar, ensaboar, esfregar, enxaguar, secar","Não sei"]},
+{id:"c4",t:"one",ok:1,q:"Um robô seguiu as ordens “ande 3 passos, vire à direita, ande 2 passos”, mas chegou ao lugar errado. O que fazer?",o:["Jogar o robô fora","Procurar o erro nas ordens e corrigir","Repetir as mesmas ordens sem mudar","Não sei"]},
+{id:"c5",t:"one",ok:1,q:"Um robô repete 4 vezes: “ande 1 passo e vire à direita”. Quantos passos ele anda no total?",o:["1 passo","4 passos","8 passos","Não sei"]},
+{id:"c6",t:"one",ok:1,q:"Regra: SE estiver chovendo, levo o guarda-chuva; SE NÃO estiver, deixo em casa. Hoje o sol está forte. O que fazer?",o:["Levar o guarda-chuva","Deixar o guarda-chuva em casa","Levar dois guarda-chuvas","Não sei"]}]},
 {id:"op",titulo:"Parte 5: Sua opinião",icone:"💬",fala:"Sua opinião é muito importante! 💛",qs:[
- {id:"o1",t:"text",q:"O que você mais gostou nas atividades?"},
- {id:"o2",t:"text",q:"O que foi mais difícil para você?"},
- {id:"o3",t:"text",q:"O que você aprendeu que pode usar no seu dia a dia?"},
- {id:"o4",t:"text",q:"O que podemos melhorar nas próximas aulas?"}]}
+{id:"o1",t:"text",q:"O que você mais gostou nas atividades?"},
+{id:"o2",t:"text",q:"O que foi mais difícil para você?"},
+{id:"o3",t:"text",q:"O que você aprendeu que pode usar no seu dia a dia?"},
+{id:"o4",t:"text",q:"O que podemos melhorar nas próximas aulas?"}]}
 ];
-
 const $=s=>document.querySelector(s);
-const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
-const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
-const TOTAL_PC=SECOES.flatMap(S=>S.qs||[]).filter(q=>q.ok!=null).length;
-let step=0,ans={},apelido="",aceite=false,DB=null,DICT=null,activeTA=null,micBtn=null,saved=false;
+const make=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e};
+const TOTAL_PC=SECOES.flatMap(s=>s.qs||[]).filter(q=>q.ok!==undefined).length;
+let step=0,answers={},apelido="",aceite=false,fontSize=20;
 const stage=$("#stage");
+$("#aMais").onclick=()=>{fontSize=Math.min(30,fontSize+2);document.documentElement.style.fontSize=fontSize+"px"};
+$("#aMenos").onclick=()=>{fontSize=Math.max(16,fontSize-2);document.documentElement.style.fontSize=fontSize+"px"};
+$("#tema").onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==="dark"?"light":"dark"};
 
-/* Ajustes de leitura */
-let fs=20;const root=document.documentElement;
-$("#aMais").onclick=()=>{fs=Math.min(30,fs+2);root.style.fontSize=fs+"px"};
-$("#aMenos").onclick=()=>{fs=Math.max(16,fs-2);root.style.fontSize=fs+"px"};
-$("#tema").onclick=()=>{const dark=root.dataset.theme?root.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;root.dataset.theme=dark?"light":"dark"};
-
-function progress(){
-  const pct=Math.round(step/(SECOES.length)*100);
-  $("#bar").style.width=Math.max(6,pct)+"%";$("#prog").setAttribute("aria-valuenow",pct);
-  $("#plabel").textContent=step<SECOES.length?`Etapa ${step+1} de ${SECOES.length}: ${SECOES[step].titulo}`:"Tudo pronto!";
+function atualizarProgresso(){
+ const pct=Math.round(step/SECOES.length*100);
+ $("#bar").style.width=Math.max(5,pct)+"%";$("#prog").setAttribute("aria-valuenow",pct);
+ $("#plabel").textContent=step<SECOES.length?`Etapa ${step+1} de ${SECOES.length}: ${SECOES[step].titulo}`:"Questionário concluído!";
 }
-
 function render(){
-  stage.replaceChildren();stage.classList.remove("enter");void stage.offsetWidth;stage.classList.add("enter");
-  progress();
-  if(step>=SECOES.length)return renderDone();
-  const S=SECOES[step];$("#fala").textContent=S.fala;
-  stage.append(el("h2",null,`${S.icone} ${S.titulo}`));
-  if(S.id==="tcle")renderTCLE();else S.qs.forEach((q,i)=>stage.append(renderQ(q,i+1)));
-  const err=el("div","err");err.id="err";err.setAttribute("role","alert");stage.append(err);
-  const nav=el("div","nav");
-  if(step>0){const b=el("button","btn","← Voltar");b.type="button";b.onclick=()=>go(-1);nav.append(b)}
-  const last=step===SECOLAST;
-  const n=el("button","btn "+(last?"save":"go"),last?"💾 Salvar questionário":"Próxima etapa →");n.type="button";n.id="next";
-  n.onclick=()=>last?salvar():validar()&&go(1);nav.append(n);stage.append(nav);
+ stage.replaceChildren();atualizarProgresso();
+ if(step>=SECOES.length){renderFinal();return}
+ const s=SECOES[step];$("#fala").textContent=s.fala;
+ stage.append(make("h2",null,`${s.icone} ${s.titulo}`));
+ if(s.id==="tcle")renderTCLE();else s.qs.forEach((q,i)=>stage.append(renderPergunta(q,i+1)));
+ const error=make("div","err");error.id="err";error.setAttribute("role","alert");stage.append(error);
+ const nav=make("div","nav");
+ if(step>0){const back=make("button","btn","← Voltar");back.type="button";back.onclick=()=>go(-1);nav.append(back)}
+ const next=make("button","btn go",step===SECOES.length-1?"💾 Salvar questionário":"Próxima etapa →");
+ next.type="button";next.onclick=()=>{if(step===SECOES.length-1)salvar();else if(validar())go(1)};
+ nav.append(next);stage.append(nav);
 }
-const SECOLAST=SECOES.length-1;
-function go(d){step+=d;render();scrollTo({top:0,behavior:reduce?"auto":"smooth"})}
-
 function renderTCLE(){
-  const box=el("div","tcle");
-  [`Você está sendo convidado(a) a participar da pesquisa “${PESQUISA.titulo}”, conduzida por ${PESQUISA.responsavel} (${PESQUISA.instituicao}).`,
-   "Objetivo: saber o que você aprendeu e o que achou das atividades com jogos e tecnologia feitas nas aulas.",
-   "Sua participação é voluntária. Você pode parar a qualquer momento, sem nenhum prejuízo nas aulas ou na escola.",
-   "Não existem respostas certas ou erradas na opinião. Os riscos são pequenos: cansaço ou algum constrangimento. Se isso acontecer, pode parar.",
-   "Seus dados são sigilosos. Só o professor pesquisador terá acesso e seu nome não aparecerá em nenhum resultado.",
-   `Dúvidas? Fale com ${PESQUISA.responsavel}: ${PESQUISA.contato}.`].forEach(t=>box.append(el("p",null,t)));
-  stage.append(box);
-  const lab=el("label","opt");const cb=el("input");cb.type="checkbox";cb.checked=aceite;cb.onchange=()=>aceite=cb.checked;
-  lab.append(cb,el("span",null,"Li e concordo em participar da pesquisa."));stage.append(lab);
-  const w=el("div","q");const l=el("label","t","Seu nome ou apelido (opcional)");l.htmlFor="apelido";
-  const i=el("input");i.type="text";i.id="apelido";i.value=apelido;i.autocomplete="off";i.oninput=()=>apelido=i.value;
-  w.append(l,i);w.style.marginTop="20px";stage.append(w);
+ const box=make("div","tcle");
+ [
+`Você está sendo convidado(a) a participar da pesquisa “${PESQUISA.titulo}”, conduzida por ${PESQUISA.responsavel} (${PESQUISA.instituicao}).`,
+"Objetivo: saber o que você aprendeu e o que achou das atividades com jogos e tecnologia feitas nas aulas.",
+"Sua participação é voluntária. Você pode parar a qualquer momento, sem nenhum prejuízo nas aulas ou na escola.",
+"Não existem respostas certas ou erradas na opinião. Os riscos são pequenos: cansaço ou algum constrangimento. Se isso acontecer, pode parar.",
+"Seus dados são sigilosos. Só o professor pesquisador terá acesso e seu nome não aparecerá em nenhum resultado.",
+`Dúvidas? Fale com ${PESQUISA.responsavel}: ${PESQUISA.contato}.`
+ ].forEach(t=>box.append(make("p",null,t)));
+ stage.append(box);
+ const lab=make("label","opt"),cb=make("input");cb.type="checkbox";cb.checked=aceite;cb.onchange=()=>aceite=cb.checked;
+ lab.append(cb,make("span",null,"Li e concordo em participar da pesquisa."));stage.append(lab);
+ const w=make("div","q"),l=make("label","t","Seu nome ou apelido (opcional)"),inp=make("input");
+ inp.type="text";inp.value=apelido;inp.autocomplete="off";inp.oninput=()=>apelido=inp.value;
+ w.append(l,inp);w.style.marginTop="18px";stage.append(w);
 }
-
-function renderQ(q,n){
-  if(q.t==="text"){
-    const w=el("div","q");const l=el("label","t",`${n}. ${q.q}`);l.htmlFor=q.id;
-    const ta=el("textarea");ta.id=q.id;ta.value=ans[q.id]||"";ta.oninput=()=>ans[q.id]=ta.value;ta.onfocus=()=>activeTA=ta;
-    w.append(l,ta);
-    if(DICT){const m=el("button","mic","🎤 Falar a resposta");m.type="button";m.onclick=()=>toggleMic(ta,m);w.append(m)}
-    return w;
-  }
-  const f=el("fieldset","q");const lg=el("legend",null,`${n}. ${q.q} `);
-  if(q.h)lg.append(el("span","hint",q.h));f.append(lg);
-  q.o.forEach((o,i)=>{
-    const lab=el("label","opt");const inp=el("input");inp.type=q.t==="multi"?"checkbox":"radio";inp.name=q.id;inp.value=o;
-    if(q.t==="multi"?(ans[q.id]||[]).includes(o):ans[q.id]===o)inp.checked=true;
-    inp.onchange=()=>{
-      if(q.t==="multi"){ans[q.id]=[...f.querySelectorAll("input:checked")].map(x=>x.value)}else ans[q.id]=o;
-      f.classList.remove("shake");$("#err").textContent="";
-    };
-    lab.append(inp,el("span",null,o));f.append(lab);
-  });
-  f.dataset.id=q.id;return f;
+function renderPergunta(q,n){
+ if(q.t==="text"){
+  const w=make("div","q"),l=make("label","t",`${n}. ${q.q}`),ta=make("textarea");
+  ta.value=answers[q.id]||"";ta.oninput=()=>answers[q.id]=ta.value;w.append(l,ta);return w;
+ }
+ const f=make("fieldset","q"),lg=make("legend",null,`${n}. ${q.q} `);
+ if(q.h)lg.append(make("span","hint",q.h));f.append(lg);
+ q.o.forEach(option=>{
+  const lab=make("label","opt"),input=make("input");input.type=q.t==="multi"?"checkbox":"radio";input.name=q.id;input.value=option;
+  input.checked=q.t==="multi"?(answers[q.id]||[]).includes(option):answers[q.id]===option;
+  input.onchange=()=>{if(q.t==="multi")answers[q.id]=[...f.querySelectorAll("input:checked")].map(x=>x.value);else answers[q.id]=option;$("#err").textContent=""};
+  lab.append(input,make("span",null,option));f.append(lab);
+ });
+ f.dataset.id=q.id;return f;
 }
-
 function validar(){
-  const S=SECOES[step];$("#err").textContent="";
-  if(S.id==="tcle"){
-    if(!aceite){$("#err").textContent="Para continuar, marque a caixinha “Li e concordo”.";return false}
-    return true;
-  }
-  for(const q of S.qs){
-    if(q.t==="text")continue;
-    const a=ans[q.id];
-    if(!a||(Array.isArray(a)&&!a.length)){
-      const f=stage.querySelector(`[data-id="${q.id}"]`);f.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});
-      f.classList.add("shake");setTimeout(()=>f.classList.remove("shake"),500);
-      $("#err").textContent="Falta responder uma pergunta. Marque uma opção para continuar.";return false;
-    }
-  }
-  return true;
+ const s=SECOES[step];$("#err").textContent="";
+ if(s.id==="tcle"){if(!aceite){$("#err").textContent="Para continuar, marque a caixinha “Li e concordo”.";return false}return true}
+ for(const q of s.qs){if(q.t==="text")continue;const a=answers[q.id];if(!a||(Array.isArray(a)&&!a.length)){
+  const f=stage.querySelector(`[data-id="${q.id}"]`);if(f)f.scrollIntoView({behavior:"smooth",block:"center"});
+  $("#err").textContent="Falta responder uma pergunta. Marque uma opção para continuar.";return false;
+ }}
+ return true;
 }
-
-/* Ditado por voz */
-function toggleMic(ta,btn){
-  if(micBtn===btn&&btn.classList.contains("on")){DICT.stop();return}
-  activeTA=ta;micBtn=btn;
-  DICT.start().catch(()=>{});
+function go(d){step+=d;render();window.scrollTo({top:0,behavior:"smooth"})}
+function montarPacote(){
+ const respostas={};let acertos=0;
+ SECOES.forEach(s=>(s.qs||[]).forEach(q=>{const a=answers[q.id];respostas[q.id]=Array.isArray(a)?a.join(" | "):(a||"");if(q.ok!==undefined&&a===q.o[q.ok])acertos++}));
+ return {id:Date.now().toString(),ts:new Date().toISOString(),apelido:apelido.trim(),respostas,acertos,totalPC:TOTAL_PC};
 }
-
-function pacote(){
-  const respostas={};let acertos=0;
-  SECOES.forEach(S=>(S.qs||[]).forEach(q=>{
-    const a=ans[q.id];respostas[q.id]=Array.isArray(a)?a.join(" | "):(a||"");
-    if(q.ok!=null&&a===q.o[q.ok])acertos++;
-  }));
-  return{ts:Date.now(),apelido:apelido.trim(),respostas,acertos,totalPC:TOTAL_PC};
+function lerBanco(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]")}catch(e){return []}}
+function gravarBanco(lista){localStorage.setItem(STORAGE_KEY,JSON.stringify(lista))}
+function salvar(){
+ if(!validar())return;
+ const pacote=montarPacote();
+ try{const lista=lerBanco();lista.push(pacote);gravarBanco(lista);renderFinal()}
+ catch(e){$("#err").textContent="O navegador não permitiu salvar. Verifique se o armazenamento do site está habilitado e tente novamente."}
 }
-
-async function salvar(){
-  if(!validar())return;
-  const b=$("#next");b.disabled=true;b.textContent="Salvando…";
-  const p=pacote();
-  try{
-    const u=await claude.use("user");
-    if(!DB||!u)throw new Error("sem-db");
-    await DB.collection("respostas").doc(await u.id()).set(p);
-  }catch(e){
-    b.disabled=false;b.textContent="💾 Salvar questionário";
-    $("#err").textContent="Não foi possível salvar agora. Confira a internet e toque em salvar de novo.";
-    return;
-  }
-  saved=true;step=SECOES.length;render();confete();
+function espelho(d){
+ const L=["QUESTIONÁRIO PÓS-INTERVENÇÃO (EJA)",`Participante: ${d.apelido||"sem nome"}`,`Data: ${new Date(d.ts).toLocaleString("pt-BR")}`,`Acertos em pensamento computacional: ${d.acertos}/${d.totalPC}`,""];
+ SECOES.forEach(s=>{if(!s.qs)return;L.push(`== ${s.titulo} ==`);s.qs.forEach(q=>L.push(q.q,`R: ${d.respostas[q.id]||"—"}`,""))});
+ return L.join("\n");
 }
-
-function renderDone(){
-  $("#fala").textContent="Muito obrigado! 🎉";
-  const d=el("div","done");
-  d.append(el("div","big","🏆"),el("h2",null,"Questionário salvo!"),el("p",null,"Obrigado por participar. Sua opinião ajuda a melhorar as aulas."));
-  const txt=espelho();const pk=pacote();
-  const passo=el("p",null,"Para entregar ao professor: 1) baixe o PDF; 2) toque no botão do WhatsApp e anexe o arquivo na conversa.");
-  const pb=el("button","btn go","⬇ 1. Baixar meu PDF");pb.type="button";pb.style.marginTop="14px";pb.onclick=()=>pdf([pk]);
-  const wa=el("a","btn save","💬 2. Enviar pelo WhatsApp");wa.href=PESQUISA.whatsapp;wa.target="_blank";wa.rel="noopener";
-  const det=el("details");det.append(el("summary",null,"Ver espelho das minhas respostas"),el("pre",null,txt));
-  d.append(passo,pb,wa,det);
-  stage.append(d);
+function renderFinal(){
+ $("#fala").textContent="Muito obrigado! 🎉";const d=make("div","done");
+ d.append(make("div","big", "🏆"),make("h2",null,"Questionário salvo neste dispositivo!"),make("p",null,"Obrigado por participar. Sua opinião ajuda a melhorar as aulas."));
+ d.append(make("p",null,"Se precisar entregar suas respostas ao professor, use o botão abaixo para imprimir ou salvar em PDF."));
+ const b=make("button","btn go","⬇ Baixar / imprimir minhas respostas em PDF");b.onclick=()=>imprimirRespostas([montarPacote()]);d.append(b);
+ const detail=make("details"),summary=make("summary",null,"Ver minhas respostas"),pre=make("pre",null,espelho(montarPacote()));detail.append(summary,pre);d.append(detail);
+ stage.replaceChildren(d);atualizarProgresso();
 }
-function espelho(){
-  const L=["QUESTIONÁRIO PÓS-INTERVENÇÃO (EJA)",`Participante: ${apelido.trim()||"sem nome"}`,`Data: ${new Date().toLocaleString("pt-BR")}`,`Acertos em pensamento computacional: ${pacote().acertos}/${TOTAL_PC}`,""];
-  SECOES.forEach(S=>{if(!S.qs)return;L.push(`== ${S.titulo} ==`);S.qs.forEach(q=>{const a=ans[q.id];L.push(q.q,`R: ${Array.isArray(a)?a.join(" | "):(a||"—")}`,"")})});
-  return L.join("\n");
+function imprimirRespostas(lista){
+ const w=window.open("","_blank");if(!w){alert("Permita pop-ups para gerar o PDF.");return}
+ const conteudo=lista.map(d=>`<article><h1>Questionário pós-intervenção · EJA</h1><p><b>Participante:</b> ${escapar(d.apelido||"sem nome")}</p><p><b>Data:</b> ${new Date(d.ts).toLocaleString("pt-BR")}</p><p><b>Acertos:</b> ${d.acertos}/${d.totalPC}</p><pre>${escapar(espelho(d))}</pre></article>`).join("<hr>");
+ w.document.write(`<!doctype html><html lang="pt-BR"><meta charset="utf-8"><title>Respostas EJA</title><style>body{font:14px Arial;margin:30px;color:#17203b}h1{font-size:20px}pre{white-space:pre-wrap;font:13px Arial;line-height:1.5}article{page-break-after:always}@media print{button{display:none}}</style><body>${conteudo}<script>window.onload=()=>window.print()<\/script></body></html>`);
+ w.document.close();
 }
-function confete(){
-  if(reduce)return;
-  const E=["🎉","⭐","💛","🟦","🟨","✨"];
-  for(let i=0;i<40;i++){
-    const s=el("span","fall",E[i%E.length]);s.style.left=Math.random()*100+"vw";
-    s.style.animationDuration=(2.5+Math.random()*2.5)+"s";s.style.animationDelay=Math.random()*1.2+"s";
-    document.body.append(s);setTimeout(()=>s.remove(),6500);
-  }
-}
+function escapar(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 
-/* ===== PDF do espelho ===== */
-async function pdf(lista){
-  const J=window.jspdf&&window.jspdf.jsPDF;
-  if(!J||!lista.length){alert("Não foi possível gerar o PDF agora.");return}
-  const doc=new J({unit:"mm",format:"a4"});
-  const NAVY=[16,25,54],BLUE=[31,63,191],GOLD=[255,201,60],SOFT=[234,243,255],INK=[28,34,60],MUTE=[96,106,138],WHITE=[255,255,255];
-  const M=18,W=174;let y=0;
-  const limpa=t=>String(t??"").replace(/⭐/g,"[estrela]").replace(/🌙/g,"[lua]").replace(/☀️?/g,"[sol]").replace(/[\u{1F000}-\u{1FFFF}\u2600-\u27BF\uFE0F]/gu,"").replace(/\s+/g," ").trim();
-  const fill=c=>doc.setFillColor(c[0],c[1],c[2]),ink=c=>doc.setTextColor(c[0],c[1],c[2]);
-  const font=(f,s,b)=>{doc.setFont(f,b?"bold":"normal");doc.setFontSize(s)};
-  const wrap=(t,f,s,b,w)=>{font(f,s,b);return doc.splitTextToSize(limpa(t),w)};
-  const barra=()=>{fill(NAVY);doc.rect(0,0,210,9,"F");fill(GOLD);doc.rect(0,9,210,1.2,"F");y=22};
-  const nova=()=>{doc.addPage();barra()};
-
-  function capa(d){
-    fill(NAVY);doc.rect(0,0,210,54,"F");fill(GOLD);doc.rect(0,54,210,2.4,"F");
-    fill(BLUE);doc.roundedRect(178,10,14,14,3,3,"F");fill(GOLD);doc.roundedRect(168,27,9,9,2,2,"F");fill(WHITE);doc.roundedRect(184,30,6,6,1.5,1.5,"F");
-    ink(GOLD);font("helvetica",9.5,true);doc.text("Questionário pós-intervenção · EJA",M,15);
-    ink(WHITE);font("times",17,true);
-    doc.splitTextToSize(PESQUISA.titulo,140).forEach((l,i)=>doc.text(l,M,26+i*7.5));
-    const top=66;
-    fill(SOFT);doc.roundedRect(M,top,W,26,3,3,"F");fill(BLUE);doc.roundedRect(M,top,2.4,26,1.2,1.2,"F");
-    const col=(x,lab,val)=>{ink(MUTE);font("helvetica",8.5);doc.text(lab,x,top+9);ink(INK);font("helvetica",11,true);doc.text(wrap(val,"helvetica",11,true,48)[0],x,top+18)};
-    col(M+9,"Participante",d.apelido||"sem nome");
-    col(M+70,"Data e hora",new Date(d.ts).toLocaleString("pt-BR"));
-    col(M+131,"Pensamento computacional",`${d.acertos} de ${d.totalPC||TOTAL_PC} acertos`);
-    y=top+38;
-  }
-
-  lista.forEach((d,i)=>{
-    if(i>0)doc.addPage();
-    capa(d);
-    SECOES.forEach(S=>{
-      if(!S.qs)return;
-      if(y>240)nova();
-      fill(BLUE);doc.roundedRect(M,y,W,9.5,2,2,"F");fill(GOLD);doc.roundedRect(M,y,2.4,9.5,1.2,1.2,"F");
-      ink(WHITE);font("times",12.5,true);doc.text(limpa(S.titulo),M+7,y+6.6);y+=16;
-      S.qs.forEach((q,n)=>{
-        const ql=wrap(`${n+1}. ${q.q}`,"helvetica",10.5,true,W);
-        const resp=(d.respostas&&d.respostas[q.id])||"";
-        const al=wrap(resp||"Sem resposta","helvetica",10,false,W-16);
-        const h=ql.length*5+al.length*4.9+13;
-        if(y+h>278)nova();
-        ink(INK);font("helvetica",10.5,true);ql.forEach((l,k)=>doc.text(l,M,y+k*5));
-        const by=y+ql.length*5-1.5,bh=al.length*4.9+5;
-        fill(SOFT);doc.roundedRect(M+4,by,W-4,bh,2,2,"F");fill(GOLD);doc.roundedRect(M+4,by,1.8,bh,0.9,0.9,"F");
-        ink(resp?INK:MUTE);font("helvetica",10,false);al.forEach((l,k)=>doc.text(l,M+10,by+5+k*4.9));
-        y=by+bh+7;
-      });
-      y+=4;
-    });
-  });
-
-  const n=doc.getNumberOfPages();
-  for(let p=1;p<=n;p++){
-    doc.setPage(p);doc.setDrawColor(200,208,230);doc.setLineWidth(.3);doc.line(M,287,M+W,287);
-    ink(MUTE);font("helvetica",8);
-    doc.text(limpa(`${PESQUISA.responsavel} · ${PESQUISA.instituicao} · Documento confidencial`),M,292);
-    doc.text(`Página ${p} de ${n}`,M+W,292,{align:"right"});
-  }
-  try{
-    const dl=await claude.use("downloads");
-    if(!dl)throw new Error("sem-downloads");
-    await dl.save({filename:lista.length>1?"espelho-todos-os-alunos.pdf":"espelho-"+(lista[0].apelido||"aluno").replace(/[^\w-]+/g,"_")+".pdf",data:doc.output("blob")});
-  }catch(e){alert("Não foi possível baixar o PDF neste aparelho.")}
-}
-
-/* ===== Painel privado da pesquisadora ===== */
-let unsub=null;
+/* PAINEL LOCAL DO PESQUISADOR */
+$("#ownerBtn").onclick=abrirPainel;
 function abrirPainel(){
-  const P=$("#panel");P.hidden=false;P.replaceChildren();
-  const inn=el("div","in");P.append(inn);
-  const top=el("div","tools");
-  const fechar=el("button",null,"✕ Fechar");fechar.type="button";fechar.onclick=()=>{P.hidden=true;unsub&&unsub()};
-  const csvB=el("button",null,"⬇ Baixar planilha (CSV)");csvB.type="button";const pdfB=el("button",null,"⬇ PDF de todos");pdfB.type="button";top.append(pdfB,csvB,fechar);inn.append(top);
-  inn.append(el("h1",null,"Respostas salvas"));
-  const resumo=el("p","plabel","Carregando…");const lista=el("div");inn.append(resumo,lista);
-  let docs=[];
-  unsub=DB.collection("respostas").orderBy("ts","desc").onSnapshot(snap=>{
-    docs=snap.docs.map(d=>d.data());lista.replaceChildren();
-    const media=docs.length?(docs.reduce((s,d)=>s+(d.acertos||0),0)/docs.length).toFixed(1):"0";
-    resumo.textContent=docs.length?`${docs.length} questionário(s) · média de acertos no pensamento computacional: ${media} de ${TOTAL_PC}`:"Nenhuma resposta ainda.";
-    docs.forEach(d=>{
-      const det=el("details");const sm=el("summary",null,`${new Date(d.ts).toLocaleString("pt-BR")} · ${d.apelido||"sem nome"} · acertos: ${d.acertos}/${d.totalPC||TOTAL_PC}`);
-      const dl=el("dl");
-      SECOES.forEach(S=>(S.qs||[]).forEach(q=>{dl.append(el("dt",null,q.q),el("dd",null,(d.respostas&&d.respostas[q.id])||"—"))}));
-      const pb=el("button","mic","⬇ Baixar PDF deste aluno");pb.type="button";pb.onclick=()=>pdf([d]);
-      det.append(sm,dl,pb);lista.append(det);
-    });
-  },()=>{resumo.textContent="Sem permissão para ler as respostas."});
-  pdfB.onclick=()=>pdf(docs);
-  csvB.onclick=async()=>{
-    const ids=[];SECOES.forEach(S=>(S.qs||[]).forEach(q=>ids.push(q.id)));
-    const esc=v=>`"${String(v??"").replace(/"/g,'""')}"`;
-    const linhas=[["data","apelido","acertos",...ids].map(esc).join(",")];
-    docs.forEach(d=>linhas.push([new Date(d.ts).toLocaleString("pt-BR"),d.apelido,d.acertos,...ids.map(i=>d.respostas&&d.respostas[i])].map(esc).join(",")));
-    try{const dl=await claude.use("downloads");if(dl)await dl.save({filename:"respostas-questionario-eja.csv",data:"\ufeff"+linhas.join("\n")})}catch(e){}
-  };
+ const panel=$("#panel"),inn=$("#panelIn");panel.hidden=false;inn.replaceChildren();
+ const actions=make("div","actions");
+ const close=make("button","tools","✕ Fechar");close.onclick=()=>panel.hidden=true;
+ const csv=make("button","tools","⬇ Baixar CSV");csv.onclick=baixarCSV;
+ const pdf=make("button","tools","⬇ PDF de todos");pdf.onclick=()=>{const ds=lerBanco();if(ds.length)imprimirRespostas(ds);else alert("Ainda não há respostas salvas.")};
+ const limpar=make("button","tools","Apagar respostas deste dispositivo");limpar.onclick=()=>{if(confirm("Tem certeza de que deseja apagar todas as respostas salvas neste navegador?")){gravarBanco([]);abrirPainel()}};
+ actions.append(csv,pdf,limpar,close);inn.append(actions,make("h1",null,"Respostas salvas neste dispositivo"));
+ const ds=lerBanco(),media=ds.length?(ds.reduce((s,d)=>s+(d.acertos||0),0)/ds.length).toFixed(1):"0";
+ inn.append(make("p","plabel",`${ds.length} questionário(s) · média de acertos: ${media} de ${TOTAL_PC}`));
+ if(!ds.length)inn.append(make("p",null,"Nenhuma resposta salva neste navegador."));
+ ds.slice().reverse().forEach(d=>{
+  const det=make("details"),sum=make("summary",null,`${new Date(d.ts).toLocaleString("pt-BR")} · ${d.apelido||"sem nome"} · acertos: ${d.acertos}/${d.totalPC}`);
+  const pre=make("pre",null,espelho(d));pre.style.whiteSpace="pre-wrap";det.append(sum,pre);inn.append(det);
+ });
 }
-
-/* ===== Capacidades do viewer ===== */
-(async()=>{
-  if(!window.claude)return;
-  try{DB=await claude.use("db")}catch(e){}
-  try{
-    DICT=await claude.use("dictation");
-    if(DICT){
-      DICT.onFinal(({text})=>{if(activeTA){activeTA.value=(activeTA.value+" "+text).trim();ans[activeTA.id]=activeTA.value}});
-      DICT.onState(({state})=>{if(micBtn){const on=state==="listening";micBtn.classList.toggle("on",on);micBtn.textContent=on?"⏹ Parar de falar":"🎤 Falar a resposta"}});
-      if(step===SECOLAST)render();
-    }
-  }catch(e){}
-  try{
-    const u=await claude.use("user");
-    if(u&&u.canEdit()&&DB){const ob=$("#ownerBtn");ob.hidden=false;ob.onclick=abrirPainel}
-  }catch(e){}
-})();
-
+function baixarCSV(){
+ const ds=lerBanco();if(!ds.length){alert("Ainda não há respostas salvas.");return}
+ const ids=SECOES.flatMap(s=>(s.qs||[]).map(q=>q.id));
+ const esc=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
+ const linhas=[["data","apelido","acertos",...ids].map(esc).join(",")];
+ ds.forEach(d=>linhas.push([new Date(d.ts).toLocaleString("pt-BR"),d.apelido,d.acertos,...ids.map(id=>d.respostas[id])].map(esc).join(",")));
+ const blob=new Blob(["\ufeff"+linhas.join("\r\n")],{type:"text/csv;charset=utf-8"});
+ const url=URL.createObjectURL(blob),a=make("a");a.href=url;a.download="respostas-questionario-eja.csv";a.click();URL.revokeObjectURL(url);
+}
 render();
 </script>
 </body>
